@@ -1,0 +1,13 @@
+.label {
+    font-size: 12px;
+    font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 0,0,0,1);
+}
+
+#welcome-text {
+    -fx-font-size: 35px;
+    -fx-font-weight: bold;
+}

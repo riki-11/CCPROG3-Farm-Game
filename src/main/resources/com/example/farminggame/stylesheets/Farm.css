@@ -1,0 +1,22 @@
+.img-button {
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+    -fx-content-display: graphic-only; 
+}
+
+.default-tile {
+    -fx-background-image: url("../assets/farm/default-tile.png");
+    -fx-min-width: 200px;
+    -fx-min-height: 200px;
+}
+
+.farmer-icon {
+    -fx-background-image: url("../assets/farmers/default-farmer.png");
+    -fx-min-width: 100px;
+    -fx-min-height: 100px;
+}
+
+.farmerInformation {
+    -fx-fill: red;
+    -fx-margin: 10px 10px;
+}

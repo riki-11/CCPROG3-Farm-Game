@@ -1,0 +1,39 @@
+
+Important steps of project:
+1. Create a GUI for the simple prototype
+    - Create a single tile
+    - Create a simple menu
+    -
+2. Changing look of tile
+- have each tile be a button with a graphic, but this graphic is set using CSS
+- have a separate CSS class for each possible tile look
+- switch the styleClass of a tile using Java
+
+3. Create a brand new MCO2 project with different packages for Models, Views, and Controllers
+
+
+
+STUFF TO SPLIT:
+1. Implementing the logic of the full specs in the terminal-based game.
+2. Changing some classes to utilize inheritance like Tools and Crop (abstract class)
+2. Finding a complete set of assets for everything in the game
+4. Implementing the GUI application on top of the game logic.
+5. MAKE SURE ANYONE CAN RUN IT
+
+potential bonus features:
+- animals
+- costumes for farmer
+- buildings (with different features like automation, extra capabilities, design, etc.)
+- lot expansion
+- seasons (w advantage and disadvantage)
+- rain (some crops can't withstand the rain)
+- tutorial
+- xmas themed assets
+pixel art: https://www.kenney.nl/assets?s=pixel
+mvc: https://edencoding.com/mvc-in-javafx/
+
+
+Useful articles:
+- Adding an image to a button: https://edencoding.com/how-to-add-an-image-to-a-button/
+- Probably useful for creating a board of tiles: https://docs.oracle.com/javase/8/javafx/layout-tutorial/size_align.htm
+- CSS Reference for all elements of JavaFX
