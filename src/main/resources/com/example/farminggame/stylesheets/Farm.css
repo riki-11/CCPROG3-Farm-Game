@@ -6,8 +6,8 @@
 
 .default-tile {
     -fx-background-image: url("../assets/farm/default-tile.png");
-    -fx-min-width: 200px;
-    -fx-min-height: 200px;
+    -fx-min-width: 75px;
+    -fx-min-height: 75px;
 }
 
 .farmer-icon {

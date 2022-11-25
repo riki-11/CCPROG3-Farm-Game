@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -34,6 +35,8 @@ public class FarmController {
 
     @FXML private Text levelDisplay;
     @FXML private Text balanceDisplay;
+
+    @FXML private GridPane farmLot;
 
     @FXML private Button plantTurnipBtn;
 
@@ -85,14 +88,44 @@ public class FarmController {
         this.stage.show();
     }
 
+    // Initializes the view upon switching to it
     @FXML
     private void initialize() {
         nameDisplay.setText(getFarmerName());
         levelDisplay.setText("Level: " + farmer.getLevel());
         balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
-        plantTurnipBtn.setOnAction(event -> plantTurnip());
+        //plantTurnipBtn.setOnAction(event -> plantTurnip());
         resetBtn.setOnAction(event -> resetTile());
         exitBtn.setOnAction(event -> exitGame());
+
+        // Create the farm lot of 50 tiles (5 rows, 10 columns)
+        GridPane newFarm = farmLot;
+        int tileIdCount = 1;
+
+        // For loop is per col
+        for (int row = 0; row < 5; row++) {
+            for (int column = 0; column < 10; column++) {
+                Button newTile = new Button();
+                // Set the respective id of a tile (tile 1, tile 2, etc.)
+                newTile.setId("tile" + tileIdCount);
+                newTile.getStyleClass().add("default-tile");
+                newTile.getStyleClass().add("img-button");
+
+                // Set the corresponding actions for a button
+                newTile.setOnAction(event -> {
+                    try {
+                        plantTurnip(event);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+
+                // Add new tile to its corresponding row and column position (column, row)
+                newFarm.add(newTile, column, row);
+
+                tileIdCount++;
+            }
+        }
 
         // Initialize seed store list
         seedStoreList.add(new Apple());
@@ -103,15 +136,24 @@ public class FarmController {
         seedStoreList.add(new Sunflower());
         seedStoreList.add(new Tulip());
         seedStoreList.add(new Turnip());
+
+
     }
 
+    @FXML protected void plantTurnip(ActionEvent event) throws IOException {
+        String turnipURL = ASSETS_URL + "/crops/new-turnip.png";
+        Button tileBtn = (Button) event.getSource();
+        tileBtn.setStyle("-fx-background-image: url("+turnipURL+")"); // probably best to use setStyleClass instead
+    }
+
+    /*
     @FXML
     protected void plantTurnip() {
         // Use the getResource method if grabbing images from resources folder
         String newTurnipURL = ASSETS_URL + "/crops/new-turnip.png";
         plantTurnipBtn.setStyle("-fx-background-image: url("+newTurnipURL+");");
-        System.out.println(plantTurnipBtn.getStyle());
     }
+     */
 
     @FXML
     protected void resetTile() {
@@ -126,11 +168,14 @@ public class FarmController {
 
     @FXML
     protected void buyCrop(ActionEvent event) throws IOException {
-        Object node = event.getSource(); // Grab the object that triggered the action
+        // Grab the object that triggered the action (THIS WILL BE USEFUL FOR THE FARM AS WELL)
+        Object node = event.getSource();
         // Since it'll be a Button, we can typecast node to a Button type
         Button button = (Button) node;
         System.out.println("BUYING " + button.getText());
         String seedName = button.getText();
+
+        // STILL HAVE TO GRAB HOW MANY SEEDS WE'RE BUYING
 
         // Pass what crop to buy to the farmer
         switch (seedName) {
@@ -147,12 +192,6 @@ public class FarmController {
         seedPouch.showSeedList();
         System.out.println(wallet.getObjectCoins());
         balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
-        /* this should be the one to talk to the view and to the model
-            1. take note of what crop we bought
-            2. tell farmer what crop we bought
-            3. farmer will reduce the corresponding amount from wallet
-            4. farmer will add to a specific index in their seed pouch
-         */
     }
 
     // GETTERS AND SETTERS

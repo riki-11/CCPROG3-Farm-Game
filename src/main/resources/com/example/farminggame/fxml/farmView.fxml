@@ -37,26 +37,22 @@
 
     </top>
 
-    <left><TextField text="left" /></left>
+    <left>
+        <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <Button fx:id="resetBtn" text="Reset Tile" />
+        </HBox>
+    </left>
 
     <center>
-        <GridPane alignment="center">
+        <GridPane fx:id="farmLot" alignment="center" gridLinesVisible="true" >
             <!-- Column Span is an arbitrarily large number to let it take up the remaining columns as needed -->
-            <Button fx:id="plantTurnipBtn" styleClass="img-button, default-tile" alignment="center"
-                    GridPane.columnSpan="1000"/>
-
-            <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                <Button fx:id="resetBtn" text="Reset Tile" />
-            </HBox>
-
-            <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                <Button fx:id="exitBtn" text="Return to Main Menu" />
-            </HBox>
-
         </GridPane>
     </center>
 
-    <right><TextField text="Right" />
+    <right>
+        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Button fx:id="exitBtn" text="Return to Main Menu" />
+        </HBox>
     </right>
     <bottom>
         <GridPane>

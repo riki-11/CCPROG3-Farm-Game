@@ -105,10 +105,9 @@ public class Farmer {
 
 
     /**
-     * Returns how much it cost to purchase the seed
+     * Buys seeds from the seed store
      * @param cropToBuy
      * @param count
-     * @param seedStoreList
      * @return
      */
     public boolean buySeeds(Crop cropToBuy, int count) {
