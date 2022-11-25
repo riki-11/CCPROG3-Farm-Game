@@ -47,25 +47,11 @@
     </left>
 
     <center>
-        <GridPane fx:id="farmLot" alignment="center" gridLinesVisible="true" >
-            <!-- Column Span is an arbitrarily large number to let it take up the remaining columns as needed -->
-        </GridPane>
+
         <StackPane>
-
-            <GridPane alignment="center">
+            <GridPane fx:id="farmLot" alignment="center" gridLinesVisible="true" >
                 <!-- Column Span is an arbitrarily large number to let it take up the remaining columns as needed -->
-                <Button fx:id="plantTurnipBtn" alignment="center" styleClass="img-button, default-tile" GridPane.columnSpan="1000" />
-
-                <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <Button fx:id="resetBtn" text="Reset Tile" />
-                </HBox>
-
-                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <Button fx:id="exitBtn" text="Return to Main Menu" />
-                </HBox>
-
             </GridPane>
-
             <!-- POP UP PROFILE -->
             <GridPane alignment="center" styleClass="popUp" visible="false">
                 <Rectangle arcHeight="10.0" arcWidth="10.0" fill="palegreen" height="400.0" stroke="BLACK" strokeType="INSIDE" width="500.0" />
@@ -114,7 +100,7 @@
             </GridPane>
 
             <!-- POP UP MARKET -->
-            <GridPane alignment="center" styleClass="popUp" visible="true">
+            <GridPane alignment="center" styleClass="popUp">
                 <Rectangle arcHeight="10.0" arcWidth="10.0" fill="indianred" height="500.0" stroke="BLACK" strokeType="INSIDE" width="500.0" />
                 <BorderPane>
                     <right>
