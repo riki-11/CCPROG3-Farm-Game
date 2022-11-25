@@ -170,6 +170,7 @@ public class FarmController {
     protected void buyCrop(ActionEvent event) throws IOException {
         // Grab the object that triggered the action (THIS WILL BE USEFUL FOR THE FARM AS WELL)
         Object node = event.getSource();
+
         // Since it'll be a Button, we can typecast node to a Button type
         Button button = (Button) node;
         System.out.println("BUYING " + button.getText());
@@ -190,7 +191,6 @@ public class FarmController {
         }
 
         seedPouch.showSeedList();
-        System.out.println(wallet.getObjectCoins());
         balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
     }
 

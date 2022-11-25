@@ -20,3 +20,17 @@
     -fx-fill: red;
     -fx-margin: 10px 10px;
 }
+
+.marketNames {
+
+}
+
+.exit {
+    -fx-background-radius: 70px;
+}
+
+
+
+#btn1 {
+    -fx-background-radius: 70px;
+}
