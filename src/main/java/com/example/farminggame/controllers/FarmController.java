@@ -1,9 +1,8 @@
 package com.example.farminggame.controllers;
 
-import com.example.farminggame.models.farmer.Farmer;
-import com.example.farminggame.models.farmer.SeedPouch;
-import com.example.farminggame.models.farmer.Wallet;
+import com.example.farminggame.models.environment.crops.*;
 import com.example.farminggame.models.tools.*;
+import com.example.farminggame.models.farmer.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class FarmController {
@@ -39,19 +41,24 @@ public class FarmController {
     @FXML private Button exitBtn;
 
 
+
     @FXML
     private SceneController sceneController;
 
-    // CONTROLLER VARIABLES
+    // MODEL VARIABLES
+    private Farmer farmer;
+    private Wallet wallet;
+    private SeedPouch seedPouch;
+
+    // List of possible seeds you can buy
+    private ArrayList<Crop> seedStoreList = new ArrayList<>();
+
     private Plough plough = new Plough();
     private Fertilizer fertilizer = new Fertilizer();
     private Pickaxe pickaxe = new Pickaxe();
     private Shovel shovel = new Shovel();
     private WateringCan wateringCan = new WateringCan();
 
-    private Farmer farmer;
-    private Wallet wallet;
-    private SeedPouch seedPouch;
 
     // FXML-RELATED METHODS
     public void createStage(Stage stage) {
@@ -81,12 +88,21 @@ public class FarmController {
     @FXML
     private void initialize() {
         nameDisplay.setText(getFarmerName());
-        levelDisplay.setText(Integer.toString(farmer.getLevel()));
-        levelDisplay.setStyle("color: red;");
-        balanceDisplay.setText(Double.toString(wallet.getObjectCoins()));
+        levelDisplay.setText("Level: " + farmer.getLevel());
+        balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
         plantTurnipBtn.setOnAction(event -> plantTurnip());
         resetBtn.setOnAction(event -> resetTile());
         exitBtn.setOnAction(event -> exitGame());
+
+        // Initialize seed store list
+        seedStoreList.add(new Apple());
+        seedStoreList.add(new Carrot());
+        seedStoreList.add(new Mango());
+        seedStoreList.add(new Potato());
+        seedStoreList.add(new Rose());
+        seedStoreList.add(new Sunflower());
+        seedStoreList.add(new Tulip());
+        seedStoreList.add(new Turnip());
     }
 
     @FXML
@@ -106,6 +122,37 @@ public class FarmController {
     @FXML
     protected void exitGame() {
         sceneController.switchToStartView();
+    }
+
+    @FXML
+    protected void buyCrop(ActionEvent event) throws IOException {
+        Object node = event.getSource(); // Grab the object that triggered the action
+        // Since it'll be a Button, we can typecast node to a Button type
+        Button button = (Button) node;
+        System.out.println("BUYING " + button.getText());
+        String seedName = button.getText();
+
+        // Pass what crop to buy to the farmer
+        switch (seedName) {
+            case "Apple" -> farmer.buySeeds(new Apple(), 1);
+            case "Carrot" -> farmer.buySeeds(new Carrot(), 1);
+            case "Mango" -> farmer.buySeeds(new Mango(), 1);
+            case "Potato" -> farmer.buySeeds(new Potato(), 1);
+            case "Rose" -> farmer.buySeeds(new Rose(), 1);
+            case "Sunflower" -> farmer.buySeeds(new Sunflower(), 1);
+            case "Tulip" -> farmer.buySeeds(new Tulip(), 1);
+            case "Turnip" -> farmer.buySeeds(new Turnip(), 1);
+        }
+
+        seedPouch.showSeedList();
+        System.out.println(wallet.getObjectCoins());
+        balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
+        /* this should be the one to talk to the view and to the model
+            1. take note of what crop we bought
+            2. tell farmer what crop we bought
+            3. farmer will reduce the corresponding amount from wallet
+            4. farmer will add to a specific index in their seed pouch
+         */
     }
 
     // GETTERS AND SETTERS

@@ -12,6 +12,8 @@ import com.example.farminggame.models.tools.WateringCan;
 
 import com.example.farminggame.models.farmer.*;
 
+import java.util.ArrayList;
+
 /**
  * Represents a Farmer which acts as the player character
  * @author Enrique Lejano and Krizchelle Wong
@@ -97,27 +99,36 @@ public class Farmer {
 
     /**
      * Lets player buy as many seeds as they desire as long they can afford it
-     * @param choice Index of specific seed to be bought
      * @param count Number of seeds to be bought
-     * @param cost Base cost of seed to be bought
      * @return true for a successful transaction, false if otherwise
     */
 
-    /*
-        Change buy seeds to accomodate all types of crops
+
+    /**
+     * Returns how much it cost to purchase the seed
+     * @param cropToBuy
+     * @param count
+     * @param seedStoreList
+     * @return
      */
-    public boolean buySeeds(int choice, int count, int cost) {
+    public boolean buySeeds(Crop cropToBuy, int count) {
+        String seedName = cropToBuy.getSeedName();
+        int basePrice = cropToBuy.getSeedCost();
+
         // If farmer has enough coins and decided to buy at least 1 seed
-        if (this.wallet.getObjectCoins() >= (cost - this.costReduction) * count && count != 0) {
-            // Update seed pouch and deduct from wallet
-            this.seedPouch.updateSeedList(choice - 1, count);
-            this.wallet.setObjectCoins(-1 * cost * count);
+        if (this.wallet.getObjectCoins() >= (basePrice - this.costReduction) * count && count != 0) {
+            double totalPrice = basePrice * count;
+
+            this.seedPouch.updateSeedList(seedName, count);
+            this.wallet.setObjectCoins(-1 * totalPrice);
+            System.out.printf("Successfully bought %d seeds of %s\n", count, seedName);
+
             return true;
         }
         // If not enough coins to buy seeds or if farmer cancelled transaction
         return false;
-    }
 
+    }
 
     /**
      * Plants a seed on a selected Tile

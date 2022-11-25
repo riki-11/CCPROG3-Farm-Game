@@ -1,15 +1,7 @@
 
 Important steps of project:
-1. Create a GUI for the simple prototype
-    - Create a single tile
-    - Create a simple menu
-    -
-2. Changing look of tile
-- have each tile be a button with a graphic, but this graphic is set using CSS
-- have a separate CSS class for each possible tile look
-- switch the styleClass of a tile using Java
+1. Save the game! Only closing the program will delete the save file
 
-3. Create a brand new MCO2 project with different packages for Models, Views, and Controllers
 
 
 
@@ -19,6 +11,7 @@ STUFF TO SPLIT:
 2. Finding a complete set of assets for everything in the game
 4. Implementing the GUI application on top of the game logic.
 5. MAKE SURE ANYONE CAN RUN IT
+
 
 potential bonus features:
 - animals
