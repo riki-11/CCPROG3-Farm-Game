@@ -54,6 +54,42 @@
             <GridPane fx:id="farmLot" alignment="center" gridLinesVisible="true" >
                 <!-- Column Span is an arbitrarily large number to let it take up the remaining columns as needed -->
             </GridPane>
+
+            <!-- Tile button options -->
+            <FlowPane fx:id="toolButtons">
+                <Button fx:id="ploughBtn" styleClass="toolButton" visible="true">
+                    <FlowPane.margin>
+                        <Insets left="10"></Insets>
+                    </FlowPane.margin>
+                </Button>
+                <Button fx:id="shovelBtn" styleClass="toolButton" visible="true">
+                    <FlowPane.margin>
+                        <Insets left="10"></Insets>
+                    </FlowPane.margin>
+                </Button>
+                <Button fx:id="pickAxeBtn" styleClass="toolButton" visible="true">
+                    <FlowPane.margin>
+                        <Insets left="10"></Insets>
+                    </FlowPane.margin>
+                </Button>
+                <Button fx:id="fertilizerBtn" styleClass="toolButton" visible="true">
+                    <FlowPane.margin>
+                        <Insets left="10"></Insets>
+                    </FlowPane.margin>
+                </Button>
+                <Button fx:id="wateringCanBtn" styleClass="toolButton" visible="true">
+                    <FlowPane.margin>
+                        <Insets left="10"></Insets>
+                    </FlowPane.margin>
+                </Button>
+                <Button fx:id="harvestBtn" styleClass="toolButton" visible="true">
+                    <FlowPane.margin>
+                        <Insets left="10"></Insets>
+                    </FlowPane.margin>
+                </Button>
+
+
+            </FlowPane>
             <!-- POP UP PROFILE -->
             <GridPane fx:id="profilePane" alignment="center" styleClass="popUp" visible="false">
                 <Rectangle arcHeight="10.0" arcWidth="10.0" fill="palegreen" height="400.0" stroke="BLACK" strokeType="INSIDE" width="500.0" />
@@ -167,11 +203,6 @@
                                     </VBox.margin>
                                 </Text>
                                 <Text fx:id="fertilizerNeedsDesc" styleClass="cropDescription" text="Fertilizer Needs: ">
-                                    <VBox.margin>
-                                        <Insets top="3"></Insets>
-                                    </VBox.margin>
-                                </Text>
-                                <Text fx:id="productsProducedDesc" styleClass="cropDescription" text="Products Produced: ">
                                     <VBox.margin>
                                         <Insets top="3"></Insets>
                                     </VBox.margin>
@@ -312,15 +343,28 @@
                                         </Button>
                                     </VBox>
                                 </FlowPane>
+                                <StackPane>
+                                    <Text fx:id="successText" text="success!" visible="false">
+                                        <StackPane.margin>
+                                            <Insets top="90" right="40"></Insets>
+                                        </StackPane.margin>
+                                    </Text>
+                                    <Text fx:id="failedText" text="purchase failed" visible="false">
+                                        <StackPane.margin>
+                                            <Insets top="90" right="40"></Insets>
+                                        </StackPane.margin>
+                                    </Text>
+
+                                </StackPane>
                                 <FlowPane>
                                     <TextField fx:id="cropNumber" promptText="how many?" prefWidth="100" alignment="center">
                                         <FlowPane.margin>
-                                            <Insets top="100" left="175"></Insets>
+                                            <Insets top="5" left="175"></Insets>
                                         </FlowPane.margin>
                                     </TextField>
                                     <Button styleClass="buyBTN" text="BUY" onAction="#buyCrop">
                                         <FlowPane.margin>
-                                            <Insets top="100" left="2"></Insets>
+                                            <Insets top="5" left="2"></Insets>
                                         </FlowPane.margin>
                                     </Button>
                                 </FlowPane>
@@ -347,7 +391,7 @@
         <GridPane>
             <Button fx:id="openMarketBtn" styleClass="img-button" GridPane.columnIndex="0" onAction="#openMarket">
                 <GridPane.margin>
-                    <Insets left="25"></Insets>
+                    <Insets left="25" bottom="20"></Insets>
                 </GridPane.margin>
             </Button>
             <!-- <GridPane GridPane.columnIndex="1" hgap="10" vgap="5" visible="false">
