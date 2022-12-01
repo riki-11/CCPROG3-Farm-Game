@@ -3,6 +3,8 @@ package com.example.farminggame.controllers;
 import com.example.farminggame.models.environment.crops.*;
 import com.example.farminggame.models.tools.*;
 import com.example.farminggame.models.farmer.*;
+import javafx.animation.PauseTransition;
+import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,12 +14,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -95,9 +99,25 @@ public class FarmController {
         this.stage.show();
     }
 
+    @FXML private FlowPane toolButtons;
+    // Adjust certain elements to their positions
+    private void translateView() {
+        toolButtons.setTranslateX(285);
+        toolButtons.setTranslateY(475);
+    }
+
+    @FXML
+    protected void displayButtons(ActionEvent tile) {
+        Object node = tile.getSource();
+        Button tileBtn = (Button) node;
+
+    }
+
+
     // Initializes the view upon switching to it
     @FXML
     private void initialize() {
+        translateView();
         nameDisplay.setText(getFarmerName());
         levelDisplay.setText("Level: " + farmer.getLevel());
         balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
@@ -174,29 +194,45 @@ public class FarmController {
     }
 
     @FXML TextField cropNumber;
+    @FXML Text successText;
+    @FXML Text failedText;
 
     @FXML
-    protected void buyCrop(ActionEvent event) throws IOException {
-        // Grab the object that triggered the action (THIS WILL BE USEFUL FOR THE FARM AS WELL)
-        Object node = event.getSource();
+    protected void buyCrop() {
 
+        boolean seedBought = false;
         int cropNum = Integer.parseInt(cropNumber.getText());
         System.out.println(this.selectedButton);
 
-        // STILL HAVE TO GRAB HOW MANY SEEDS WE'RE BUYING
 
         // Pass what crop to buy to the farmer
         switch (this.selectedButton) {
-            case "Apple" -> farmer.buySeeds(new Apple(), cropNum);
-            case "Carrot" -> farmer.buySeeds(new Carrot(), cropNum);
-            case "Mango" -> farmer.buySeeds(new Mango(), cropNum);
-            case "Potato" -> farmer.buySeeds(new Potato(), cropNum);
-            case "Rose" -> farmer.buySeeds(new Rose(), cropNum);
-            case "Sunflower" -> farmer.buySeeds(new Sunflower(), cropNum);
-            case "Tulip" -> farmer.buySeeds(new Tulip(), cropNum);
-            case "Turnip" -> farmer.buySeeds(new Turnip(), cropNum);
+            case "Apple" -> seedBought = farmer.buySeeds(new Apple(), cropNum);
+            case "Carrot" -> seedBought = farmer.buySeeds(new Carrot(), cropNum);
+            case "Mango" -> seedBought = farmer.buySeeds(new Mango(), cropNum);
+            case "Potato" -> seedBought = farmer.buySeeds(new Potato(), cropNum);
+            case "Rose" -> seedBought = farmer.buySeeds(new Rose(), cropNum);
+            case "Sunflower" -> seedBought = farmer.buySeeds(new Sunflower(), cropNum);
+            case "Tulip" -> seedBought = farmer.buySeeds(new Tulip(), cropNum);
+            case "Turnip" -> seedBought = farmer.buySeeds(new Turnip(), cropNum);
+        }
+        PauseTransition pause = new PauseTransition(Duration.seconds(1));
+
+        if(seedBought) {
+            successText.setTranslateX(-150);
+            successText.setVisible(true);
+            pause.setOnFinished(
+                    f -> successText.setVisible(false));
+            pause.play();
+        } else {
+            failedText.setTranslateX(-150);
+            failedText.setVisible(true);
+            pause.setOnFinished(
+                    f -> failedText.setVisible(false));
+            pause.play();
         }
 
+        cropNumber.setText("");
         seedPouch.showSeedList();
         balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
     }
@@ -229,7 +265,10 @@ public class FarmController {
     @FXML
     protected void openMarket(){
         System.out.println("Called market");
+
         marketPane.setVisible(true);
+
+        cropNumber.setText("");
         disableButtons();
     }
 
@@ -289,13 +328,13 @@ public class FarmController {
     @FXML
     protected void displayMarketInformation(ActionEvent event) throws IOException {
         //Switch image in the market description
-        /*Image carrotImage = new Image(getClass().getResourceAsStream("com/example/farminggame/assets/crops/carrot.jpg"));
-        Image appleImage = new Image(getClass().getResourceAsStream("com/example/farminggame/assets/crops/apple.jpg"));
-        Image mangoImage = new Image(getClass().getResourceAsStream("com/example/farminggame/assets/crops/mango.jpg"));
-        Image potatoImage = new Image(getClass().getResourceAsStream("com/example/farminggame/assets/crops/potato.jpg"));
+        Image carrotImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/assets/crops/carrot.jpg"));
+        Image appleImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/assets/crops/apple.jpg"));
+        Image mangoImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/assets/crops/mango.jpg"));
+        Image potatoImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/assets/crops/potato.jpg"));
 
-        Image turnipImage = new Image(getClass().getResourceAsStream("com/example/farminggame/assets/crops/turnip.jpg"));
-*/
+        Image turnipImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/assets/crops/turnip.jpg"));
+
         Carrot carrot = new Carrot();
         Apple apple = new Apple();
         Mango mango = new Mango();
@@ -313,51 +352,46 @@ public class FarmController {
 
         if (button.getId().equals("marketCarrotBtn")) {
             setSelectedButton("Carrot");
-            //cropDescImage.setImage(carrotImage);
+            cropDescImage.setImage(carrotImage);
             cropNameDesc.setText(carrot.getSeedName());
             harvestTimeDesc.setText("Harvest Time: " + carrot.getHarvestTime());
             waterNeedsDesc.setText("Water Needs (Bonus): " + carrot.getWaterNeeds() + "(" + carrot.getWaterBonusLimit() + ")");
             fertilizerNeedsDesc.setText("Fertilizer Needs (Bonus): " + carrot.getFertilizerNeeds() + "(" + carrot.getFertilizerBonusLimit() + ")");
-            productsProducedDesc.setText("Products Produced: " + carrot.getProduce());
             basePriceDesc.setText("Base Selling Price: " + carrot.getSellingPrice());
         }
         else if (button.getId().equals("marketAppleBtn")) {
             setSelectedButton("Apple");
-            //cropDescImage.setImage(appleImage);
+            cropDescImage.setImage(appleImage);
             cropNameDesc.setText(apple.getSeedName());
             harvestTimeDesc.setText("Harvest Time: " + apple.getHarvestTime());
             waterNeedsDesc.setText("Water Needs (Bonus): " + apple.getWaterNeeds() + "(" + apple.getWaterBonusLimit() + ")");
             fertilizerNeedsDesc.setText("Fertilizer Needs (Bonus): " + apple.getFertilizerNeeds() + "(" + apple.getFertilizerBonusLimit() + ")");
-            productsProducedDesc.setText("Products Produced: " + apple.getProduce());
             basePriceDesc.setText("Base Selling Price: " + apple.getSellingPrice());
         }
         else if (button.getId().equals("marketMangoBtn")) {
             setSelectedButton("Mango");
-            //cropDescImage.setImage(mangoImage);
+            cropDescImage.setImage(mangoImage);
             cropNameDesc.setText(mango.getSeedName());
             harvestTimeDesc.setText("Harvest Time: " + mango.getHarvestTime());
             waterNeedsDesc.setText("Water Needs (Bonus): " + mango.getWaterNeeds() + "(" + mango.getWaterBonusLimit() + ")");
             fertilizerNeedsDesc.setText("Fertilizer Needs (Bonus): " + mango.getFertilizerNeeds() + "(" + mango.getFertilizerBonusLimit() + ")");
-            productsProducedDesc.setText("Products Produced: " + mango.getProduce());
             basePriceDesc.setText("Base Selling Price: " + mango.getSellingPrice());
         }
         else if (button.getId().equals("marketPotatoBtn")) {
             setSelectedButton("Potato");
-            //cropDescImage.setImage(potatoImage);
+            cropDescImage.setImage(potatoImage);
             cropNameDesc.setText(potato.getSeedName());
             harvestTimeDesc.setText("Harvest Time: " + potato.getHarvestTime());
             waterNeedsDesc.setText("Water Needs (Bonus): " + potato.getWaterNeeds() + "(" + potato.getWaterBonusLimit() + ")");
             fertilizerNeedsDesc.setText("Fertilizer Needs (Bonus): " + potato.getFertilizerNeeds() + "(" + potato.getFertilizerBonusLimit() + ")");
-            productsProducedDesc.setText("Products Produced: " + potato.getProduce());
             basePriceDesc.setText("Base Selling Price: " + potato.getSellingPrice());
         }
         else if (button.getId().equals("marketRoseBtn")) {
             setSelectedButton("Rose");
-            //harvestTimeDesc.setText("Harvest Time: " + rose.getHarvestTime());
+            harvestTimeDesc.setText("Harvest Time: " + rose.getHarvestTime());
             cropNameDesc.setText(rose.getSeedName());
             waterNeedsDesc.setText("Water Needs (Bonus): " + rose.getWaterNeeds() + "(" + rose.getWaterBonusLimit() + ")");
             fertilizerNeedsDesc.setText("Fertilizer Needs (Bonus): " + rose.getFertilizerNeeds() + "(" + rose.getFertilizerBonusLimit() + ")");
-            productsProducedDesc.setText("Products Produced: " + rose.getProduce());
             basePriceDesc.setText("Base Selling Price: " + rose.getSellingPrice());
         }
         else if (button.getId().equals("marketSunflowerBtn")) {
@@ -367,7 +401,6 @@ public class FarmController {
             harvestTimeDesc.setText("Harvest Time: " + sunflower.getHarvestTime());
             waterNeedsDesc.setText("Water Needs (Bonus): " + sunflower.getWaterNeeds() + "(" + sunflower.getWaterBonusLimit() + ")");
             fertilizerNeedsDesc.setText("Fertilizer Needs (Bonus): " + sunflower.getFertilizerNeeds() + "(" + sunflower.getFertilizerBonusLimit() + ")");
-            productsProducedDesc.setText("Products Produced: " + sunflower.getProduce());
             basePriceDesc.setText("Base Selling Price: " + sunflower.getSellingPrice());
         }
         else if (button.getId().equals("marketTulipBtn")) {
@@ -377,7 +410,6 @@ public class FarmController {
             harvestTimeDesc.setText("Harvest Time: " + tulip.getHarvestTime());
             waterNeedsDesc.setText("Water Needs (Bonus): " + tulip.getWaterNeeds() + "(" + tulip.getWaterBonusLimit() + ")");
             fertilizerNeedsDesc.setText("Fertilizer Needs (Bonus): " + tulip.getFertilizerNeeds() + "(" + tulip.getFertilizerBonusLimit() + ")");
-            productsProducedDesc.setText("Products Produced: " + tulip.getProduce());
             basePriceDesc.setText("Base Selling Price: " + tulip.getSellingPrice());
         }
         else if (button.getId().equals("marketTurnipBtn")) {
@@ -388,7 +420,6 @@ public class FarmController {
             harvestTimeDesc.setText("Harvest Time: " + turnip.getHarvestTime());
             waterNeedsDesc.setText("Water Needs (Bonus): " + turnip.getWaterNeeds() + "(" + turnip.getWaterBonusLimit() + ")");
             fertilizerNeedsDesc.setText("Fertilizer Needs (Bonus): " + turnip.getFertilizerNeeds() + "(" + turnip.getFertilizerBonusLimit() + ")");
-            productsProducedDesc.setText("Products Produced: " + turnip.getProduce());
             basePriceDesc.setText("Base Selling Price: " + turnip.getSellingPrice());
         }
 
