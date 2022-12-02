@@ -18,6 +18,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.ScrollPane?>
 <BorderPane fx:id="farmView" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <FlowPane>
@@ -50,43 +52,6 @@
             <GridPane fx:id="farmLotGrid" alignment="center">
                 <!-- Column Span is an arbitrarily large number to let it take up the remaining columns as needed -->
             </GridPane>
-
-            <!-- Tool buttons -->
-            <FlowPane fx:id="toolButtons">
-                <!-- Call farmer equip methods -->
-                <Button style="-fx-border-color: red;" fx:id="ploughBtn" onAction="#usePlough" styleClass="imgBtn, toolBtn">
-                    <FlowPane.margin>
-                        <Insets left="10"></Insets>
-                    </FlowPane.margin>
-                </Button>
-                <Button style="-fx-border-color: green;" fx:id="shovelBtn" styleClass="imgBtn, toolBtn">
-                    <FlowPane.margin>
-                        <Insets left="10"></Insets>
-                    </FlowPane.margin>
-                </Button>
-                <Button style="-fx-border-color: blue;" fx:id="pickaxeBtn" styleClass="imgBtn, toolBtn">
-                    <FlowPane.margin>
-                        <Insets left="10"></Insets>
-                    </FlowPane.margin>
-                </Button>
-                <Button style="-fx-border-color: black;" fx:id="fertilizerBtn" styleClass="imgBtn, toolBtn">
-                    <FlowPane.margin>
-                        <Insets left="10"></Insets>
-                    </FlowPane.margin>
-                </Button>
-                <Button style="-fx-border-color: yellow;" fx:id="wateringCanBtn" styleClass="imgBtn, toolBtn">
-                    <FlowPane.margin>
-                        <Insets left="10"></Insets>
-                    </FlowPane.margin>
-                </Button>
-                <Button style="-fx-border-color: gray;" fx:id="harvestBtn" styleClass="imgBtn, toolBtn">
-                    <FlowPane.margin>
-                        <Insets left="10"></Insets>
-                    </FlowPane.margin>
-                </Button>
-
-
-            </FlowPane>
             <!-- POP UP PROFILE -->
             <GridPane fx:id="profilePane" alignment="center" styleClass="popUp" visible="false">
                 <Rectangle arcHeight="10.0" arcWidth="10.0" fill="palegreen" height="400.0" stroke="BLACK" strokeType="INSIDE" width="500.0" />
@@ -108,8 +73,8 @@
                                 </image>
                             </ImageView>
                             <VBox>
-                                <TextField editable="false" text="FARMER NAME" />
-                                <TextField editable="false" text="RANK: FARMER" />
+                                <Text fx:id="farmerNamePopUp" text="FARMER NAME" />
+                                <Text fx:id="farmerRankPopUp" text="Rank: FARMER" />
                                 <FlowPane.margin>
                                     <Insets top="25" />
                                 </FlowPane.margin>
@@ -117,14 +82,11 @@
                             <BorderPane.margin>
                                 <Insets left="10" top="20" />
                             </BorderPane.margin>
-
-
-
                         </FlowPane>
                     </left>
                     <bottom>
                         <!-- UPGRADE NOW -->
-                        <Button fx:id="upgradeNow" text="UPGRADE FARMER" BorderPane.alignment="CENTER">
+                        <Button fx:id="upgradeFarmerBtn" text="UPGRADE FARMER" BorderPane.alignment="CENTER" disable="true" onAction="#upgradeFarmer">
                             <BorderPane.margin>
                                 <Insets bottom="35.0" />
                             </BorderPane.margin>
@@ -380,44 +342,93 @@
         </HBox>
     </right>
     <bottom>
+
+        <StackPane>
+
+            <BorderPane>
+                <left>
+                    <Button fx:id="openMarketBtn" styleClass="img-button" onAction="#openMarket">
+                        <BorderPane.margin>
+                            <Insets left="20" bottom="20"></Insets>
+                        </BorderPane.margin>
+                    </Button>
+                </left>
+                <!-- Button options -->
+                <top>
+
+                                <!-- Tool buttons -->
+            <FlowPane fx:id="toolButtons">
+                <!-- Call farmer equip methods -->
+                <Button style="-fx-border-color: red;" fx:id="ploughBtn" onAction="#usePlough" styleClass="imgBtn, toolBtn">
+                    <FlowPane.margin>
+                        <Insets left="10"></Insets>
+                    </FlowPane.margin>
+                </Button>
+                <Button style="-fx-border-color: green;" fx:id="shovelBtn" styleClass="imgBtn, toolBtn">
+                    <FlowPane.margin>
+                        <Insets left="10"></Insets>
+                    </FlowPane.margin>
+                </Button>
+                <Button style="-fx-border-color: blue;" fx:id="pickaxeBtn" styleClass="imgBtn, toolBtn">
+                    <FlowPane.margin>
+                        <Insets left="10"></Insets>
+                    </FlowPane.margin>
+                </Button>
+                <Button style="-fx-border-color: black;" fx:id="fertilizerBtn" styleClass="imgBtn, toolBtn">
+                    <FlowPane.margin>
+                        <Insets left="10"></Insets>
+                    </FlowPane.margin>
+                </Button>
+                <Button style="-fx-border-color: yellow;" fx:id="wateringCanBtn" styleClass="imgBtn, toolBtn">
+                    <FlowPane.margin>
+                        <Insets left="10"></Insets>
+                    </FlowPane.margin>
+                </Button>
+                <Button style="-fx-border-color: gray;" fx:id="harvestBtn" styleClass="imgBtn, toolBtn">
+                    <FlowPane.margin>
+                        <Insets left="10"></Insets>
+                    </FlowPane.margin>
+                </Button>
+            </FlowPane>
+                  
+
+                    <!-- Crop buttons
+                    <ScrollPane fx:id="cropButtons" visible="true">
+                        <Button fx:id="carrotBtn" styleClass="cropButton" visible="true">
+                            <FlowPane.margin>
+                                <Insets left="10"></Insets>
+                            </FlowPane.margin>
+                        </Button>
+                        <Button fx:id="appleBtn" styleClass="cropButton" visible="true">
+                            <FlowPane.margin>
+                                <Insets left="10"></Insets>
+                            </FlowPane.margin>
+                        </Button>
+                    </ScrollPane> -->
+
+                </top>
+
+                <right>
+                    <Button fx:id="nextDayBtn" text="Next Day" onAction="#nextDay">
+                        <BorderPane.margin>
+                            <Insets right="20" bottom="20"></Insets>
+                        </BorderPane.margin>
+                    </Button>
+                </right>
+
+            </BorderPane>
+
+        </StackPane>
+
         <GridPane>
             <Button fx:id="openMarketBtn" styleClass="imgBtn" GridPane.columnIndex="0" onAction="#openMarket">
                 <GridPane.margin>
                     <Insets left="25" bottom="20"></Insets>
                 </GridPane.margin>
             </Button>
-            <!-- <GridPane GridPane.columnIndex="1" hgap="10" vgap="5" visible="false">
-                <GridPane.margin>
-                    <Insets left="100"></Insets>
-                </GridPane.margin>
 
-                <Label GridPane.columnIndex="1" GridPane.rowIndex="0">BUY CROPS</Label>
-                <HBox spacing="20" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <Button text="Turnip" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <Button text="Carrot" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                    <Button text="Potato" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                    <Button text="Rose" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                    <Button text="Tulip" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                    <Button text="Sunflower" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                    <Button text="Mango" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                    <Button text="Apple" onAction="#buyCrop"/>
-                </HBox>
-            </GridPane> -->
         </GridPane>
+
     </bottom>
 
     <stylesheets>
