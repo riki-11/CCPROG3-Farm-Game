@@ -35,7 +35,6 @@ public class SceneController {
         fxmlURL = "/com/example/farminggame/fxml/";
         assetsURL = SceneController.class.getResource("/com/example/farminggame/assets/").toString();
         gameTitle = "Farming Game";
-        gameIcon = new Image(assetsURL + "farmer-sprite.png");
     }
 
     public SceneController(Stage stage) {

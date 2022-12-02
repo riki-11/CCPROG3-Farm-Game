@@ -1,6 +1,7 @@
 
 Important steps of project:
 1. Save the game! Only closing the program will delete the save file
+2. ROCKS
 
 
 

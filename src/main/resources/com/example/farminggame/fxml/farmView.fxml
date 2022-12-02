@@ -21,7 +21,7 @@
 <BorderPane fx:id="farmView" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <FlowPane>
-            <Button fx:id="profileBtn" styleClass="img-button, farmer-icon" onAction="#openProfile"/>
+            <Button fx:id="profileBtn" styleClass="imgBtn, farmer-icon" onAction="#openProfile"/>
             <Text styleClass="farmerInformation" fx:id="nameDisplay">
                 <FlowPane.margin>
                     <Insets left="10.0" right="10.0" />
@@ -43,46 +43,43 @@
     </top>
 
     <left>
-        <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
-            <Button fx:id="resetBtn" text="Reset Tile" />
-        </HBox>
     </left>
 
     <center>
-
         <StackPane>
-            <GridPane fx:id="farmLot" alignment="center" gridLinesVisible="true" >
+            <GridPane fx:id="farmLotGrid" alignment="center">
                 <!-- Column Span is an arbitrarily large number to let it take up the remaining columns as needed -->
             </GridPane>
 
-            <!-- Tile button options -->
+            <!-- Tool buttons -->
             <FlowPane fx:id="toolButtons">
-                <Button fx:id="ploughBtn" styleClass="toolButton" visible="true">
+                <!-- Call farmer equip methods -->
+                <Button style="-fx-border-color: red;" fx:id="ploughBtn" onAction="#usePlough" styleClass="imgBtn, toolBtn">
                     <FlowPane.margin>
                         <Insets left="10"></Insets>
                     </FlowPane.margin>
                 </Button>
-                <Button fx:id="shovelBtn" styleClass="toolButton" visible="true">
+                <Button style="-fx-border-color: green;" fx:id="shovelBtn" styleClass="imgBtn, toolBtn">
                     <FlowPane.margin>
                         <Insets left="10"></Insets>
                     </FlowPane.margin>
                 </Button>
-                <Button fx:id="pickAxeBtn" styleClass="toolButton" visible="true">
+                <Button style="-fx-border-color: blue;" fx:id="pickaxeBtn" styleClass="imgBtn, toolBtn">
                     <FlowPane.margin>
                         <Insets left="10"></Insets>
                     </FlowPane.margin>
                 </Button>
-                <Button fx:id="fertilizerBtn" styleClass="toolButton" visible="true">
+                <Button style="-fx-border-color: black;" fx:id="fertilizerBtn" styleClass="imgBtn, toolBtn">
                     <FlowPane.margin>
                         <Insets left="10"></Insets>
                     </FlowPane.margin>
                 </Button>
-                <Button fx:id="wateringCanBtn" styleClass="toolButton" visible="true">
+                <Button style="-fx-border-color: yellow;" fx:id="wateringCanBtn" styleClass="imgBtn, toolBtn">
                     <FlowPane.margin>
                         <Insets left="10"></Insets>
                     </FlowPane.margin>
                 </Button>
-                <Button fx:id="harvestBtn" styleClass="toolButton" visible="true">
+                <Button style="-fx-border-color: gray;" fx:id="harvestBtn" styleClass="imgBtn, toolBtn">
                     <FlowPane.margin>
                         <Insets left="10"></Insets>
                     </FlowPane.margin>
@@ -212,11 +209,6 @@
                                         <Insets top="3"></Insets>
                                     </VBox.margin>
                                 </Text>
-
-
-
-
-
                             </VBox>
 
                             <VBox>
@@ -389,7 +381,7 @@
     </right>
     <bottom>
         <GridPane>
-            <Button fx:id="openMarketBtn" styleClass="img-button" GridPane.columnIndex="0" onAction="#openMarket">
+            <Button fx:id="openMarketBtn" styleClass="imgBtn" GridPane.columnIndex="0" onAction="#openMarket">
                 <GridPane.margin>
                     <Insets left="25" bottom="20"></Insets>
                 </GridPane.margin>

@@ -1,13 +1,25 @@
-.img-button {
+.imgBtn {
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
     -fx-content-display: graphic-only; 
 }
 
-.default-tile {
-    -fx-background-image: url("../assets/farm/default-tile.png");
+.farm-tile {
     -fx-min-width: 75px;
     -fx-min-height: 75px;
+}
+
+.unplowed-tile {
+    -fx-background-image: url("../assets/farm/default-tile.png");
+}
+
+.plowed-tile {
+    -fx-background-image: url("../assets/farm/plowed-tile.png")
+}
+
+.rock-tile {
+    -fx-background-image: url("../assets/environment/rock.png");
+
 }
 
 .farmer-icon {
@@ -38,13 +50,9 @@
     -fx-background-repeat: no-repeat;
 }
 
-.toolButton {
+.toolBtn {
     -fx-min-width: 75px;
     -fx-min-height: 75px;
-}
-
-#btn1 {
-    -fx-background-radius: 70px;
 }
 
 #openMarketBtn {
@@ -54,8 +62,6 @@
     -fx-background-size: 85% 85%;
     -fx-background-position: center;
 }
-
-
 
 #marketCarrotBtn {
     -fx-background-image: url("../assets/crops/carrot.jpg");
@@ -75,4 +81,28 @@
 
 #marketTurnipBtn {
     -fx-background-image: url("../assets/crops/turnip.jpg");
+}
+
+#ploughBtn {
+    -fx-background-image: url("../assets/tools/plough.jpg");
+}
+
+#shovelBtn {
+    -fx-background-image: url("../assets/tools/shovel.jpg");
+}
+
+#pickaxeBtn {
+    -fx-background-image: url("../assets/tools/pickaxe.jpg");
+}
+
+#fertilizerBtn {
+    -fx-background-image: url("../assets/tools/fertilizer.jpg");
+}
+
+#wateringCanBtn {
+    -fx-background-image: url("../assets/tools/watering-can.jpg");
+}
+
+#harvestBtn {
+    -fx-background-image: url("../assets/tools/harvest.jpg");
 }

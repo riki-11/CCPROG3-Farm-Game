@@ -14,7 +14,12 @@ public class FarmLot {
      */
     public FarmLot() {
         this.lot = new ArrayList<>();
-        lot.add(new Tile());
+
+        // Populate lot with Tiles that have rocks and some that don't
+        for (int i = 0; i < 50; i++) {
+            lot.add(new Tile());
+        }
+
     }
 
     /**
@@ -76,6 +81,11 @@ public class FarmLot {
      * @return An ArrayList of all the Tiles in FarmLot
      */
     public ArrayList<Tile> getLot() {
-        return this.lot;
+        return lot;
+    }
+
+    public void setRockPosition(int rockPosition) {
+        getTile(rockPosition - 1).placeRock();
+        System.out.println("Tile " + (rockPosition - 1)  + " has rock: " + getTile(rockPosition - 1).hasRock());
     }
 }

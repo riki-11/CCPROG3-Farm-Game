@@ -26,12 +26,12 @@ public class Farmer {
     private String name;
     private int level;
     private double experience;
-    private boolean equipped;
+    private boolean equipped; // REMOVE tHIS
     private int bonusEarnings;
     private int costReduction;
     private int waterBonusLimit;
     private int fertilizerBonusLimit;
-    private String currentTool;
+    private String currentTool; // REMOVE THIS
     private String farmerType;
     private Wallet wallet;
     private SeedPouch seedPouch;
