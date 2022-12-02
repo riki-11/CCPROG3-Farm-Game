@@ -6,7 +6,6 @@ import com.example.farminggame.models.environment.crops.*;
 import com.example.farminggame.models.tools.*;
 import com.example.farminggame.models.farmer.*;
 import javafx.animation.PauseTransition;
-import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,15 +17,19 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.IOException;
+import java.io.*;
+import java.lang.reflect.Array;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.Buffer;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 
 public class FarmController {
@@ -42,7 +45,12 @@ public class FarmController {
             "/assets").toExternalForm();
     private final String fxmlURL = "/com/example/farminggame/fxml/";
 
+
     private int activeTileIndex = -1;
+
+
+    // To store all the tile buttons
+    private ArrayList<Button> tileBtnList = new ArrayList<>();
 
     // FXML VARIABLES
     @FXML private Text nameDisplay;
@@ -50,19 +58,20 @@ public class FarmController {
     @FXML private Text levelDisplay;
     @FXML private Text balanceDisplay;
 
-    @FXML private GridPane farmLot;
-
-    @FXML private Button plantTurnipBtn;
-
-    @FXML private Button resetBtn;
+    @FXML private GridPane farmLotGrid;
+    @FXML private Button ploughBtn;
+    @FXML private Button shovelBtn;
+    @FXML private Button pickaxeBtn;
+    @FXML private Button fertilizerBtn;
+    @FXML private Button wateringCanBtn;
+    @FXML private Button harvestBtn;
     @FXML private Button exitBtn;
-
-
-
     @FXML
     private SceneController sceneController;
 
+
     // MODEL VARIABLES
+    private FarmLot lot;
     private Farmer farmer;
     private Wallet wallet;
     private SeedPouch seedPouch;
@@ -189,81 +198,19 @@ public class FarmController {
 
     }
 
+    // TOOL METHODS
+    @FXML protected void usePlough(ActionEvent e) {
+        Tile activeTile = lot.getTile(activeTileIndex);
+        plough.plowTile(activeTile);
 
-    // Initializes the view upon switching to it
-    @FXML
-    private void initialize() {
-        nameDisplay.setText(getFarmerName());
-        levelDisplay.setText("Level: " + farmer.getLevel());
-        balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
-        farmerNamePopUp.setText(getFarmerName());
-        //plantTurnipBtn.setOnAction(event -> plantTurnip());
-        resetBtn.setOnAction(event -> resetTile());
-        exitBtn.setOnAction(event -> exitGame());
+        // Grab the tile button from the list of tile buttons
+        Button activeTileBtn = tileBtnList.get(activeTileIndex);
+        activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "farm/plowed-tile.png"));
+        // change appearance of tile
 
-        this.lot = new FarmLot();
-
-        // Create the farm lot of 50 tiles (5 rows, 10 columns)
-        GridPane newFarm = farmLot;
-        int tileIdCount = 1;
-
-        // For loop is per col
-        for (int row = 0; row < 5; row++) {
-            for (int column = 0; column < 10; column++) {
-                Button newTile = new Button();
-                // Set the respective id of a tile (tile 1, tile 2, etc.)
-                newTile.setId("tile" + tileIdCount);
-                newTile.getStyleClass().add("default-tile");
-                newTile.getStyleClass().add("img-button");
-
-                // Set the corresponding actions for a button
-                newTile.setOnAction(event -> {
-                    try {
-                        displayButtons(event);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-
-                // Add new tile to its corresponding row and column position (column, row)
-                newFarm.add(newTile, column, row);
-
-                tileIdCount++;
-            }
-        }
-
-        // Initialize seed store list
-        seedStoreList.add(new Apple());
-        seedStoreList.add(new Carrot());
-        seedStoreList.add(new Mango());
-        seedStoreList.add(new Potato());
-        seedStoreList.add(new Rose());
-        seedStoreList.add(new Sunflower());
-        seedStoreList.add(new Tulip());
-        seedStoreList.add(new Turnip());
-
-
-    }
-
-    /*@FXML protected void plantTurnip(ActionEvent event) throws IOException {
-        String turnipURL = ASSETS_URL + "/crops/new-turnip.png";
-        Button tileBtn = (Button) event.getSource();
-        tileBtn.setStyle("-fx-background-image: url("+turnipURL+")"); // probably best to use setStyleClass instead
-    }*/
-
-    /*
-    @FXML
-    protected void plantTurnip() {
-        // Use the getResource method if grabbing images from resources folder
-        String newTurnipURL = ASSETS_URL + "/crops/new-turnip.png";
-        plantTurnipBtn.setStyle("-fx-background-image: url("+newTurnipURL+");");
-    }
-     */
-
-    @FXML
-    protected void resetTile() {
-        String defaultTileURL = ASSETS_URL + "/farm/default-tile.png";
-        plantTurnipBtn.setStyle("-fx-background-image: url("+defaultTileURL+");");
+        // grab index of active tile
+        // pass it into plough
+        // voila
     }
 
     @FXML
@@ -470,6 +417,7 @@ public class FarmController {
 
         if (button.getId().equals("marketCarrotBtn")) {
             setSelectedButton("Carrot");
+            System.out.println(getClass().getResourceAsStream("/com/example/farminggame/assets/crops/carrot.jpg"));
             cropDescImage.setImage(carrotImage);
             cropNameDesc.setText(carrot.getSeedName());
             harvestTimeDesc.setText("Harvest Time: " + carrot.getHarvestTime());
@@ -534,7 +482,6 @@ public class FarmController {
             setSelectedButton("Turnip");
 
             cropNameDesc.setText(turnip.getSeedName());
-            //cropDescImage.setImage(turnipImage);
             harvestTimeDesc.setText("Harvest Time: " + turnip.getHarvestTime());
             waterNeedsDesc.setText("Water Needs (Bonus): " + turnip.getWaterNeeds() + "(" + turnip.getWaterBonusLimit() + ")");
             fertilizerNeedsDesc.setText("Fertilizer Needs (Bonus): " + turnip.getFertilizerNeeds() + "(" + turnip.getFertilizerBonusLimit() + ")");
@@ -543,7 +490,71 @@ public class FarmController {
 
     }
 
+    // Initializes the view upon switching to it
+    @FXML
+    private void initialize() throws IOException {
+        translateView();
 
+        InputStream is = getClass().getResourceAsStream("/com/example/farminggame/input/rockInput.txt");
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String rockInput;
+
+
+        nameDisplay.setText(getFarmerName());
+        levelDisplay.setText("Level: " + farmer.getLevel());
+        balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
+        exitBtn.setOnAction(event -> exitGame());
+
+
+        // Check the rockInput.txt file for positions of rocks
+        this.lot = new FarmLot();
+
+        while ((rockInput = br.readLine()) != null) {
+            lot.setRockPosition(Integer.parseInt(rockInput));
+            // change
+        }
+
+        // Create the farm lot of 50 tiles (5 rows, 10 columns)
+        GridPane newFarm = farmLotGrid;
+        int tileIdCount = 1;
+
+        // For loop is per col
+        for (int row = 0; row < 5; row++) {
+            for (int column = 0; column < 10; column++) {
+                Button newTile = new Button();
+                // Set the respective id of a tile (tile 1, tile 2, etc.)
+                newTile.setId("tile" + tileIdCount);
+
+                // Check the FarmLot model if this rock should have a tile or not
+                if (lot.getTile(tileIdCount - 1).hasRock()) {
+                    newTile.getStyleClass().add("rock-tile");
+                } else {
+                    newTile.getStyleClass().add("unplowed-tile");
+                }
+
+                newTile.getStyleClass().add("farm-tile");
+                newTile.getStyleClass().add("imgBtn");
+
+                // Add new tile to its corresponding row and column position (column, row)
+                newFarm.add(newTile, column, row);
+
+                // Add the new tile to the arraylist of all tiles (for the controller to change the visual attributes)
+                tileBtnList.add(newTile);
+
+                tileIdCount++;
+            }
+        }
+
+        // Initialize seed store list
+        seedStoreList.add(new Apple());
+        seedStoreList.add(new Carrot());
+        seedStoreList.add(new Mango());
+        seedStoreList.add(new Potato());
+        seedStoreList.add(new Rose());
+        seedStoreList.add(new Sunflower());
+        seedStoreList.add(new Tulip());
+        seedStoreList.add(new Turnip());
+    }
 
     // GETTERS AND SETTERS
 

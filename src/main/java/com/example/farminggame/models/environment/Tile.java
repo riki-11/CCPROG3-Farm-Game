@@ -10,7 +10,7 @@ public class Tile {
     private boolean plowed;
     private boolean rock;
     private Crop crop; // USE POLYMORPHISM
-    private String appearance;
+    private String appearance; // REMOVE THIS
 
     /**
      *  Creates a basic tile in its default state
@@ -142,10 +142,10 @@ public class Tile {
 
     /**
      * Modifies the existence of a rock on the tile
-     * @param value boolean value signifying whether the tile has a rock or not
+     *
      */
-    public void setRock(boolean value) {
-        this.plowed = value;
+    public void placeRock() {
+        this.rock = true;
     }
 
     /**
