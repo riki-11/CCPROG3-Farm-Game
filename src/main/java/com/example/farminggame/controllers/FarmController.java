@@ -75,7 +75,6 @@ public class FarmController {
     private Farmer farmer;
     private Wallet wallet;
     private SeedPouch seedPouch;
-    private FarmLot lot;
 
 
     // List of possible seeds you can buy
@@ -105,7 +104,7 @@ public class FarmController {
              stage.setScene(scene);
 
              // set the screen to full screen
-             stage.setFullScreen(true);
+             // stage.setFullScreen(true);
 
          } catch(Exception e) {
              e.printStackTrace();
@@ -125,17 +124,9 @@ public class FarmController {
         if (tileBtn.getId().length() == 5) {
             this.activeTileIndex = Integer.parseInt(tileBtn.getId().substring(4)) - 1;
         } else if (tileBtn.getId().length() == 6) {
-            this.activeTileIndex = Integer.parseInt(tileBtn.getId().substring(4, 5)) - 1;
+            this.activeTileIndex = Integer.parseInt(tileBtn.getId().substring(4, 6)) - 1;
         }
     }
-
-    // Variables
-    @FXML private Button ploughBtn;
-    @FXML private Button shovelBtn;
-    @FXML private Button pickaxeBtn;
-    @FXML private Button fertilizerBtn;
-    @FXML private Button wateringCanBtn;
-    @FXML private Button harvestBtn;
 
     private void translateButton(Button button) {
         button.setTranslateX(-85);
@@ -144,7 +135,6 @@ public class FarmController {
     protected void displayButtons(ActionEvent tile) throws IOException{
         Object node = tile.getSource();
         Button tileBtn = (Button) node;
-
 
         setActiveTileIndex(tileBtn);
 
@@ -166,9 +156,8 @@ public class FarmController {
             harvestBtn.setVisible(false);
         } else if (!(activeTile.isPlowed())) {
             // unplowed
-            ploughBtn.setVisible(false);
-            translateButton(shovelBtn);
-            pickaxeBtn.setVisible(true);
+            ploughBtn.setVisible(true);
+            pickaxeBtn.setVisible(false);
             fertilizerBtn.setVisible(false);
             wateringCanBtn.setVisible(false);
             harvestBtn.setVisible(false);
@@ -205,12 +194,9 @@ public class FarmController {
 
         // Grab the tile button from the list of tile buttons
         Button activeTileBtn = tileBtnList.get(activeTileIndex);
-        activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "farm/plowed-tile.png"));
         // change appearance of tile
-
-        // grab index of active tile
-        // pass it into plough
-        // voila
+        activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "farm/plowed-tile.png"));
+        System.out.println("It works!");
     }
 
     @FXML
@@ -493,8 +479,6 @@ public class FarmController {
     // Initializes the view upon switching to it
     @FXML
     private void initialize() throws IOException {
-        translateView();
-
         InputStream is = getClass().getResourceAsStream("/com/example/farminggame/input/rockInput.txt");
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String rockInput;
@@ -534,6 +518,14 @@ public class FarmController {
 
                 newTile.getStyleClass().add("farm-tile");
                 newTile.getStyleClass().add("imgBtn");
+
+                newTile.setOnAction(event -> {
+                    try {
+                        displayButtons(event);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
 
                 // Add new tile to its corresponding row and column position (column, row)
                 newFarm.add(newTile, column, row);

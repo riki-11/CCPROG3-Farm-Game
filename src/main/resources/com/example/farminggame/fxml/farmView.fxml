@@ -347,7 +347,7 @@
 
             <BorderPane>
                 <left>
-                    <Button fx:id="openMarketBtn" styleClass="img-button" onAction="#openMarket">
+                    <Button fx:id="openMarketBtn" styleClass="imgBtn" onAction="#openMarket">
                         <BorderPane.margin>
                             <Insets left="20" bottom="20"></Insets>
                         </BorderPane.margin>
@@ -419,15 +419,6 @@
             </BorderPane>
 
         </StackPane>
-
-        <GridPane>
-            <Button fx:id="openMarketBtn" styleClass="imgBtn" GridPane.columnIndex="0" onAction="#openMarket">
-                <GridPane.margin>
-                    <Insets left="25" bottom="20"></Insets>
-                </GridPane.margin>
-            </Button>
-
-        </GridPane>
 
     </bottom>
 

@@ -86,6 +86,5 @@ public class FarmLot {
 
     public void setRockPosition(int rockPosition) {
         getTile(rockPosition - 1).placeRock();
-        System.out.println("Tile " + (rockPosition - 1)  + " has rock: " + getTile(rockPosition - 1).hasRock());
     }
 }
