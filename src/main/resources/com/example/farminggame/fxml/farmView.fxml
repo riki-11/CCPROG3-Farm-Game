@@ -18,6 +18,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ScrollBar?>
+<?import javafx.scene.control.ScrollPane?>
 <BorderPane fx:id="farmView" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <FlowPane>
@@ -55,41 +57,6 @@
                 <!-- Column Span is an arbitrarily large number to let it take up the remaining columns as needed -->
             </GridPane>
 
-            <!-- Tile button options -->
-            <FlowPane fx:id="toolButtons">
-                <Button fx:id="ploughBtn" styleClass="toolButton" visible="true">
-                    <FlowPane.margin>
-                        <Insets left="10"></Insets>
-                    </FlowPane.margin>
-                </Button>
-                <Button fx:id="shovelBtn" styleClass="toolButton" visible="true">
-                    <FlowPane.margin>
-                        <Insets left="10"></Insets>
-                    </FlowPane.margin>
-                </Button>
-                <Button fx:id="pickAxeBtn" styleClass="toolButton" visible="true">
-                    <FlowPane.margin>
-                        <Insets left="10"></Insets>
-                    </FlowPane.margin>
-                </Button>
-                <Button fx:id="fertilizerBtn" styleClass="toolButton" visible="true">
-                    <FlowPane.margin>
-                        <Insets left="10"></Insets>
-                    </FlowPane.margin>
-                </Button>
-                <Button fx:id="wateringCanBtn" styleClass="toolButton" visible="true">
-                    <FlowPane.margin>
-                        <Insets left="10"></Insets>
-                    </FlowPane.margin>
-                </Button>
-                <Button fx:id="harvestBtn" styleClass="toolButton" visible="true">
-                    <FlowPane.margin>
-                        <Insets left="10"></Insets>
-                    </FlowPane.margin>
-                </Button>
-
-
-            </FlowPane>
             <!-- POP UP PROFILE -->
             <GridPane fx:id="profilePane" alignment="center" styleClass="popUp" visible="false">
                 <Rectangle arcHeight="10.0" arcWidth="10.0" fill="palegreen" height="400.0" stroke="BLACK" strokeType="INSIDE" width="500.0" />
@@ -111,8 +78,8 @@
                                 </image>
                             </ImageView>
                             <VBox>
-                                <TextField editable="false" text="FARMER NAME" />
-                                <TextField editable="false" text="RANK: FARMER" />
+                                <Text fx:id="farmerNamePopUp" text="FARMER NAME" />
+                                <Text fx:id="farmerRankPopUp" text="Rank: FARMER" />
                                 <FlowPane.margin>
                                     <Insets top="25" />
                                 </FlowPane.margin>
@@ -120,14 +87,11 @@
                             <BorderPane.margin>
                                 <Insets left="10" top="20" />
                             </BorderPane.margin>
-
-
-
                         </FlowPane>
                     </left>
                     <bottom>
                         <!-- UPGRADE NOW -->
-                        <Button fx:id="upgradeNow" text="UPGRADE FARMER" BorderPane.alignment="CENTER">
+                        <Button fx:id="upgradeFarmerBtn" text="UPGRADE FARMER" BorderPane.alignment="CENTER" disable="true" onAction="#upgradeFarmer">
                             <BorderPane.margin>
                                 <Insets bottom="35.0" />
                             </BorderPane.margin>
@@ -388,44 +352,87 @@
         </HBox>
     </right>
     <bottom>
-        <GridPane>
-            <Button fx:id="openMarketBtn" styleClass="img-button" GridPane.columnIndex="0" onAction="#openMarket">
-                <GridPane.margin>
-                    <Insets left="25" bottom="20"></Insets>
-                </GridPane.margin>
-            </Button>
-            <!-- <GridPane GridPane.columnIndex="1" hgap="10" vgap="5" visible="false">
-                <GridPane.margin>
-                    <Insets left="100"></Insets>
-                </GridPane.margin>
+        <StackPane>
 
-                <Label GridPane.columnIndex="1" GridPane.rowIndex="0">BUY CROPS</Label>
-                <HBox spacing="20" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <Button text="Turnip" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <Button text="Carrot" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                    <Button text="Potato" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                    <Button text="Rose" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                    <Button text="Tulip" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                    <Button text="Sunflower" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                    <Button text="Mango" onAction="#buyCrop"/>
-                </HBox>
-                <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                    <Button text="Apple" onAction="#buyCrop"/>
-                </HBox>
-            </GridPane> -->
-        </GridPane>
+            <BorderPane>
+                <left>
+                    <Button fx:id="openMarketBtn" styleClass="img-button" onAction="#openMarket">
+                        <BorderPane.margin>
+                            <Insets left="20" bottom="20"></Insets>
+                        </BorderPane.margin>
+                    </Button>
+                </left>
+                <!-- Button options -->
+                <top>
+
+                    <!-- Tile button options -->
+                    <FlowPane fx:id="toolButtons"  visible="true">
+                        <BorderPane.margin>
+                            <Insets left="500"></Insets>
+                        </BorderPane.margin>
+
+                        <Button fx:id="ploughBtn" styleClass="toolButton" visible="true" text="plough">
+                            <FlowPane.margin>
+                                <Insets left="10"></Insets>
+                            </FlowPane.margin>
+                        </Button>
+                        <Button fx:id="shovelBtn" styleClass="toolButton" visible="true" text="shovel">
+                            <FlowPane.margin>
+                                <Insets left="10"></Insets>
+                            </FlowPane.margin>
+                        </Button>
+                        <Button fx:id="pickaxeBtn" styleClass="toolButton" visible="true" text="pickaxe">
+                            <FlowPane.margin>
+                                <Insets left="10"></Insets>
+                            </FlowPane.margin>
+                        </Button>
+                        <Button fx:id="fertilizerBtn" styleClass="toolButton" visible="true" text="fertilizer">
+                            <FlowPane.margin>
+                                <Insets left="10"></Insets>
+                            </FlowPane.margin>
+                        </Button>
+                        <Button fx:id="wateringCanBtn" styleClass="toolButton" visible="true" text="watering">
+                            <FlowPane.margin>
+                                <Insets left="10"></Insets>
+                            </FlowPane.margin>
+                        </Button>
+                        <Button fx:id="harvestBtn" styleClass="toolButton" visible="true" text="harvest">
+                            <FlowPane.margin>
+                                <Insets left="10"></Insets>
+                            </FlowPane.margin>
+                        </Button>
+                    </FlowPane>
+
+                    <!-- Crop buttons
+                    <ScrollPane fx:id="cropButtons" visible="true">
+                        <Button fx:id="carrotBtn" styleClass="cropButton" visible="true">
+                            <FlowPane.margin>
+                                <Insets left="10"></Insets>
+                            </FlowPane.margin>
+                        </Button>
+                        <Button fx:id="appleBtn" styleClass="cropButton" visible="true">
+                            <FlowPane.margin>
+                                <Insets left="10"></Insets>
+                            </FlowPane.margin>
+                        </Button>
+                    </ScrollPane> -->
+
+                </top>
+
+                <right>
+                    <Button fx:id="nextDayBtn" text="Next Day" onAction="#nextDay">
+                        <BorderPane.margin>
+                            <Insets right="20" bottom="20"></Insets>
+                        </BorderPane.margin>
+                    </Button>
+                </right>
+
+            </BorderPane>
+
+        </StackPane>
+
+
+
     </bottom>
 
     <stylesheets>
