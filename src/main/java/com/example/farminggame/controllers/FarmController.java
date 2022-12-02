@@ -131,6 +131,9 @@ public class FarmController {
     private void translateButton(Button button) {
         button.setTranslateX(-85);
     }
+
+    @FXML private Button carrotBtn;
+    @FXML private Button appleBtn;
     @FXML
     protected void displayButtons(ActionEvent tile) throws IOException{
         Object node = tile.getSource();
@@ -144,44 +147,45 @@ public class FarmController {
         Tile activeTile = lot.getLot().get(this.activeTileIndex);
 
         // buttons that appear will depend on the tile status
+        carrotBtn.setDisable(true);
+        appleBtn.setDisable(true);
 
         if (activeTile.hasRock()) {
             //rock
-            ploughBtn.setVisible(false);
-            translateButton(shovelBtn);
-            translateButton(pickaxeBtn);
-            pickaxeBtn.setVisible(true);
-            fertilizerBtn.setVisible(false);
-            wateringCanBtn.setVisible(false);
-            harvestBtn.setVisible(false);
+            ploughBtn.setDisable(true);
+            pickaxeBtn.setDisable(false);
+            fertilizerBtn.setDisable(true);
+            wateringCanBtn.setDisable(true);
+            harvestBtn.setDisable(true);
         } else if (!(activeTile.isPlowed())) {
             // unplowed
-            ploughBtn.setVisible(true);
-            pickaxeBtn.setVisible(false);
-            fertilizerBtn.setVisible(false);
-            wateringCanBtn.setVisible(false);
-            harvestBtn.setVisible(false);
+            ploughBtn.setDisable(false);
+            pickaxeBtn.setDisable(true);
+            fertilizerBtn.setDisable(true);
+            wateringCanBtn.setDisable(true);
+            harvestBtn.setDisable(true);
         } else if (!(activeTile.hasCrop())) {
             // plowed
+            carrotBtn.setDisable(false);
+            appleBtn.setDisable(false);
         } else {
-            pickaxeBtn.setVisible(false);
-            ploughBtn.setVisible(false);
+            pickaxeBtn.setDisable(true);
+            ploughBtn.setDisable(true);
             if (activeTile.hasHarvestableCrop()) {
                 // harvestable
-                translateButton(fertilizerBtn);
-                fertilizerBtn.setVisible(true);
-                wateringCanBtn.setVisible(true);
-                harvestBtn.setVisible(true);
+                fertilizerBtn.setDisable(false);
+                wateringCanBtn.setDisable(false);
+                harvestBtn.setDisable(false);
             } else if (activeTile.hasWitheredCrop()) {
                 // withered
-                fertilizerBtn.setVisible(false);
-                wateringCanBtn.setVisible(false);
-                harvestBtn.setVisible(false);
+                fertilizerBtn.setDisable(true);
+                wateringCanBtn.setDisable(true);
+                harvestBtn.setDisable(true);
             } else {
                 // crop
-                fertilizerBtn.setVisible(true);
-                wateringCanBtn.setVisible(true);
-                harvestBtn.setVisible(false);
+                fertilizerBtn.setDisable(false);
+                wateringCanBtn.setDisable(false);
+                harvestBtn.setDisable(true);
             }
         }
 
@@ -194,9 +198,34 @@ public class FarmController {
 
         // Grab the tile button from the list of tile buttons
         Button activeTileBtn = tileBtnList.get(activeTileIndex);
+
         // change appearance of tile
         activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "farm/plowed-tile.png"));
-        System.out.println("It works!");
+
+    }
+
+    @FXML protected void plantCarrot(ActionEvent e) {
+        Tile activeTile = lot.getTile(activeTileIndex);
+        activeTile.setCrop(new Carrot());
+
+        // Grab the tile button from the list of tile buttons
+        Button activeTileBtn = tileBtnList.get(activeTileIndex);
+
+        // change appearance of tile
+        activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/carrot.jpg"));
+
+    }
+
+    @FXML protected void plantApple(ActionEvent e) {
+        Tile activeTile = lot.getTile(activeTileIndex);
+        activeTile.setCrop(new Apple());
+
+        // Grab the tile button from the list of tile buttons
+        Button activeTileBtn = tileBtnList.get(activeTileIndex);
+
+        // change appearance of tile
+        activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/apple.jpg"));
+
     }
 
     @FXML

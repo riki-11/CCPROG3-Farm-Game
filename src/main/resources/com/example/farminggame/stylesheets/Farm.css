@@ -55,6 +55,11 @@
     -fx-min-height: 75px;
 }
 
+.cropBtn {
+    -fx-min-width: 75px;
+    -fx-min-height: 75px;
+}
+
 #openMarketBtn {
     -fx-background-image:  url("../assets/miscellaneous/market.png");
     -fx-min-width: 75px;
