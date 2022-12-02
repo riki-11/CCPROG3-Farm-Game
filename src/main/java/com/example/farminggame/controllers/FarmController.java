@@ -134,6 +134,7 @@ public class FarmController {
 
     @FXML private Button carrotBtn;
     @FXML private Button appleBtn;
+    @FXML private FlowPane cropButtons;
     @FXML
     protected void displayButtons(ActionEvent tile) throws IOException{
         Object node = tile.getSource();
@@ -149,6 +150,9 @@ public class FarmController {
         // buttons that appear will depend on the tile status
         carrotBtn.setDisable(true);
         appleBtn.setDisable(true);
+
+        toolButtons.setVisible(true);
+        cropButtons.setVisible(false);
 
         if (activeTile.hasRock()) {
             //rock
@@ -166,6 +170,8 @@ public class FarmController {
             harvestBtn.setDisable(true);
         } else if (!(activeTile.hasCrop())) {
             // plowed
+            toolButtons.setVisible(false);
+            cropButtons.setVisible(true);
             carrotBtn.setDisable(false);
             appleBtn.setDisable(false);
         } else {
@@ -228,6 +234,104 @@ public class FarmController {
 
     }
 
+    @FXML protected void plantMango(ActionEvent e) {
+        Tile activeTile = lot.getTile(activeTileIndex);
+        activeTile.setCrop(new Mango());
+
+        // Grab the tile button from the list of tile buttons
+        Button activeTileBtn = tileBtnList.get(activeTileIndex);
+
+        // change appearance of tile
+        activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/mango.jpg"));
+
+    }
+    @FXML protected void plantPotato(ActionEvent e) {
+        Tile activeTile = lot.getTile(activeTileIndex);
+        activeTile.setCrop(new Potato());
+
+        // Grab the tile button from the list of tile buttons
+        Button activeTileBtn = tileBtnList.get(activeTileIndex);
+
+        // change appearance of tile
+        activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/potato.jpg"));
+
+    }
+
+    @FXML protected void plantTurnip(ActionEvent e) {
+        Tile activeTile = lot.getTile(activeTileIndex);
+        activeTile.setCrop(new Potato());
+
+        // Grab the tile button from the list of tile buttons
+        Button activeTileBtn = tileBtnList.get(activeTileIndex);
+
+        // change appearance of tile
+        activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/turnip.jpg"));
+
+    }
+
+    private boolean hasAdjacentCrops() {
+        if (!(lot.getTile(activeTileIndex - 10).hasCrop()) &&
+                !(lot.getTile(activeTileIndex - 9).hasCrop()) &&
+                !(lot.getTile(activeTileIndex - 11).hasCrop()) &&
+                !(lot.getTile(activeTileIndex + 10).hasCrop()) &&
+                !(lot.getTile(activeTileIndex + 9).hasCrop()) &&
+                !(lot.getTile(activeTileIndex + 11).hasCrop())) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    @FXML protected void plantRose(ActionEvent e) {
+        if (!hasAdjacentCrops()) {
+            Tile activeTile = lot.getTile(activeTileIndex);
+            activeTile.setCrop(new Rose());
+
+            // Grab the tile button from the list of tile buttons
+            Button activeTileBtn = tileBtnList.get(activeTileIndex);
+
+            // change appearance of tile
+            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/rose.jpg"));
+        } else {
+            System.out.println("Flowers cannot be planted on tiles with adjacent crops");
+            // TO-DO: add a pop-up for that
+        }
+    }
+
+    @FXML protected void plantSunflower(ActionEvent e) {
+        if (!hasAdjacentCrops()) {
+            Tile activeTile = lot.getTile(activeTileIndex);
+            activeTile.setCrop(new Sunflower());
+
+            // Grab the tile button from the list of tile buttons
+            Button activeTileBtn = tileBtnList.get(activeTileIndex);
+
+            // change appearance of tile
+            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/sunflower.jpg"));
+        } else {
+            System.out.println("Flowers cannot be planted on tiles with adjacent crops");
+            // TO-DO: add a pop-up for that
+        }
+    }
+
+    @FXML protected void plantTulip(ActionEvent e) {
+        if (!hasAdjacentCrops()) {
+            Tile activeTile = lot.getTile(activeTileIndex);
+            activeTile.setCrop(new Tulip());
+
+            // Grab the tile button from the list of tile buttons
+            Button activeTileBtn = tileBtnList.get(activeTileIndex);
+
+            // change appearance of tile
+            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/tulip.jpg"));
+        } else {
+            System.out.println("Flowers cannot be planted on tiles with adjacent crops");
+            // TO-DO: add a pop-up for that
+        }
+    }
+
+
     @FXML
     protected void exitGame() {
         sceneController.switchToStartView();
@@ -243,7 +347,6 @@ public class FarmController {
         boolean seedBought = false;
         int cropNum = Integer.parseInt(cropNumber.getText());
         System.out.println(this.selectedButton);
-
 
         // Pass what crop to buy to the farmer
         switch (this.selectedButton) {
