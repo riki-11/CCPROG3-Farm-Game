@@ -1,5 +1,7 @@
 package com.example.farminggame.controllers;
 
+import com.example.farminggame.models.environment.FarmLot;
+import com.example.farminggame.models.environment.Tile;
 import com.example.farminggame.models.environment.crops.*;
 import com.example.farminggame.models.tools.*;
 import com.example.farminggame.models.farmer.*;
@@ -40,6 +42,8 @@ public class FarmController {
             "/assets").toExternalForm();
     private final String fxmlURL = "/com/example/farminggame/fxml/";
 
+    private int activeTileIndex = -1;
+
     // FXML VARIABLES
     @FXML private Text nameDisplay;
 
@@ -62,6 +66,7 @@ public class FarmController {
     private Farmer farmer;
     private Wallet wallet;
     private SeedPouch seedPouch;
+    private FarmLot lot;
 
 
     // List of possible seeds you can buy
@@ -90,6 +95,9 @@ public class FarmController {
              Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
              stage.setScene(scene);
 
+             // set the screen to full screen
+             stage.setFullScreen(true);
+
          } catch(Exception e) {
              e.printStackTrace();
          }
@@ -101,15 +109,83 @@ public class FarmController {
 
     @FXML private FlowPane toolButtons;
     // Adjust certain elements to their positions
-    private void translateView() {
-        toolButtons.setTranslateX(285);
-        toolButtons.setTranslateY(475);
+
+
+    private void setActiveTileIndex(Button tileBtn) {
+        // get the index of the tile in the farmlot arrayList
+        if (tileBtn.getId().length() == 5) {
+            this.activeTileIndex = Integer.parseInt(tileBtn.getId().substring(4)) - 1;
+        } else if (tileBtn.getId().length() == 6) {
+            this.activeTileIndex = Integer.parseInt(tileBtn.getId().substring(4, 5)) - 1;
+        }
     }
 
+    // Variables
+    @FXML private Button ploughBtn;
+    @FXML private Button shovelBtn;
+    @FXML private Button pickaxeBtn;
+    @FXML private Button fertilizerBtn;
+    @FXML private Button wateringCanBtn;
+    @FXML private Button harvestBtn;
+
+    private void translateButton(Button button) {
+        button.setTranslateX(-85);
+    }
     @FXML
-    protected void displayButtons(ActionEvent tile) {
+    protected void displayButtons(ActionEvent tile) throws IOException{
         Object node = tile.getSource();
         Button tileBtn = (Button) node;
+
+
+        setActiveTileIndex(tileBtn);
+
+        System.out.println(this.activeTileIndex);
+
+        // access the tile and check what its status is
+        Tile activeTile = lot.getLot().get(this.activeTileIndex);
+
+        // buttons that appear will depend on the tile status
+
+        if (activeTile.hasRock()) {
+            //rock
+            ploughBtn.setVisible(false);
+            translateButton(shovelBtn);
+            translateButton(pickaxeBtn);
+            pickaxeBtn.setVisible(true);
+            fertilizerBtn.setVisible(false);
+            wateringCanBtn.setVisible(false);
+            harvestBtn.setVisible(false);
+        } else if (!(activeTile.isPlowed())) {
+            // unplowed
+            ploughBtn.setVisible(false);
+            translateButton(shovelBtn);
+            pickaxeBtn.setVisible(true);
+            fertilizerBtn.setVisible(false);
+            wateringCanBtn.setVisible(false);
+            harvestBtn.setVisible(false);
+        } else if (!(activeTile.hasCrop())) {
+            // plowed
+        } else {
+            pickaxeBtn.setVisible(false);
+            ploughBtn.setVisible(false);
+            if (activeTile.hasHarvestableCrop()) {
+                // harvestable
+                translateButton(fertilizerBtn);
+                fertilizerBtn.setVisible(true);
+                wateringCanBtn.setVisible(true);
+                harvestBtn.setVisible(true);
+            } else if (activeTile.hasWitheredCrop()) {
+                // withered
+                fertilizerBtn.setVisible(false);
+                wateringCanBtn.setVisible(false);
+                harvestBtn.setVisible(false);
+            } else {
+                // crop
+                fertilizerBtn.setVisible(true);
+                wateringCanBtn.setVisible(true);
+                harvestBtn.setVisible(false);
+            }
+        }
 
     }
 
@@ -117,13 +193,15 @@ public class FarmController {
     // Initializes the view upon switching to it
     @FXML
     private void initialize() {
-        translateView();
         nameDisplay.setText(getFarmerName());
         levelDisplay.setText("Level: " + farmer.getLevel());
         balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
+        farmerNamePopUp.setText(getFarmerName());
         //plantTurnipBtn.setOnAction(event -> plantTurnip());
         resetBtn.setOnAction(event -> resetTile());
         exitBtn.setOnAction(event -> exitGame());
+
+        this.lot = new FarmLot();
 
         // Create the farm lot of 50 tiles (5 rows, 10 columns)
         GridPane newFarm = farmLot;
@@ -141,7 +219,7 @@ public class FarmController {
                 // Set the corresponding actions for a button
                 newTile.setOnAction(event -> {
                     try {
-                        plantTurnip(event);
+                        displayButtons(event);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -167,11 +245,11 @@ public class FarmController {
 
     }
 
-    @FXML protected void plantTurnip(ActionEvent event) throws IOException {
+    /*@FXML protected void plantTurnip(ActionEvent event) throws IOException {
         String turnipURL = ASSETS_URL + "/crops/new-turnip.png";
         Button tileBtn = (Button) event.getSource();
         tileBtn.setStyle("-fx-background-image: url("+turnipURL+")"); // probably best to use setStyleClass instead
-    }
+    }*/
 
     /*
     @FXML
@@ -237,7 +315,22 @@ public class FarmController {
         balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
     }
 
+    // NEXT DAY
+    private int days = 0;
+    @FXML
+    protected void nextDay() {
+        this.days++;
+        System.out.println("Day " + days);
+        // add days planted for each tile in the farm lot
+    }
+
+
+
+
+
     // POP UP CONTROLLERS
+
+    // Variables
     @FXML private GridPane profilePane;
     @FXML private GridPane marketPane;
     @FXML private Button profileBtn;
@@ -251,6 +344,7 @@ public class FarmController {
     @FXML
     protected void openProfile(){
         System.out.println("Called profile");
+        farmerUpgradeButton();
         profilePane.setVisible(true);
         disableButtons();
     }
@@ -307,6 +401,30 @@ public class FarmController {
         exitMarket.toFront();
     }
 
+    // Variables
+    @FXML private Button upgradeFarmerBtn;
+    @FXML private Text farmerNamePopUp;
+    @FXML private Text farmerRankPopUp;
+
+    private void farmerUpgradeButton() {
+        // check if a farmer can be upgraded
+        if (farmer.getCanUpgrade() != -1) {
+            upgradeFarmerBtn.setDisable(false);
+        } else {
+            upgradeFarmerBtn.setDisable(true);
+        }
+    }
+
+    // FARMER PROFILE CODE
+    @FXML
+    protected void upgradeFarmer() {
+        farmer.upgradeFarmer();
+        farmerRankPopUp.setText(farmer.getFarmerType());
+
+    }
+
+    // MARKET CODE
+    // Variables
     @FXML private TextField cropNameDesc;
     @FXML private Text harvestTimeDesc;
     @FXML private Text waterNeedsDesc;
