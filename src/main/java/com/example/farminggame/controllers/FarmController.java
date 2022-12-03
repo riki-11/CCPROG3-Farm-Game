@@ -146,6 +146,7 @@ public class FarmController {
     }
     @FXML private Button carrotBtn;
     @FXML private Button appleBtn;
+    @FXML private FlowPane cropButtons;
 
     @FXML
     protected void displayButtons(ActionEvent tile) throws IOException{
@@ -160,8 +161,9 @@ public class FarmController {
         Tile activeTile = lot.getLot().get(this.activeTileIndex);
 
         // buttons that appear will depend on the tile status
-        carrotBtn.setDisable(true);
-        appleBtn.setDisable(true);
+
+        toolButtons.setVisible(true);
+        cropButtons.setVisible(false);
 
         // WE HAVE TO CLICK ON A TILE AGAIN THO
 
@@ -181,7 +183,14 @@ public class FarmController {
             harvestBtn.setDisable(true);
         } else if (!(activeTile.hasCrop())) {
             // plowed
-            pickaxeBtn.setDisable(true);
+
+            toolButtons.setVisible(false);
+            //displayCropButtons();
+            
+            // TODO:             
+            
+            // shovelBtn.setDisable(true); 
+            cropButtons.setVisible(true);
             carrotBtn.setDisable(false);
             appleBtn.setDisable(false);
         } else {
@@ -211,127 +220,117 @@ public class FarmController {
         }
 
     }
-    // TOOL METHODS
 
-    // THERE SHOULD BE AN ADDITIONAL CONDITION TO CHECK IF FARMER HAS ENOUGH MONEY
-
-    @FXML protected void usePlough(ActionEvent e) {
+    @FXML protected void useTool(ActionEvent event) {
         Tile activeTile = lot.getTile(activeTileIndex);
-        plough.plowTile(activeTile);
-
-        // Grab the tile button from the list of tile buttons
         Button activeTileBtn = tileBtnList.get(activeTileIndex);
+        Object node = event.getSource();
 
-        // change appearance of tile
-        activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "farm/plowed-tile.png"));
+        Button tool = (Button) node;
 
-        // Add farmer xp and deduct from wallet
-        farmer.addXP(plough.getXP());
-        wallet.setObjectCoins(-1 * plough.getCost());
+        if (tool.getId().equals("ploughBtn")) {
+            farmer.usePlough(activeTile, plough);
+            // change appearance of tile
+            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "farm/plowed-tile.png"));
+        } else if (tool.getId().equals("pickaxeBtn")) {
+            farmer.usePickaxe(activeTile, pickaxe);
+            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "farm/default-tile.png"));
+        } else if (tool.getId().equals("shovelBtn")) {
+            if (activeTile.hasCrop()) {
+                activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "farm/default-tile.png"));
+            }
+            farmer.useShovel(activeTile, shovel);
+
+        }
 
         updateStats();
+        toolButtons.setVisible(false);
     }
+    // CROP METHODS
 
-    @FXML protected void useShovel(ActionEvent e) {
-        // It can only do something if the tile has a crop
-        Tile activeTile = lot.getTile(activeTileIndex);
-        Button activeTileBtn = tileBtnList.get(activeTileIndex);
-
-        if (activeTile.hasCrop()) {
-            System.out.println("Plant successfully removed!");
-            shovel.removePlant(activeTile);
-            activeTileBtn.setStyle("-fx-background-image: url(\"" + defaultTileImg + "\");");
-            farmer.addXP(pickaxe.getXP());
+    private boolean hasAdjacentCrops() {
+        // check if the tile has any adjacent crops
+        if (!(lot.getTile(activeTileIndex - 10).hasCrop()) &&
+                !(lot.getTile(activeTileIndex - 9).hasCrop()) &&
+                !(lot.getTile(activeTileIndex - 11).hasCrop()) &&
+                !(lot.getTile(activeTileIndex + 10).hasCrop()) &&
+                !(lot.getTile(activeTileIndex + 9).hasCrop()) &&
+                !(lot.getTile(activeTileIndex + 11).hasCrop()) &&
+                !(lot.getTile(activeTileIndex + 1).hasCrop()) &&
+                !(lot.getTile(activeTileIndex - 1 ).hasCrop())) {
+            return false;
         } else {
-            System.out.println("nothing happened lol");
+            return true;
         }
+    }
 
-        wallet.setObjectCoins(-1 * shovel.getCost());
+    private boolean inRange() {
+        // check if the tile is not on the edges
+        if ((activeTileIndex >= 11 && activeTileIndex <= 18) ||
+                (activeTileIndex >= 21 && activeTileIndex <= 28) ||
+                (activeTileIndex >= 31 && activeTileIndex <= 38)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @FXML protected void plantCrop(ActionEvent event) {
+        Tile activeTile = lot.getTile(activeTileIndex);
+        Button activeTileBtn = tileBtnList.get(activeTileIndex);
+        Object node = event.getSource();
+
+        Button tool = (Button) node;
+
+        if (tool.getId().equals("carrotBtn")) {
+            activeTile.setCrop(new Carrot());
+            farmer.plantSeed(activeTile, "Carrot");
+            // change appearance of tile
+            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/carrot.jpg"));
+        } else if (tool.getId().equals("appleBtn")) {
+            farmer.plantSeed(activeTile, "Apple");
+            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/apple.jpg"));
+        } else if (tool.getId().equals("mangoBtn")) {
+            farmer.plantSeed(activeTile, "Mango");
+            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/mango.jpg"));
+        } else if (tool.getId().equals("potatoBtn")) {
+            farmer.plantSeed(activeTile, "Potato");
+            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/potato.jpg"));
+        } else if (tool.getId().equals("turnipBtn")) {
+            farmer.plantSeed(activeTile, "Turnip");
+            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/turnip.jpg"));
+        } else {
+            // condition for planting a flower
+            if (!hasAdjacentCrops() && inRange()) {
+                if (tool.getId().equals("roseBtn")) {
+                    farmer.plantSeed(activeTile, "Rose");
+                    activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/rose.jpg"));
+                } else if (tool.getId().equals("sunflowerBtn")) {
+                    farmer.plantSeed(activeTile, "Sunflower");
+                    activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/sunflower.jpg"));
+
+                } else if (tool.getId().equals("tulipBtn")) {
+                    farmer.plantSeed(activeTile, "Tulip");
+                    activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/tulip.jpg"));
+                }
+
+            }   else {
+                System.out.println("Flowers cannot be planted on tiles with adjacent crops");
+                // TO-DO: add a pop-up for that
+            }
+
+        }
 
         updateStats();
+        cropButtons.setVisible(false);
     }
 
-    @FXML protected void usePickaxe(ActionEvent e) {
-        // Update model
-        Tile activeTile = lot.getTile(activeTileIndex);
-        pickaxe.removeRock(activeTile);
-
-        // Update view
-        Button activeTileBtn = tileBtnList.get(activeTileIndex);
-        activeTileBtn.setStyle("-fx-background-image: url(\"" + defaultTileImg + "\");");
-
-        // Add farmer xp and deduct from wallet
-        farmer.addXP(pickaxe.getXP());
-        wallet.setObjectCoins(-1 * pickaxe.getCost());
-
-        updateStats();
-    }
-
-    @FXML
-    protected void useFertilizer(ActionEvent e) {
-        Tile activeTile = lot.getTile(activeTileIndex);
-
-        // If tile has a crop and it's not withered.
-        if (activeTile.hasCrop() && !(activeTile.hasWitheredCrop())) {
-            fertilizer.fertilizeCrop(activeTile.getCrop());
-
-            farmer.addXP(fertilizer.getXP());
-            wallet.setObjectCoins(-1 * fertilizer.getCost());
-            System.out.println("successfully fertilized plant");
-
-            // SHOW CROP INFO IN-GAME
-            System.out.println(activeTile.getCropInfo());
-
-            updateStats();
-        }
-    }
-
-    @FXML
-    protected void useWateringCan(ActionEvent e) {
-        Tile activeTile = lot.getTile(activeTileIndex);
-
-        // If tile has a crop and it's not withered
-        if (activeTile.hasCrop() && !(activeTile.hasWitheredCrop())) {
-            wateringCan.waterCrop(activeTile.getCrop());
-
-            farmer.addXP(wateringCan.getXP());
-            wallet.setObjectCoins(-1 * fertilizer.getXP());
-
-            System.out.println(activeTile.getCropInfo());
-
-            updateStats();
-        }
-    }
-
-    // PLANTING METHODS
-    @FXML protected void plantCarrot(ActionEvent e) {
-        Tile activeTile = lot.getTile(activeTileIndex);
-        activeTile.setCrop(new Carrot());
-
-        // Grab the tile button from the list of tile buttons
-        Button activeTileBtn = tileBtnList.get(activeTileIndex);
-
-        // change appearance of tile
-        activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/carrot.jpg"));
-
-    }
-
-    @FXML protected void plantApple(ActionEvent e) {
-        Tile activeTile = lot.getTile(activeTileIndex);
-        activeTile.setCrop(new Apple());
-
-        // Grab the tile button from the list of tile buttons
-        Button activeTileBtn = tileBtnList.get(activeTileIndex);
-
-        // change appearance of tile
-        activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/apple.jpg"));
-
-    }
 
     @FXML
     protected void exitGame() {
         sceneController.switchToStartView();
     }
+    
     @FXML TextField cropNumber;
     @FXML Text successText;
     @FXML Text failedText;
@@ -373,9 +372,8 @@ public class FarmController {
 
         cropNumber.setText("");
         seedPouch.showSeedList();
-        balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
+        updateStats();
     }
-
 
     // POP UP CONTROLLERS
 

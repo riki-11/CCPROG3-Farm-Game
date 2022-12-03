@@ -359,65 +359,97 @@
                     </left>
                     <!-- Button options -->
                     <top>
+                        <StackPane>
+                            <!-- Tool buttons -->
+                            <FlowPane styleClass="imgBtn" fx:id="toolButtons" visible="false">
+                                <!-- Call farmer equip methods -->
+                                <Button style="-fx-border-color: red;" fx:id="ploughBtn" onAction="#useTool" styleClass="imgBtn, toolBtn">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                                <Button style="-fx-border-color: green;" fx:id="shovelBtn" onAction="#useTool" styleClass="imgBtn, toolBtn">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                                <Button style="-fx-border-color: blue;" fx:id="pickaxeBtn" onAction="#useTool" styleClass="imgBtn, toolBtn">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                                <Button style="-fx-border-color: black;" fx:id="fertilizerBtn" styleClass="imgBtn, toolBtn">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                                <Button style="-fx-border-color: yellow;" fx:id="wateringCanBtn" styleClass="imgBtn, toolBtn">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                                <Button style="-fx-border-color: gray;" fx:id="harvestBtn" styleClass="imgBtn, toolBtn">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
 
-                                <!-- Tool buttons -->
-                    <FlowPane fx:id="toolButtons" visible="true">
-                        <!-- Call farmer equip methods -->
-                        <Button fx:id="ploughBtn" styleClass="imgBtn, toolBtn" onAction="#usePlough">
-                            <FlowPane.margin>
-                                <Insets left="10"/>
-                            </FlowPane.margin>
-                        </Button>
-                        <Button fx:id="shovelBtn" styleClass="imgBtn, toolBtn" onAction="#useShovel">
-                            <FlowPane.margin>
-                                <Insets left="10"/>
-                            </FlowPane.margin>
-                        </Button>
-                        <Button fx:id="pickaxeBtn" styleClass="imgBtn, toolBtn" onAction="#usePickaxe">
-                            <FlowPane.margin>
-                                <Insets left="10"/>
-                            </FlowPane.margin>
-                        </Button>
-                        <Button fx:id="fertilizerBtn" styleClass="imgBtn, toolBtn" onAction="#useFertilizer">
-                            <FlowPane.margin>
-                                <Insets left="10"/>
-                            </FlowPane.margin>
-                        </Button>
-                        <Button fx:id="wateringCanBtn" styleClass="imgBtn, toolBtn" onAction="#useWateringCan">
-                            <FlowPane.margin>
-                                <Insets left="10"/>
-                            </FlowPane.margin>
-                        </Button>
-                        <Button fx:id="harvestBtn" styleClass="imgBtn, toolBtn">
-                            <FlowPane.margin>
-                                <Insets left="10"/>
-                            </FlowPane.margin>
-                        </Button>
-                        <!-- Crop Buttons -->
-                        <FlowPane fx:id="cropButtons" visible="true">
-                            <Button fx:id="carrotBtn" styleClass="cropBtn" visible="true" text="Carrot" onAction="#plantCarrot">
-                                <FlowPane.margin>
-                                    <Insets left="10"/>
-                                </FlowPane.margin>
-                            </Button>
-                            <Button fx:id="appleBtn" styleClass="cropBtn" visible="true" text="Apple" onAction="#plantApple">
-                                <FlowPane.margin>
-                                    <Insets left="10"></Insets>
-                                </FlowPane.margin>
-                            </Button>
-                        </FlowPane>
-                    </FlowPane>
+                            </FlowPane>
 
+                            <!-- Crop Buttons -->
+                            <FlowPane fx:id="cropButtons" visible="false">
+                                <Button fx:id="carrotBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                                <Button fx:id="appleBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                                <Button fx:id="mangoBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                                <Button fx:id="potatoBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                                <Button fx:id="roseBtn" styleClass="cropBtn, imgBtn" visible="true" text="Rose" onAction="#plantCrop">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                                <Button fx:id="sunflowerBtn" styleClass="cropBtn, imgBtn" visible="true" text="Sunflower" onAction="#plantCrop">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                                <Button fx:id="tulipBtn" styleClass="cropBtn, imgBtn" visible="true" text="Tulip" onAction="#plantCrop">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                                <Button fx:id="turnipBtn" styleClass="cropBtn, imgBtn" visible="true" text="Rose" onAction="#plantCrop">
+                                    <FlowPane.margin>
+                                        <Insets left="10"></Insets>
+                                    </FlowPane.margin>
+                                </Button>
+                            </FlowPane>
+                        </StackPane>
 
-                </top>
+                    </top>
 
-                <right>
-                    <Button fx:id="nextDayBtn" text="Next Day" onAction="#nextDay">
-                        <BorderPane.margin>
-                            <Insets right="20" bottom="20"></Insets>
-                        </BorderPane.margin>
-                    </Button>
-                </right>
+                    <right>
+                        <Button fx:id="nextDayBtn" text="Next Day" onAction="#nextDay">
+                            <BorderPane.margin>
+                                <Insets right="20" bottom="20"></Insets>
+                            </BorderPane.margin>
+                        </Button>
+                    </right>
 
             </BorderPane>
 
