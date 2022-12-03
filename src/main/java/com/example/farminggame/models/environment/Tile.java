@@ -27,18 +27,6 @@ public class Tile {
     }
 
     /**
-     * Resets tile to its default state
-     */
-    public void resetTile() {
-        this.appearance = String.format("-------\n" +
-                "|     |\n" +
-                "|     |\n" +
-                "|     |\n" +
-                "-------\n");
-    }
-
-
-    /**
      * Checks if a tile currently has a crop planted on it
      * @return true if a Crop exists on the tile, false otherwise
      */
@@ -108,6 +96,8 @@ public class Tile {
      * @return information of Crop as a String
      */
     public String getCropInfo() {
+
+        // MODIFY THIS TO FIT THE GAME INSTEAD OF TERMINAL
         if (hasCrop()) {
             return String.format("""
 
@@ -128,8 +118,6 @@ public class Tile {
      */
     public void setCrop(Crop crop) {
         this.crop = crop;
-        // A planted crop is represented by its first character in this prototype
-        setAppearance(String.format(" %c ", crop.getSeedName().charAt(0)));
     }
 
     /**
@@ -154,18 +142,6 @@ public class Tile {
     */
     public void setWithered(boolean value) {
         this.plowed = value;
-    }
-
-    /**
-     * Modifies the appearance of the tile
-     * @param status current state of the crop as a String
-     */
-    public void setAppearance(String status) {
-        this.appearance = String.format("-------\n" +
-                "|     |\n" +
-                "| %s |\n" +
-                "|     |\n" +
-                "-------\n", status);
     }
 
     /**

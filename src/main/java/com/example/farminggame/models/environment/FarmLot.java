@@ -1,4 +1,6 @@
 package com.example.farminggame.models.environment;
+import com.example.farminggame.models.environment.crops.Crop;
+
 import java.util.ArrayList;
 
 
@@ -56,15 +58,15 @@ public class FarmLot {
      * Gets the number of active/growing crops
      * @return the number of active/growing crops
      */
-    public int getCropsPlanted() {
-        int total = 0;
+    public ArrayList<Crop> getCropsPlanted() {
+        ArrayList<Crop> cropList = new ArrayList<>();
         for (Tile tile : lot) {
-            // If tile has a crop and it isn't withered
-            if (tile.hasCrop() && !tile.hasWitheredCrop()) {
-                total += 1;
+            if (tile.hasCrop() && !(tile.hasWitheredCrop())) {
+                cropList.add(tile.getCrop());
             }
         }
-        return total;
+
+        return cropList;
     }
 
     /**
