@@ -60,6 +60,8 @@
     -fx-min-height: 75px;
 }
 
+
+
 #openMarketBtn {
     -fx-background-image:  url("../assets/miscellaneous/market.png");
     -fx-min-width: 75px;
@@ -67,6 +69,28 @@
     -fx-background-size: 85% 85%;
     -fx-background-position: center;
 }
+
+#carrotBtn {
+    -fx-background-image: url("../assets/crops/carrot.jpg");
+}
+
+#appleBtn {
+    -fx-background-image: url("../assets/crops/apple.jpg");
+}
+
+#mangoBtn {
+    -fx-background-image: url("../assets/crops/mango.jpg");
+}
+
+#potatoBtn {
+    -fx-background-image: url("../assets/crops/potato.jpg");
+}
+
+#turnipBtn {
+    -fx-background-image: url("../assets/crops/turnip.jpg");
+}
+
+
 
 #marketCarrotBtn {
     -fx-background-image: url("../assets/crops/carrot.jpg");

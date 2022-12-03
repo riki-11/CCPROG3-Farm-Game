@@ -1,9 +1,8 @@
 package com.example.farminggame.models.farmer;
 
-import com.example.farminggame.models.environment.crops.Crop;
+import com.example.farminggame.models.environment.crops.*;
 import com.example.farminggame.models.environment.Tile;
 
-import com.example.farminggame.models.environment.crops.Turnip;
 import com.example.farminggame.models.tools.Fertilizer;
 import com.example.farminggame.models.tools.Pickaxe;
 import com.example.farminggame.models.tools.Plough;
@@ -136,7 +135,22 @@ public class Farmer {
      */
     public void plantSeed(Tile tile, String seedName) {
         if (tile.isPlowed() && !tile.hasCrop())  {
-            tile.setCrop(new Turnip());
+            if (seedName.equals("Carrot")) {
+                tile.setCrop(new Carrot());
+            } else if (seedName.equals("Apple")) {
+                tile.setCrop(new Apple());
+            } else if (seedName.equals("Mango")) {
+                tile.setCrop(new Mango());
+            } else if (seedName.equals("Potato")) {
+                tile.setCrop(new Potato());
+            } else if (seedName.equals("Rose")) {
+                tile.setCrop(new Rose());
+            } else if (seedName.equals("Sunflower")) {
+                tile.setCrop(new Tulip());
+            } else if(seedName.equals("Tulip")) {
+                tile.setCrop(new Turnip());
+            }
+
             System.out.printf("\nA %s has been successfully planted.\n", seedName);
         } else {
             System.out.println("\nA seed can't be planted here.\n");
