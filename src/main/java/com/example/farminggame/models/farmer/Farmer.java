@@ -186,13 +186,14 @@ public class Farmer {
             this.wallet.setObjectCoins(finalHarvestPrice);
 
             tile.removeCrop();
-            tile.resetTile();
 
             return true;
         }
 
         return false;
     }
+
+    // Get rid of all the tool-related equip and use methods
 
     /**
      * Equips Plough tool

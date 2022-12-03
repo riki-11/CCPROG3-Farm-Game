@@ -21,6 +21,5 @@ public class Shovel extends Tool {
      */
     public void removePlant(Tile tile){
         tile.removeCrop();
-        tile.resetTile();
     }
 }

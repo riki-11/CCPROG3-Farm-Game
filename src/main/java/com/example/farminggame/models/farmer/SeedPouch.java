@@ -14,10 +14,7 @@ public class SeedPouch {
     // Stores seedName and no. of seeds as pairs
     private Hashtable<String, Integer> seedList;
 
-    private int[] seeds; // make use of polymorphism again because arraylists (idk abt arrays) can store references to subclass as well
-
     public SeedPouch() {
-        this.seeds = new int[8];
         this.seedList = new Hashtable<String, Integer>();
         // initialize hashtable with all crops
         this.seedList.put("Turnip", 0);
@@ -52,23 +49,29 @@ public class SeedPouch {
         this.seedList.put(seedName, currentCount + seedCount);
     }
 
-    /**
-     * Gets the entire Array of seeds in the SeedPouch
-     * @return Array of seeds in SeedPouch
-     */
-    public int[] getSeedList() {
-        return this.seeds;
+    public int getSeedCount(String seedName) {
+        return this.seedList.get(seedName);
     }
 
     /**
+     * Gets the entire Array of seeds in the SeedPouch
+     *
+     * @return Array of seeds in SeedPouch
+     */
+    public Hashtable<String, Integer> getSeedList() {
+        return this.seedList;
+    }
+/*
+    /**
      * Gets the total number of seeds
      * @return number of seeds as int
-     */
-    public int getSeedCount() {
+
+    public int getSeedPouchCount() {
         int totalSeeds = 0;
         for (int i = 0; i < 8; i++) {
             totalSeeds += seeds[i];
         }
         return totalSeeds;
     }
+    */
 }

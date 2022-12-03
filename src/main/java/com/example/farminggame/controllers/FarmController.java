@@ -24,12 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.Buffer;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 
 public class FarmController {
@@ -41,22 +36,32 @@ public class FarmController {
     private final int SCENE_WIDTH = 1300;
     private final int SCENE_HEIGHT = 700;
 
+    // ASSET VARIABLES
     private final String ASSETS_URL = FarmController.class.getResource("/com/example/farminggame" +
             "/assets").toExternalForm();
     private final String fxmlURL = "/com/example/farminggame/fxml/";
 
+    private final String defaultTileImg = ASSETS_URL + "farm/default-tile.png";
 
-    private int activeTileIndex = -1;
-
+    // GAME-WIDE VARIABLES
+    private int days = 1;
 
     // To store all the tile buttons
     private ArrayList<Button> tileBtnList = new ArrayList<>();
+
+    // Keeps track of the last pressed tile
+    private int activeTileIndex = -1;
+
+    // Selected crop while in the market
+    private String selectedButton;
 
     // FXML VARIABLES
     @FXML private Text nameDisplay;
 
     @FXML private Text levelDisplay;
+    @FXML private Text xpDisplay;
     @FXML private Text balanceDisplay;
+    @FXML private Text dayDisplay;
 
     @FXML private GridPane farmLotGrid;
     @FXML private Button ploughBtn;
@@ -66,9 +71,19 @@ public class FarmController {
     @FXML private Button wateringCanBtn;
     @FXML private Button harvestBtn;
     @FXML private Button exitBtn;
+
     @FXML
     private SceneController sceneController;
 
+    @FXML private TextField cropNameDesc;
+    @FXML private Text harvestTimeDesc;
+    @FXML private Text waterNeedsDesc;
+    @FXML private Text fertilizerNeedsDesc;
+    @FXML private Text productsProducedDesc;
+    @FXML private Text basePriceDesc;
+
+    @FXML
+    private ImageView cropDescImage;
 
     // MODEL VARIABLES
     private FarmLot lot;
@@ -86,8 +101,6 @@ public class FarmController {
     private Shovel shovel = new Shovel();
     private WateringCan wateringCan = new WateringCan();
 
-
-    // FXML-RELATED METHODS
     public void createStage(Stage stage) {
         this.stage = stage;
 
@@ -114,9 +127,9 @@ public class FarmController {
     public void showStage() {
         this.stage.show();
     }
-
     @FXML private FlowPane toolButtons;
     // Adjust certain elements to their positions
+
 
 
     private void setActiveTileIndex(Button tileBtn) {
@@ -131,11 +144,9 @@ public class FarmController {
     private void translateButton(Button button) {
         button.setTranslateX(-85);
     }
-
     @FXML private Button carrotBtn;
     @FXML private Button appleBtn;
     @FXML private FlowPane cropButtons;
-
 
     @FXML
     protected void displayButtons(ActionEvent tile) throws IOException{
@@ -154,6 +165,8 @@ public class FarmController {
         toolButtons.setVisible(true);
         cropButtons.setVisible(false);
 
+        // WE HAVE TO CLICK ON A TILE AGAIN THO
+
         if (activeTile.hasRock()) {
             //rock
             ploughBtn.setDisable(true);
@@ -170,14 +183,24 @@ public class FarmController {
             harvestBtn.setDisable(true);
         } else if (!(activeTile.hasCrop())) {
             // plowed
+
             toolButtons.setVisible(false);
             //displayCropButtons();
+            
+            // TODO:             
+            
+            // shovelBtn.setDisable(true); 
             cropButtons.setVisible(true);
             carrotBtn.setDisable(false);
             appleBtn.setDisable(false);
         } else {
             pickaxeBtn.setDisable(true);
             ploughBtn.setDisable(true);
+
+            Crop tileCrop = activeTile.getCrop();
+            // check inventory for how many of this plant there are (JUST FOR TESTING)
+            System.out.println(tileCrop.getSeedName() + " " + seedPouch.getSeedCount(tileCrop.getSeedName()));
+
             if (activeTile.hasHarvestableCrop()) {
                 // harvestable
                 fertilizerBtn.setDisable(false);
@@ -303,17 +326,15 @@ public class FarmController {
     }
 
 
-
-
-
     @FXML
     protected void exitGame() {
         sceneController.switchToStartView();
     }
-
+    
     @FXML TextField cropNumber;
     @FXML Text successText;
     @FXML Text failedText;
+
 
     @FXML
     protected void buyCrop() {
@@ -353,25 +374,6 @@ public class FarmController {
         seedPouch.showSeedList();
         updateStats();
     }
-
-    // NEXT DAY
-    private int days = 0;
-    @FXML
-    protected void nextDay() {
-        this.days++;
-        System.out.println("Day " + days);
-        // add days planted for each tile in the farm lot
-    }
-
-    // update the balance, level, and XP text after every action mad
-    private void updateStats() {
-        // TO-DO: add XP display as well
-        balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
-        levelDisplay.setText("Level: " + farmer.getLevel());
-    }
-
-
-
 
     // POP UP CONTROLLERS
 
@@ -422,10 +424,34 @@ public class FarmController {
         enableButtons();
 
     }
+    // Expand the market when any of the plant buttons are pressed
+    // NEXT DAY
+    @FXML
+    protected void nextDay() {
+        this.days++;
+
+        // Grab all the crops currently planted
+        ArrayList<Crop> cropList = lot.getCropsPlanted();
+
+        // advance the days planted for each crop
+        for (Crop crop : cropList) {
+            crop.addDayPlanted();
+        }
+
+        // Update the view
+        updateDay();
+    }
+
     private void disableButtons() {
         exitBtn.setDisable(true);
         profileBtn.setDisable(true);
         openMarketBtn.setDisable(true);
+        ploughBtn.setDisable(true);
+        shovelBtn.setDisable(true);
+        pickaxeBtn.setDisable(true);
+        fertilizerBtn.setDisable(true);
+        wateringCanBtn.setDisable(true);
+        harvestBtn.setDisable(true);
     }
 
     private void enableButtons() {
@@ -435,7 +461,6 @@ public class FarmController {
     }
 
 
-    // Expand the market when any of the plant buttons are pressed
     private void expandMarket() {
         marketRectangle.setWidth(800);
         descriptionRectangle.setTranslateX(500);
@@ -465,28 +490,28 @@ public class FarmController {
     protected void upgradeFarmer() {
         farmer.upgradeFarmer();
         farmerRankPopUp.setText(farmer.getFarmerType());
-
     }
-
-    // MARKET CODE
-    // Variables
-    @FXML private TextField cropNameDesc;
-    @FXML private Text harvestTimeDesc;
-    @FXML private Text waterNeedsDesc;
-    @FXML private Text fertilizerNeedsDesc;
-    @FXML private Text productsProducedDesc;
-    @FXML private Text basePriceDesc;
 
     @FXML
-    private ImageView cropDescImage;
-
-    // Selected crop while in the market
-    private String selectedButton;
-
-    private void setSelectedButton(String button) {
-        this.selectedButton = button;
+    protected void updateStats() {
+        levelDisplay.setText("Level: " + farmer.getLevel());
+        xpDisplay.setText("XP: " + farmer.getCurrentXP());
+        balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
     }
 
+    @FXML
+    protected void updateDay() {
+        dayDisplay.setText("Day: " + days);
+
+        // Check each tile if it has a withered crop
+        for (Tile tile : lot.getLot()) {
+            if (tile.hasWitheredCrop()) {
+                System.out.println("There's a withered crop lol");
+                // change background of tile to a withered tile
+                // HAVE TO FIND A WAY TO CHANGE ALL TILES WITHOUT ACTUALLY PRESSING THEM
+            }
+        }
+    }
 
     @FXML
     protected void displayMarketInformation(ActionEvent event) throws IOException {
@@ -495,7 +520,6 @@ public class FarmController {
         Image appleImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/assets/crops/apple.jpg"));
         Image mangoImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/assets/crops/mango.jpg"));
         Image potatoImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/assets/crops/potato.jpg"));
-
         Image turnipImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/assets/crops/turnip.jpg"));
 
         Carrot carrot = new Carrot();
@@ -579,6 +603,7 @@ public class FarmController {
         else if (button.getId().equals("marketTurnipBtn")) {
             setSelectedButton("Turnip");
 
+            cropDescImage.setImage(turnipImage);
             cropNameDesc.setText(turnip.getSeedName());
             harvestTimeDesc.setText("Harvest Time: " + turnip.getHarvestTime());
             waterNeedsDesc.setText("Water Needs (Bonus): " + turnip.getWaterNeeds() + "(" + turnip.getWaterBonusLimit() + ")");
@@ -594,27 +619,19 @@ public class FarmController {
         InputStream is = getClass().getResourceAsStream("/com/example/farminggame/input/rockInput.txt");
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String rockInput;
-
-
-        nameDisplay.setText(getFarmerName());
-        levelDisplay.setText("Level: " + farmer.getLevel());
-        balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
-        exitBtn.setOnAction(event -> exitGame());
-
+        int tileIdCount = 1;
 
         // Check the rockInput.txt file for positions of rocks
         this.lot = new FarmLot();
 
         while ((rockInput = br.readLine()) != null) {
             lot.setRockPosition(Integer.parseInt(rockInput));
-            // change
         }
 
         // Create the farm lot of 50 tiles (5 rows, 10 columns)
         GridPane newFarm = farmLotGrid;
-        int tileIdCount = 1;
 
-        // For loop is per col
+        // Initialize the farm lot
         for (int row = 0; row < 5; row++) {
             for (int column = 0; column < 10; column++) {
                 Button newTile = new Button();
@@ -649,6 +666,11 @@ public class FarmController {
             }
         }
 
+        // Initializing UI elements
+        nameDisplay.setText(farmer.getName());
+        updateDay();
+        updateStats();
+
         // Initialize seed store list
         seedStoreList.add(new Apple());
         seedStoreList.add(new Carrot());
@@ -658,6 +680,14 @@ public class FarmController {
         seedStoreList.add(new Sunflower());
         seedStoreList.add(new Tulip());
         seedStoreList.add(new Turnip());
+
+        // Setting event handlers
+        exitBtn.setOnAction(event -> exitGame());
+    }
+
+
+    private void setSelectedButton(String button) {
+        this.selectedButton = button;
     }
 
     // GETTERS AND SETTERS
@@ -666,10 +696,6 @@ public class FarmController {
         this.farmer = farmer;
         this.wallet = farmer.getWallet();
         this.seedPouch = farmer.getSeedPouch();
-    }
-
-    public String getFarmerName() {
-        return farmer.getName();
     }
 
     public void setSceneController(SceneController sceneController) {

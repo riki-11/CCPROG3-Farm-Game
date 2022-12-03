@@ -22,7 +22,6 @@ public class Plough extends Tool {
     public boolean plowTile(Tile tile) {
         if (!(tile.isPlowed())) {
             tile.setPlowed(true);
-            tile.setAppearance(" P ");
             System.out.println("SUCCESSFULY PLOWED!");
             return true;
         }
