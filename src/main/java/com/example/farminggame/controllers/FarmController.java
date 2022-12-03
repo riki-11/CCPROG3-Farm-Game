@@ -186,8 +186,8 @@ public class FarmController {
 
             toolButtons.setVisible(false);
             //displayCropButtons();
-            
-            // TODO:             
+
+            // TODO: SET SHOVEL HERE
             
             // shovelBtn.setDisable(true); 
             cropButtons.setVisible(true);
@@ -200,6 +200,7 @@ public class FarmController {
             Crop tileCrop = activeTile.getCrop();
             // check inventory for how many of this plant there are (JUST FOR TESTING)
             System.out.println(tileCrop.getSeedName() + " " + seedPouch.getSeedCount(tileCrop.getSeedName()));
+            System.out.println(activeTile.getCropInfo());
 
             if (activeTile.hasHarvestableCrop()) {
                 // harvestable
@@ -249,15 +250,15 @@ public class FarmController {
     // CROP METHODS
 
     private boolean hasAdjacentCrops() {
-        // check if the tile has any adjacent crops
-        if (!(lot.getTile(activeTileIndex - 10).hasCrop()) &&
-                !(lot.getTile(activeTileIndex - 9).hasCrop()) &&
-                !(lot.getTile(activeTileIndex - 11).hasCrop()) &&
-                !(lot.getTile(activeTileIndex + 10).hasCrop()) &&
-                !(lot.getTile(activeTileIndex + 9).hasCrop()) &&
-                !(lot.getTile(activeTileIndex + 11).hasCrop()) &&
-                !(lot.getTile(activeTileIndex + 1).hasCrop()) &&
-                !(lot.getTile(activeTileIndex - 1 ).hasCrop())) {
+        // check if the tile has any adjacent crops or rocks
+        if (!(lot.getTile(activeTileIndex - 10).hasCrop() || lot.getTile(activeTileIndex - 10).hasRock()) &&
+            !(lot.getTile(activeTileIndex - 9).hasCrop() || lot.getTile(activeTileIndex - 9).hasRock()) &&
+            !(lot.getTile(activeTileIndex - 11).hasCrop() || lot.getTile(activeTileIndex - 11).hasRock()) &&
+            !(lot.getTile(activeTileIndex + 10).hasCrop() || lot.getTile(activeTileIndex + 10).hasRock()) &&
+            !(lot.getTile(activeTileIndex + 9).hasCrop() || lot.getTile(activeTileIndex + 9).hasRock()) &&
+            !(lot.getTile(activeTileIndex + 11).hasCrop() || lot.getTile(activeTileIndex + 11).hasRock()) &&
+            !(lot.getTile(activeTileIndex + 1).hasCrop() || lot.getTile(activeTileIndex + 1).hasRock()) &&
+            !(lot.getTile(activeTileIndex - 1).hasCrop() || lot.getTile(activeTileIndex - 1).hasRock())) {
             return false;
         } else {
             return true;
@@ -286,37 +287,36 @@ public class FarmController {
             activeTile.setCrop(new Carrot());
             farmer.plantSeed(activeTile, "Carrot");
             // change appearance of tile
-            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/carrot.jpg"));
-        } else if (tool.getId().equals("appleBtn")) {
-            farmer.plantSeed(activeTile, "Apple");
-            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/apple.jpg"));
-        } else if (tool.getId().equals("mangoBtn")) {
-            farmer.plantSeed(activeTile, "Mango");
-            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/mango.jpg"));
+            setBtnImage(activeTileBtn, "crops/carrot.jpg");
+        } else if (tool.getId().equals("roseBtn")) {
+            farmer.plantSeed(activeTile, "Rose");
+            setBtnImage(activeTileBtn, "crops/rose.jpg");
+        } else if (tool.getId().equals("sunflowerBtn")) {
+            farmer.plantSeed(activeTile, "Sunflower");
+            setBtnImage(activeTileBtn, "crops/sunflower.jpg");
+
+        } else if (tool.getId().equals("tulipBtn")) {
+            farmer.plantSeed(activeTile, "Tulip");
+            setBtnImage(activeTileBtn,"crops/tulip.jpg" );
         } else if (tool.getId().equals("potatoBtn")) {
             farmer.plantSeed(activeTile, "Potato");
-            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/potato.jpg"));
+            setBtnImage(activeTileBtn, "crops/potato.jpg");
         } else if (tool.getId().equals("turnipBtn")) {
             farmer.plantSeed(activeTile, "Turnip");
-            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/turnip.jpg"));
+            setBtnImage(activeTileBtn, "crops/turnip.jpg");
+
         } else {
-            // condition for planting a flower
-            if (!hasAdjacentCrops() && inRange()) {
-                if (tool.getId().equals("roseBtn")) {
-                    farmer.plantSeed(activeTile, "Rose");
-                    activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/rose.jpg"));
-                } else if (tool.getId().equals("sunflowerBtn")) {
-                    farmer.plantSeed(activeTile, "Sunflower");
-                    activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/sunflower.jpg"));
-
-                } else if (tool.getId().equals("tulipBtn")) {
-                    farmer.plantSeed(activeTile, "Tulip");
-                    activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "crops/tulip.jpg"));
+            if (inRange() && !hasAdjacentCrops()) {
+                if (tool.getId().equals("appleBtn")) {
+                    farmer.plantSeed(activeTile, "Apple");
+                    setBtnImage(activeTileBtn, "crops/apple.jpg");
+                } else if (tool.getId().equals("mangoBtn")) {
+                    farmer.plantSeed(activeTile, "Mango");
+                    setBtnImage(activeTileBtn, "crops/mango.jpg");
                 }
-
-            }   else {
-                System.out.println("Flowers cannot be planted on tiles with adjacent crops");
-                // TO-DO: add a pop-up for that
+            } else {
+                System.out.println("Fruit trees cannot be planted on tiles with adjacent crops");
+                // TODO: add a pop-up for that
             }
 
         }
@@ -446,12 +446,8 @@ public class FarmController {
         exitBtn.setDisable(true);
         profileBtn.setDisable(true);
         openMarketBtn.setDisable(true);
-        ploughBtn.setDisable(true);
-        shovelBtn.setDisable(true);
-        pickaxeBtn.setDisable(true);
-        fertilizerBtn.setDisable(true);
-        wateringCanBtn.setDisable(true);
-        harvestBtn.setDisable(true);
+        toolButtons.setVisible(false);
+        cropButtons.setVisible(false);
     }
 
     private void enableButtons() {
@@ -610,7 +606,6 @@ public class FarmController {
             fertilizerNeedsDesc.setText("Fertilizer Needs (Bonus): " + turnip.getFertilizerNeeds() + "(" + turnip.getFertilizerBonusLimit() + ")");
             basePriceDesc.setText("Base Selling Price: " + turnip.getSellingPrice());
         }
-
     }
 
     // Initializes the view upon switching to it
@@ -685,6 +680,9 @@ public class FarmController {
         exitBtn.setOnAction(event -> exitGame());
     }
 
+    private void setBtnImage(Button button, String imagePath) {
+        button.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + imagePath));
+    }
 
     private void setSelectedButton(String button) {
         this.selectedButton = button;

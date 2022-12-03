@@ -101,12 +101,13 @@ public class Tile {
         if (hasCrop()) {
             return String.format("""
 
-                                Crop Name: %s        
+                                Crop Name: %s
+                                Withered: %s        
                                 Water Count : %d
                                 Fertilizer Count : %d
                                 Days until harvestable: %d
                                 """,
-                                this.crop.getSeedName(), this.crop.getWaterCount(),
+                                this.crop.getSeedName(), this.crop.isWithered(), this.crop.getWaterCount(),
                                 this.crop.getFertilizerCount(), this.crop.getHarvestTime() - this.crop.getDaysPlanted());
         }
         return "";

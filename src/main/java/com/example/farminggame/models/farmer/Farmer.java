@@ -146,8 +146,10 @@ public class Farmer {
             } else if (seedName.equals("Rose")) {
                 tile.setCrop(new Rose());
             } else if (seedName.equals("Sunflower")) {
+                tile.setCrop(new Sunflower());
+            } else if (seedName.equals("Tulip")) {
                 tile.setCrop(new Tulip());
-            } else if(seedName.equals("Tulip")) {
+            } else if (seedName.equals("Turnip")) {
                 tile.setCrop(new Turnip());
             }
 
