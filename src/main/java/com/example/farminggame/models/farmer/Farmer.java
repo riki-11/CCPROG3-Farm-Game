@@ -9,10 +9,6 @@ import com.example.farminggame.models.tools.Plough;
 import com.example.farminggame.models.tools.Shovel;
 import com.example.farminggame.models.tools.WateringCan;
 
-import com.example.farminggame.models.farmer.*;
-
-import java.util.ArrayList;
-
 /**
  * Represents a Farmer which acts as the player character
  * @author Enrique Lejano and Krizchelle Wong
@@ -110,8 +106,8 @@ public class Farmer {
      * @return
      */
     public boolean buySeeds(Crop cropToBuy, int count) {
-        String seedName = cropToBuy.getSeedName();
-        int basePrice = cropToBuy.getSeedCost();
+        String seedName = cropToBuy.getCropName();
+        int basePrice = cropToBuy.getCropCost();
 
         // If farmer has enough coins and decided to buy at least 1 seed
         if (this.wallet.getObjectCoins() >= (basePrice - this.costReduction) * count && count != 0) {
@@ -162,37 +158,38 @@ public class Farmer {
     /**
      * Harvests a harvestable crop from a selected Tile
      * @param tile Tile containing harvestable crop
-     * @return true if harvesting was successful, false if otherwise
      */
-    public boolean harvestCrop(Tile tile) {
-        if (tile != null) {
-            Crop harvestedCrop = tile.getCrop();
-            addXP(harvestedCrop.getXpYield());
+    public void harvestCrop(Tile tile) {
 
-            int waterCount = harvestedCrop.getWaterCount();
-            int fertilizerCount = harvestedCrop.getFertilizerCount();
+        // ACCOUNT FOR FLOWERS
+        Crop harvestedCrop = tile.getCrop();
+        // Add to the farmer's current xp
+        addXP((harvestedCrop.getXpYield()));
 
-            // Bonuses for watering/fertilizing are capped by the Crop's bonus limit plus the Farmer's bonus increase
-            if (waterCount > harvestedCrop.getWaterBonusLimit() + this.waterBonusLimit) {
-                waterCount = harvestedCrop.getWaterBonusLimit();
-            }
-            if (fertilizerCount > harvestedCrop.getFertilizerBonusLimit() + this.waterBonusLimit) {
-                fertilizerCount = harvestedCrop.getFertilizerBonusLimit();
-            }
+        // Get how many times the crop was fertilized and watered
+        int fertilizerCount = harvestedCrop.getFertilizerCount();
+        int waterCount = harvestedCrop.getWaterCount();
 
-            double harvestTotal = harvestedCrop.getProduce() * (harvestedCrop.getSellingPrice() + this.bonusEarnings);
-            double waterBonus = harvestTotal * 0.2 * (waterCount - 1);
-            double fertilizerBonus = harvestTotal * 0.5 * fertilizerCount;
-            double finalHarvestPrice = harvestTotal + waterBonus + fertilizerBonus;
-
-            this.wallet.setObjectCoins(finalHarvestPrice);
-
-            tile.removeCrop();
-
-            return true;
+        // Bonuses for watering/fertilizing are capped by the Crop's bonus limit plus the Farmer's bonus increase
+        if (waterCount > harvestedCrop.getWaterBonusLimit() + this.waterBonusLimit) {
+            waterCount = harvestedCrop.getWaterBonusLimit();
+        }
+        if (fertilizerCount > harvestedCrop.getFertilizerBonusLimit() + this.fertilizerBonusLimit) {
+            fertilizerCount = harvestedCrop.getFertilizerBonusLimit();
         }
 
-        return false;
+        // Compute for the final harvest price
+        double harvestTotal = harvestedCrop.getProduce() * (harvestedCrop.getSellingPrice() + this.bonusEarnings);
+        double waterBonus = harvestTotal * 0.2 * (waterCount - 1);
+        double fertilizerBonus = harvestTotal * 0.5 * fertilizerCount;
+        double finalHarvestPrice = harvestTotal + waterBonus + fertilizerBonus;
+
+        if (harvestedCrop.getType().equals("Flower")) {
+            finalHarvestPrice *= 1.1;
+        }
+
+        this.wallet.setObjectCoins(finalHarvestPrice);
+        tile.removeCrop();
     }
 
     // Get rid of all the tool-related equip and use methods
@@ -237,16 +234,7 @@ public class Farmer {
         this.equipped = true;
     }
 
-    /**
-     * Unequips tool if Farmer currently has one equipped
-     */
-    public void unequipTool() {
-        if (!this.currentTool.equals("None")) {
-            System.out.printf("\n%s has been unequipped\n", this.currentTool);
-            this.currentTool = "None";
-            this.equipped = false;
-        }
-    }
+
 
     /**
      * Uses Plough tool
@@ -267,7 +255,6 @@ public class Farmer {
         }
 
         // Unequip tool after using
-        this.unequipTool();
     }
 
     /**
@@ -281,10 +268,6 @@ public class Farmer {
 
             this.wallet.setObjectCoins(-1 * wateringCan.getCost());
             this.experience += wateringCan.getXP();
-
-            System.out.println("Successfully watered plant");
-
-            this.unequipTool();
         }
     }
 
@@ -300,8 +283,6 @@ public class Farmer {
             this.wallet.setObjectCoins(-1 * fertilizer.getCost());
             this.experience += fertilizer.getXP();
 
-            System.out.println("Successfully fertilized plant"); // remove this?
-            this.unequipTool();
         }
     }
 
@@ -316,7 +297,6 @@ public class Farmer {
             shovel.removePlant(tile);
             this.experience += shovel.getXP();
 
-            this.unequipTool();
         } else {
             System.out.println("Nothing happened. We can't use the shovel here.");
         }
@@ -334,9 +314,6 @@ public class Farmer {
         if (tile.hasRock()) {
             pickaxe.removeRock(tile);
             this.experience += pickaxe.getXP();
-
-            // Uneqip tool after using
-            this.unequipTool();
 
             // Deduct from wallet
             this.wallet.setObjectCoins(-1 * pickaxe.getCost());

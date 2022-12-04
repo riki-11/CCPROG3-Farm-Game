@@ -105,10 +105,11 @@ public class Tile {
                                 Withered: %s        
                                 Water Count : %d
                                 Fertilizer Count : %d
+                                Harvestable : %s
                                 Days until harvestable: %d
                                 """,
-                                this.crop.getSeedName(), this.crop.isWithered(), this.crop.getWaterCount(),
-                                this.crop.getFertilizerCount(), this.crop.getHarvestTime() - this.crop.getDaysPlanted());
+                                this.crop.getCropName(), this.crop.isWithered(), this.crop.getWaterCount(),
+                                this.crop.getFertilizerCount(), this.crop.isHarvestable(), this.crop.getHarvestTime() - this.crop.getDaysPlanted());
         }
         return "";
     }

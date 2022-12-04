@@ -104,8 +104,6 @@
             <GridPane fx:id="marketPane" alignment="center" styleClass="popUp" visible="false">
                 <Rectangle fx:id="marketRectangle" styleClass="popUp" arcHeight="10.0" arcWidth="10.0" fill="indianred" height="500.0" stroke="BLACK" strokeType="INSIDE" width="500.0" />
                 <Rectangle fx:id="descriptionRectangle" arcHeight="10.0" arcWidth="10.0" fill="sandybrown" height="500.0" width="300.0" visible="false"/>
-
-
                 <BorderPane>
                     <right>
                         <Button fx:id="exitMarket" layoutX="200" layoutY="200" styleClass="exit" text="X" onAction="#exitMarket">
@@ -122,13 +120,12 @@
                                 <StackPane.margin>
                                     <Insets top="70"/>
                                 </StackPane.margin>
-                                <ImageView fx:id="cropDescImage" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView fx:id="cropDescImage" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true"
+                                           preserveRatio="true">
                                     <VBox.margin>
                                         <Insets top="30" left="58"></Insets>
                                     </VBox.margin>
-                                    <image>
-                                        <Image url="@../assets/crops/carrot.jpg" />
-                                    </image>
+                                    <Image url="@../assets/crops/carrot.jpg"/>
                                 </ImageView>
 
                                 <TextField fx:id="cropNameDesc" text="CARROT" alignment = "center" maxWidth="100">
@@ -378,17 +375,17 @@
                                         <Insets left="10"></Insets>
                                     </FlowPane.margin>
                                 </Button>
-                                <Button style="-fx-border-color: black;" fx:id="fertilizerBtn" styleClass="imgBtn, toolBtn">
+                                <Button style="-fx-border-color: black;" fx:id="fertilizerBtn" onAction="#useTool" styleClass="imgBtn, toolBtn">
                                     <FlowPane.margin>
                                         <Insets left="10"></Insets>
                                     </FlowPane.margin>
                                 </Button>
-                                <Button style="-fx-border-color: yellow;" fx:id="wateringCanBtn" styleClass="imgBtn, toolBtn">
+                                <Button style="-fx-border-color: yellow;" fx:id="wateringCanBtn" onAction="#useTool" styleClass="imgBtn, toolBtn">
                                     <FlowPane.margin>
                                         <Insets left="10"></Insets>
                                     </FlowPane.margin>
                                 </Button>
-                                <Button style="-fx-border-color: gray;" fx:id="harvestBtn" styleClass="imgBtn, toolBtn">
+                                <Button style="-fx-border-color: gray;" fx:id="harvestBtn" onAction="#useTool" styleClass="imgBtn, toolBtn">
                                     <FlowPane.margin>
                                         <Insets left="10"></Insets>
                                     </FlowPane.margin>

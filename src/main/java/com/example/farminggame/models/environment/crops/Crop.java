@@ -5,15 +5,15 @@ package com.example.farminggame.models.environment.crops;
  * @author Enrique Lejano and Krizchelle Wong
  */
 public abstract class Crop {
-    protected String seedName;
-    protected String cropType;
+    protected String name;
+    protected String type;
     protected int harvestTime;
     protected int waterNeeds;
     protected int waterBonusLimit;
     protected int fertilizerNeeds;
     protected int fertilizerBonusLimit;
     protected int produce;
-    protected int seedCost;
+    protected int cost;
     protected int sellingPrice;
     protected double xpYield;
     protected int fertilizerCount;
@@ -50,7 +50,8 @@ public abstract class Crop {
      */
     public boolean isWithered() {
         if (this.daysPlanted > this.harvestTime ||
-            (this.daysPlanted == this.harvestTime && (this.fertilizerCount < this.fertilizerNeeds || this.waterCount < this.waterNeeds))) {
+            (this.daysPlanted == this.harvestTime && (this.fertilizerCount < this.fertilizerNeeds
+                                                      || this.waterCount < this.waterNeeds))) {
             return true;
         }
         return false;
@@ -79,8 +80,16 @@ public abstract class Crop {
      * Gets the name of the Crop
      * @return this Crop's name
      */
-    public String getSeedName() {
-        return this.seedName;
+    public String getCropName() {
+        return this.name;
+    }
+
+    /**
+     * Gets the type of the Crop
+     * @return
+     */
+    public String getType() {
+        return this.type;
     }
 
     /**
@@ -135,8 +144,8 @@ public abstract class Crop {
      * Gets cost of purchasing the Crop
      * @return cost of purchasing the Crop
      */
-    public int getSeedCost() {
-        return this.seedCost;
+    public int getCropCost() {
+        return this.cost;
     }
 
     /**
