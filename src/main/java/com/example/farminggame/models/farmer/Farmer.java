@@ -130,7 +130,7 @@ public class Farmer {
      * @param seedName name of seed to be planted
      */
     public void plantSeed(Tile tile, String seedName) {
-        if (tile.isPlowed() && !tile.hasCrop())  {
+        if (tile.isPlowed() && !tile.hasCrop() && !tile.hasRock())  {
             if (seedName.equals("Carrot")) {
                 tile.setCrop(new Carrot());
             } else if (seedName.equals("Apple")) {
@@ -148,6 +148,10 @@ public class Farmer {
             } else if (seedName.equals("Turnip")) {
                 tile.setCrop(new Turnip());
             }
+
+            // Deduct seed from seed pouch
+            int currentSeedCount = seedPouch.getSeedCount(seedName);
+            seedPouch.getSeedList().put(seedName, currentSeedCount - 1);
 
             System.out.printf("\nA %s has been successfully planted.\n", seedName);
         } else {

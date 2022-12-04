@@ -15,6 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
+<?import javafx.scene.control.Label?>
 <BorderPane fx:id="farmView" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <FlowPane>
@@ -395,46 +396,77 @@
 
                             <!-- Crop Buttons -->
                             <FlowPane fx:id="cropButtons" visible="false">
-                                <Button fx:id="carrotBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
-                                    <FlowPane.margin>
-                                        <Insets left="10"></Insets>
-                                    </FlowPane.margin>
-                                </Button>
-                                <Button fx:id="appleBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
-                                    <FlowPane.margin>
-                                        <Insets left="10"></Insets>
-                                    </FlowPane.margin>
-                                </Button>
-                                <Button fx:id="mangoBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
-                                    <FlowPane.margin>
-                                        <Insets left="10"></Insets>
-                                    </FlowPane.margin>
-                                </Button>
-                                <Button fx:id="potatoBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
-                                    <FlowPane.margin>
-                                        <Insets left="10"></Insets>
-                                    </FlowPane.margin>
-                                </Button>
-                                <Button fx:id="roseBtn" styleClass="cropBtn, imgBtn" visible="true" text="Rose" onAction="#plantCrop">
-                                    <FlowPane.margin>
-                                        <Insets left="10"></Insets>
-                                    </FlowPane.margin>
-                                </Button>
-                                <Button fx:id="sunflowerBtn" styleClass="cropBtn, imgBtn" visible="true" text="Sunflower" onAction="#plantCrop">
-                                    <FlowPane.margin>
-                                        <Insets left="10"></Insets>
-                                    </FlowPane.margin>
-                                </Button>
-                                <Button fx:id="tulipBtn" styleClass="cropBtn, imgBtn" visible="true" text="Tulip" onAction="#plantCrop">
-                                    <FlowPane.margin>
-                                        <Insets left="10"></Insets>
-                                    </FlowPane.margin>
-                                </Button>
-                                <Button fx:id="turnipBtn" styleClass="cropBtn, imgBtn" visible="true" text="Rose" onAction="#plantCrop">
-                                    <FlowPane.margin>
-                                        <Insets left="10"></Insets>
-                                    </FlowPane.margin>
-                                </Button>
+                                <VBox>
+                                    <Text fx:id="carrotCount" text="0" textAlignment="CENTER"/>
+                                    <Button fx:id="carrotBtn" text="Carrot" contentDisplay="BOTTOM" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
+                                        <FlowPane.margin>
+                                            <Insets left="10"></Insets>
+                                        </FlowPane.margin>
+                                    </Button>
+                                </VBox>
+
+                                <VBox>
+                                    <Text fx:id="appleCount" text="0" textAlignment="CENTER"/>
+                                    <Button fx:id="appleBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
+                                        <FlowPane.margin>
+                                            <Insets left="10"></Insets>
+                                        </FlowPane.margin>
+                                    </Button>
+                                </VBox>
+
+                                <VBox>
+                                    <Text fx:id="mangoCount" text="0" textAlignment="CENTER"/>
+                                    <Button fx:id="mangoBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
+                                        <FlowPane.margin>
+                                            <Insets left="10"></Insets>
+                                        </FlowPane.margin>
+                                    </Button>
+                                </VBox>
+
+                                <VBox>
+                                    <Text fx:id="potatoCount" text="0" textAlignment="CENTER"/>
+                                    <Button fx:id="potatoBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
+                                        <FlowPane.margin>
+                                            <Insets left="10"></Insets>
+                                        </FlowPane.margin>
+                                    </Button>
+                                </VBox>
+
+                                <VBox>
+                                    <Text fx:id="roseCount" text="0" textAlignment="CENTER"/>
+                                    <Button fx:id="roseBtn" styleClass="cropBtn, imgBtn" visible="true" text="Rose" onAction="#plantCrop">
+                                        <FlowPane.margin>
+                                            <Insets left="10"></Insets>
+                                        </FlowPane.margin>
+                                    </Button>
+                                </VBox>
+
+                                <VBox>
+                                    <Text fx:id="sunflowerCount" text="0" textAlignment="CENTER"/>
+                                    <Button fx:id="sunflowerBtn" styleClass="cropBtn, imgBtn" visible="true" text="Sunflower" onAction="#plantCrop">
+                                        <FlowPane.margin>
+                                            <Insets left="10"></Insets>
+                                        </FlowPane.margin>
+                                    </Button>
+                                </VBox>
+
+                                <VBox>
+                                    <Text fx:id="tulipCount" text="0" textAlignment="CENTER"/>
+                                    <Button fx:id="tulipBtn" styleClass="cropBtn, imgBtn" visible="true" text="Tulip" onAction="#plantCrop">
+                                        <FlowPane.margin>
+                                            <Insets left="10"></Insets>
+                                        </FlowPane.margin>
+                                    </Button>
+                                </VBox>
+
+                                <VBox>
+                                    <Text fx:id="turnipCount" text="0" textAlignment="CENTER"/>
+                                    <Button fx:id="turnipBtn" styleClass="cropBtn, imgBtn" visible="true" text="Rose" onAction="#plantCrop">
+                                        <FlowPane.margin>
+                                            <Insets left="10"></Insets>
+                                        </FlowPane.margin>
+                                    </Button>
+                                </VBox>
                             </FlowPane>
                         </StackPane>
 
