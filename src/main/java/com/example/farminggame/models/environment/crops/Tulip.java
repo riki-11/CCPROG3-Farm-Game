@@ -7,15 +7,15 @@ public class Tulip extends Crop {
 
     public Tulip() {
         super();
-        this.seedName = "Tulip";
-        this.cropType = "Flower";
+        this.name = "Tulip";
+        this.type = "Flower";
         this.harvestTime = 2;
         this.waterNeeds = 2;
         this.waterBonusLimit = 3;
         this.fertilizerNeeds = 0;
         this.fertilizerBonusLimit = 1;
         this.produce = (int) ((Math.random() * (MAX_PRODUCE - MIN_PRODUCE + 1) + MIN_PRODUCE));
-        this.seedCost = 10;
+        this.cost = 10;
         this.sellingPrice = 9;
         this.xpYield = 5;
     }

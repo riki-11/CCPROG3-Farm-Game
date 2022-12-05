@@ -7,15 +7,15 @@ public class Turnip extends Crop {
 
     public Turnip() {
         super();
-        this.seedName = "Turnip";
-        this.cropType = "Root Crop";
+        this.name = "Turnip";
+        this.type = "Root Crop";
         this.harvestTime = 2;
         this.waterNeeds = 1;
         this.waterBonusLimit = 2;
         this.fertilizerNeeds = 0;
         this.fertilizerBonusLimit = 1;
         this.produce = (int) ((Math.random() * (MAX_PRODUCE - MIN_PRODUCE + 1) + MIN_PRODUCE));
-        this.seedCost = 5;
+        this.cost = 5;
         this.sellingPrice = 6;
         this.xpYield = 5;
     }

@@ -26,6 +26,7 @@ import javafx.util.Duration;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 
 public class FarmController {
@@ -41,8 +42,6 @@ public class FarmController {
     private final String ASSETS_URL = FarmController.class.getResource("/com/example/farminggame" +
             "/new-assets").toExternalForm();
     private final String fxmlURL = "/com/example/farminggame/fxml/";
-
-    private final String defaultTileImg = ASSETS_URL + "environment/default-tile.png";
 
     // GAME-WIDE VARIABLES
     private int days = 1;
@@ -128,10 +127,8 @@ public class FarmController {
         this.stage.show();
     }
     @FXML private FlowPane toolButtons;
+
     // Adjust certain elements to their positions
-
-
-
     private void setActiveTileIndex(Button tileBtn) {
         // get the index of the tile in the farmlot arrayList
         if (tileBtn.getId().length() == 5) {
@@ -184,9 +181,26 @@ public class FarmController {
             tileDescLabel.setText("TULIP");
         }
     }
+    
     @FXML private Button carrotBtn;
     @FXML private Button appleBtn;
     @FXML private FlowPane cropButtons;
+    @FXML private Button appleBtn;
+    @FXML private Button carrotBtn;
+    @FXML private Button mangoBtn;
+    @FXML private Button potatoBtn;
+    @FXML private Button roseBtn;
+    @FXML private Button sunflowerBtn;
+    @FXML private Button tulipBtn;
+    @FXML private Button turnipBtn;
+    @FXML private Text appleCount;
+    @FXML private Text carrotCount;
+    @FXML private Text mangoCount;
+    @FXML private Text potatoCount;
+    @FXML private Text roseCount;
+    @FXML private Text sunflowerCount;
+    @FXML private Text tulipCount;
+    @FXML private Text turnipCount;
 
     @FXML private ImageView tileDescImage;
     @FXML private TextField tileDescLabel;
@@ -238,50 +252,37 @@ public class FarmController {
     }
     private void displayButtons(){
 
-        System.out.println(this.activeTileIndex);
-
-        // access the tile and check what its status is
         Tile activeTile = lot.getLot().get(this.activeTileIndex);
 
         // buttons that appear will depend on the tile status
         toolButtons.setVisible(true);
         cropButtons.setVisible(false);
 
-        // WE HAVE TO CLICK ON A TILE AGAIN THO
-
+        // Check the status of the last clicked tile (aka the active Tile)
         if (activeTile.hasRock()) {
-            //rock
+            // If tile has a rock
             ploughBtn.setDisable(true);
             pickaxeBtn.setDisable(false);
             fertilizerBtn.setDisable(true);
             wateringCanBtn.setDisable(true);
             harvestBtn.setDisable(true);
         } else if (!(activeTile.isPlowed())) {
-            // unplowed
+            // If tile is unplowed
             ploughBtn.setDisable(false);
             pickaxeBtn.setDisable(true);
             fertilizerBtn.setDisable(true);
             wateringCanBtn.setDisable(true);
             harvestBtn.setDisable(true);
         } else if (!(activeTile.hasCrop())) {
-            // plowed
-
+            // If tile is plowed
             toolButtons.setVisible(false);
-            //displayCropButtons();
-
-            // TODO: SET SHOVEL HERE
-            
-            // shovelBtn.setDisable(true); 
-            cropButtons.setVisible(true);
-            carrotBtn.setDisable(false);
-            appleBtn.setDisable(false);
+            showCropBtns(); // method to show crops depending on seed inventory
         } else {
             pickaxeBtn.setDisable(true);
             ploughBtn.setDisable(true);
 
+            // If t
             Crop tileCrop = activeTile.getCrop();
-            // check inventory for how many of this plant there are (JUST FOR TESTING)
-            System.out.println(tileCrop.getSeedName() + " " + seedPouch.getSeedCount(tileCrop.getSeedName()));
 
             if (activeTile.hasHarvestableCrop()) {
                 // harvestable
@@ -312,34 +313,40 @@ public class FarmController {
         displayData();
     }
 
-
     @FXML protected void useTool(ActionEvent event) {
         Tile activeTile = lot.getTile(activeTileIndex);
         Button activeTileBtn = tileBtnList.get(activeTileIndex);
         Object node = event.getSource();
 
         Button tool = (Button) node;
+        String toolID = tool.getId();
 
-        if (tool.getId().equals("ploughBtn")) {
+        if (toolID.equals("ploughBtn")) {
             farmer.usePlough(activeTile, plough);
-            // change appearance of tile
-            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "environment/plowed-tile.png"));
-        } else if (tool.getId().equals("pickaxeBtn")) {
+            setBtnImage(activeTileBtn, "farm/plowed-tile.png");
+        } else if (toolID.equals("pickaxeBtn")) {
             farmer.usePickaxe(activeTile, pickaxe);
-            activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "environment/default-tile.png"));
-        } else if (tool.getId().equals("shovelBtn")) {
+            setBtnImage(activeTileBtn, "farm/default-tile.png");
+        } else if (toolID.equals("shovelBtn")) {
             if (activeTile.hasCrop()) {
-                activeTileBtn.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + "environment/default-tile.png"));
+                setBtnImage(activeTileBtn, "farm/default-tile.png");
             }
             farmer.useShovel(activeTile, shovel);
-
+        } else if (toolID.equals("fertilizerBtn")) {
+            farmer.useFertilizer(activeTile, fertilizer);
+        } else if (toolID.equals("wateringCanBtn")) {
+            farmer.useWateringCan(activeTile, wateringCan);
+        } else if (toolID.equals("harvestBtn")) {
+            System.out.println("harvested crop!");
+            farmer.harvestCrop(activeTile);
+            // Change the tile image back to the default state
+            setBtnImage(activeTileBtn, "farm/default-tile.png");
         }
 
         updateStats();
         toolButtons.setVisible(false);
         tileDescription.setVisible(false);
     }
-    // CROP METHODS
 
     private boolean hasAdjacentCrops() {
         // check if the tile has any adjacent crops or rocks
@@ -368,11 +375,82 @@ public class FarmController {
         }
     }
 
-    @FXML protected void plantCrop(ActionEvent event) {
+    @FXML
+    protected void showCropBtns() {
+        // show all crop buttons
+        cropButtons.setVisible(true);
+
+        // check seed inventory for each crop count
+        Hashtable<String, Integer> inventory = seedPouch.getSeedList();
+
+        int apples = inventory.get("Apple");
+        int carrots = inventory.get("Carrot");
+        int mangoes = inventory.get("Mango");
+        int potatoes = inventory.get("Potato");
+        int roses = inventory.get("Rose");
+        int sunflowers = inventory.get("Sunflower");
+        int tulips = inventory.get("Tulip");
+        int turnips = inventory.get("Turnip");
+
+        appleCount.setText(Integer.toString(apples));
+        carrotCount.setText(Integer.toString(carrots));
+        mangoCount.setText(Integer.toString(mangoes));
+        potatoCount.setText(Integer.toString(potatoes));
+        roseCount.setText(Integer.toString(roses));
+        sunflowerCount.setText(Integer.toString(sunflowers));
+        tulipCount.setText(Integer.toString(tulips));
+        turnipCount.setText(Integer.toString(turnips));
+
+        // If the farmer hasn't bought at least one of each crop, disable it in the view.
+        if (apples == 0) {
+            appleBtn.setDisable(true);
+        } else {
+            appleBtn.setDisable(false);
+        }
+        if (carrots == 0) {
+            carrotBtn.setDisable(true);
+        } else {
+            carrotBtn.setDisable(false);
+        }
+        if (mangoes == 0) {
+            mangoBtn.setDisable(true);
+        } else {
+            mangoBtn.setDisable(false);
+        }
+        if (potatoes == 0) {
+            potatoBtn.setDisable(true);
+        } else {
+            potatoBtn.setDisable(false);
+        }
+        if (roses == 0) {
+            roseBtn.setDisable(true);
+        } else {
+            roseBtn.setDisable(false);
+        }
+        if (sunflowers == 0) {
+            sunflowerBtn.setDisable(true);
+        } else {
+            sunflowerBtn.setDisable(false);
+        }
+        if (tulips == 0) {
+            tulipBtn.setDisable(true);
+        } else {
+            tulipBtn.setDisable(false);
+        }
+        if (turnips == 0) {
+            turnipBtn.setDisable(true);
+        } else {
+            turnipBtn.setDisable(false);
+        }
+    }
+
+    @FXML
+    protected void plantCrop(ActionEvent event) {
         Tile activeTile = lot.getTile(activeTileIndex);
         Button activeTileBtn = tileBtnList.get(activeTileIndex);
         Object node = event.getSource();
 
+        boolean canPlant = true;
         Button seed = (Button) node;
 
         if (seed.getId().equals("carrotBtn")) {
@@ -385,7 +463,6 @@ public class FarmController {
         } else if (seed.getId().equals("sunflowerBtn")) {
             farmer.plantSeed(activeTile, "Sunflower");
             setBtnImage(activeTileBtn, "environment/planted-sunflower.png");
-
         } else if (seed.getId().equals("tulipBtn")) {
             farmer.plantSeed(activeTile, "Tulip");
             setBtnImage(activeTileBtn,"environment/planted-tulip.png" );
@@ -406,10 +483,14 @@ public class FarmController {
                     setBtnImage(activeTileBtn, "environment/planted-mango.png");
                 }
             } else {
+                canPlant = false;
                 System.out.println("Fruit trees cannot be planted on tiles with adjacent crops");
                 // TODO: add a pop-up for that
             }
+        }
 
+        if (canPlant) {
+            setBtnImage(activeTileBtn, "farm/planted-tile.png");
         }
 
         updateStats();
@@ -417,22 +498,16 @@ public class FarmController {
     }
 
 
-    @FXML
-    protected void exitGame() {
-        sceneController.switchToStartView();
-    }
-    
     @FXML TextField cropNumber;
+
     @FXML Text successText;
     @FXML Text failedText;
-
 
     @FXML
     protected void buyCrop() {
 
         boolean seedBought = false;
         int cropNum = Integer.parseInt(cropNumber.getText());
-        System.out.println(this.selectedButton);
 
         // Pass what crop to buy to the farmer
         switch (this.selectedButton) {
@@ -447,7 +522,7 @@ public class FarmController {
         }
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
 
-        if(seedBought) {
+        if (seedBought) {
             successText.setTranslateX(-150);
             successText.setVisible(true);
             pause.setOnFinished(
@@ -466,9 +541,8 @@ public class FarmController {
         updateStats();
     }
 
-    // POP UP CONTROLLERS
 
-    // Variables
+    // POP UP CONTROLLERS
     @FXML private StackPane profilePane;
     @FXML private GridPane marketPane;
     @FXML private Button profileBtn;
@@ -494,7 +568,6 @@ public class FarmController {
         } else if (farmer.getFarmerType().equals("Legendary Farmer")) {
             farmerProfileDesc.setImage(legendaryFarmerImage);
         }
-
     }
 
     @FXML
@@ -534,6 +607,7 @@ public class FarmController {
         enableButtons();
 
     }
+
     // Expand the market when any of the plant buttons are pressed
     // NEXT DAY
     @FXML
@@ -551,7 +625,6 @@ public class FarmController {
         // Update the view
         updateDay();
     }
-
     private void disableButtons() {
         exitBtn.setDisable(true);
         profileBtn.setDisable(true);
@@ -578,10 +651,10 @@ public class FarmController {
     }
 
     // Variables
+
     @FXML private Button upgradeFarmerBtn;
     @FXML private Text farmerNamePopUp;
     @FXML private Text farmerRankPopUp;
-
     private void farmerUpgradeButton() {
         // check if a farmer can be upgraded
         if (farmer.getCanUpgrade() != -1) {
@@ -592,12 +665,12 @@ public class FarmController {
     }
 
     // FARMER PROFILE CODE
+
     @FXML
     protected void upgradeFarmer() {
         farmer.upgradeFarmer();
         farmerRankPopUp.setText(farmer.getFarmerType());
     }
-
     @FXML
     protected void updateStats() {
         levelDisplay.setText("Level: " + farmer.getLevel());
@@ -609,12 +682,40 @@ public class FarmController {
     protected void updateDay() {
         dayDisplay.setText("Day: " + days);
 
-        // Check each tile if it has a withered crop
-        for (Tile tile : lot.getLot()) {
+        // After each day, check if there are any withered crops
+        updateWitheredCrops();
+        updateHarvestableCrops();
+    }
+
+    private void updateHarvestableCrops() {
+        // Check each tile if it has a harvestable crop
+        for (int i = 0; i < 50; i++) {
+            Tile tile = lot.getTile(i);
+            if (tile.hasHarvestableCrop()) {
+                // change the image of the tile to the corresponding fully grown crop
+                Button tileBtn = tileBtnList.get(i);
+                switch (tile.getCrop().getCropName()) {
+                    case "Apple" -> setBtnImage(tileBtn, "farm/planted-apple.png");
+                    case "Carrot" -> setBtnImage(tileBtn, "farm/planted-carrot.png");
+                    case "Mango" -> setBtnImage(tileBtn, "farm/planted-mango.png");
+                    case "Potato" -> setBtnImage(tileBtn, "farm/planted-potato.png");
+                    case "Rose" -> setBtnImage(tileBtn, "farm/planted-rose.png");
+                    case "Sunflower" -> setBtnImage(tileBtn, "farm/planted-sunflower.png");
+                    case "Tulip" -> setBtnImage(tileBtn, "farm/planted-tulip.png");
+                    case "Turnip" -> setBtnImage(tileBtn, "farm/planted-turnip.png");
+                }
+            }
+        }
+    }
+
+    private void updateWitheredCrops() {
+        // Check each tile if it has a withered crop (MAKE THIS INTO ITS OWN METHOD)
+        for (int i = 0; i < 50; i++) {
+            Tile tile = lot.getTile(i);
             if (tile.hasWitheredCrop()) {
-                System.out.println("There's a withered crop lol");
-                // change background of tile to a withered tile
-                // HAVE TO FIND A WAY TO CHANGE ALL TILES WITHOUT ACTUALLY PRESSING THEM
+                // Grab the corresponding tile button from the list of tile buttons.
+                Button tileBtn = tileBtnList.get(i);
+                setBtnImage(tileBtn, "crops/withered-crop.png");
             }
         }
     }
@@ -681,6 +782,7 @@ public class FarmController {
     }
 
     // Initializes the view upon switching to it
+
     @FXML
     private void initialize() throws IOException {
         InputStream is = getClass().getResourceAsStream("/com/example/farminggame/input/rockInput.txt");
@@ -750,6 +852,10 @@ public class FarmController {
 
         // Setting event handlers
         exitBtn.setOnAction(event -> exitGame());
+    }
+    @FXML
+    protected void exitGame() {
+        sceneController.switchToStartView();
     }
 
     private void setBtnImage(Button button, String imagePath) {

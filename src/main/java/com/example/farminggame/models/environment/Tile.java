@@ -103,6 +103,7 @@ public class Tile {
                                 Withered: %s        
                                 Water Count : %d
                                 Fertilizer Count : %d
+                                Harvestable : %s
                                 Days until harvestable: %d
                                 """,
                                 this.crop.isWithered(), this.crop.getWaterCount(),

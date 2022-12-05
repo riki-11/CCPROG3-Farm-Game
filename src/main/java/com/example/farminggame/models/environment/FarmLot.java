@@ -25,36 +25,6 @@ public class FarmLot {
     }
 
     /**
-     * Displays each Tile in lot and its Crop's info (if available)
-     */
-    public void displayFarmLot() {
-        for (Tile tile : lot) {
-            System.out.println("\n" + tile.getAppearance());
-            System.out.printf("Tile No. %d\n", lot.indexOf(tile));
-            System.out.println(tile.getCropInfo());
-        }
-        // Display how many crops are ready for harvest
-        System.out.printf("There are %d crops ready for harvest.\n", getHarvestableTiles().size());
-    }
-
-    /**
-     * Gets an ArrayList of every tile that has a crop ready for harvest
-     * @return all Tiles with harvestable Crops
-     */
-    public ArrayList<Tile> getHarvestableTiles() {
-        ArrayList<Tile> harvestableTiles = new ArrayList<>();
-
-        for (Tile tile : lot) {
-
-            if (tile.hasHarvestableCrop()) {
-                harvestableTiles.add(tile);
-            }
-        }
-
-        return harvestableTiles;
-    }
-
-    /**
      * Gets the number of active/growing crops
      * @return the number of active/growing crops
      */

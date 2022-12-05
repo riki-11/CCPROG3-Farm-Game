@@ -7,15 +7,15 @@ public class Rose extends Crop {
 
     public Rose() {
         super();
-        this.seedName = "Rose";
-        this.cropType = "Flower";
+        this.name = "Rose";
+        this.type = "Flower";
         this.harvestTime = 1;
         this.waterNeeds = 1;
         this.waterBonusLimit = 2;
         this.fertilizerNeeds = 0;
         this.fertilizerBonusLimit = 1;
         this.produce = (int) ((Math.random() * (MAX_PRODUCE - MIN_PRODUCE + 1) + MIN_PRODUCE));
-        this.seedCost = 5;
+        this.cost = 5;
         this.sellingPrice = 5;
         this.xpYield = 2.5;
     }

@@ -1,18 +1,21 @@
+Things left to do:
+- Withered crop integration (DONE)
+- fertilizing and watering behavior (DONE)
+- harvesting behavior (DONE)
+    - change look of tile
+- Seed Buying (DONE)
+- Flower Bonus (DONE)
+- showing info when clicking a crop
+- Adding the nice assets
+- Polishing the UI
+- Upgrade Farmer
+    - Testing
+- UML
 
-Important steps of project:
-1. Save the game! Only closing the program will delete the save file
-2. ROCKS
 
-
-
-
-STUFF TO SPLIT:
-1. Implementing the logic of the full specs in the terminal-based game.
-2. Changing some classes to utilize inheritance like Tools and Crop (abstract class)
-2. Finding a complete set of assets for everything in the game
-4. Implementing the GUI application on top of the game logic.
-5. MAKE SURE ANYONE CAN RUN IT
-
+Things left to do (maybe):
+- Notification for bonux xp or yield
+- Different Sprites fper Farmer Type
 
 potential bonus features:
 - animals
@@ -23,6 +26,7 @@ potential bonus features:
 - rain (some crops can't withstand the rain)
 - tutorial
 - xmas themed assets
+
 pixel art: https://www.kenney.nl/assets?s=pixel
 mvc: https://edencoding.com/mvc-in-javafx/
 

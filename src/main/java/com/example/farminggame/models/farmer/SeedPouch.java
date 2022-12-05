@@ -53,11 +53,7 @@ public class SeedPouch {
         return this.seedList.get(seedName);
     }
 
-    /**
-     * Gets the entire Array of seeds in the SeedPouch
-     *
-     * @return Array of seeds in SeedPouch
-     */
+
     public Hashtable<String, Integer> getSeedList() {
         return this.seedList;
     }
