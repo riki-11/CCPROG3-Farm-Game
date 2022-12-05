@@ -329,7 +329,7 @@
                                     <Text fx:id="carrotCount" text="0" textAlignment="CENTER"/>
                                     <Button fx:id="carrotBtn" text="Carrot" contentDisplay="BOTTOM" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
                                         <FlowPane.margin>
-                                            <Insets left="10"></Insets>
+                                            <Insets left="105"></Insets>
                                         </FlowPane.margin>
                                     </Button>
                                 </VBox>
