@@ -255,6 +255,11 @@ public class FarmController {
 
         // buttons that appear will depend on the tile status
         toolButtons.setVisible(true);
+        ploughBtn.setVisible(true);
+        pickaxeBtn.setVisible(true);
+        fertilizerBtn.setVisible(true);
+        wateringCanBtn.setVisible(true);
+        shovelBtn.setTranslateX(0);
         cropButtons.setVisible(false);
 
         // Check the status of the last clicked tile (aka the active Tile)
@@ -280,7 +285,8 @@ public class FarmController {
             fertilizerBtn.setVisible(false);
             wateringCanBtn.setVisible(false);
             harvestBtn.setVisible(false);
-            shovelBtn.setTranslateX(-75);
+            shovelBtn.setTranslateX(510);
+            shovelBtn.setTranslateY(15);
             
             showCropBtns(); // method to show crops depending on seed inventory
             
