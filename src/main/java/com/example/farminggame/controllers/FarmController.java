@@ -274,13 +274,20 @@ public class FarmController {
             harvestBtn.setDisable(true);
         } else if (!(activeTile.hasCrop())) {
             // If tile is plowed
-            toolButtons.setVisible(false);
+            // remove all tools except shovel
+            ploughBtn.setVisible(false);
+            pickaxeBtn.setVisible(false);
+            fertilizerBtn.setVisible(false);
+            wateringCanBtn.setVisible(false);
+            harvestBtn.setVisible(false);
+            shovelBtn.setTranslateX(-75);
+            
             showCropBtns(); // method to show crops depending on seed inventory
+            
         } else {
             pickaxeBtn.setDisable(true);
             ploughBtn.setDisable(true);
 
-            // If t
             Crop tileCrop = activeTile.getCrop();
 
             if (activeTile.hasHarvestableCrop()) {
