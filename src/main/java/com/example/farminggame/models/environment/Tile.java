@@ -100,14 +100,12 @@ public class Tile {
         // MODIFY THIS TO FIT THE GAME INSTEAD OF TERMINAL
         if (hasCrop()) {
             return String.format("""
-
-                                Crop Name: %s
                                 Withered: %s        
                                 Water Count : %d
                                 Fertilizer Count : %d
                                 Days until harvestable: %d
                                 """,
-                                this.crop.getSeedName(), this.crop.isWithered(), this.crop.getWaterCount(),
+                                this.crop.isWithered(), this.crop.getWaterCount(),
                                 this.crop.getFertilizerCount(), this.crop.getHarvestTime() - this.crop.getDaysPlanted());
         }
         return "";
