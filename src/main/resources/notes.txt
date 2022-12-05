@@ -1,17 +1,11 @@
 Things left to do:
-- Withered crop integration (DONE)
-- fertilizing and watering behavior (DONE)
-- harvesting behavior (DONE)
-    - change look of tile
-- Seed Buying (DONE)
-- Flower Bonus (DONE)
-- showing info when clicking a crop
-- Adding the nice assets
 - Polishing the UI
+- Game over conditions
+    - (for no more money to buy seeds, do we check it upon going to the next day?
+- Game over screen?
 - Upgrade Farmer
     - Testing
 - UML
-
 
 Things left to do (maybe):
 - Notification for bonux xp or yield

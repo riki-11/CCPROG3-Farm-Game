@@ -15,18 +15,16 @@ import com.example.farminggame.models.tools.WateringCan;
  */
 
 
-// MAKE THIS THE FARMER SUPERCLASS
+// TODO: UPDATE THE UML
 public class Farmer {
     // REFLECT IN UML
     private String name;
     private int level;
     private double experience;
-    private boolean equipped; // REMOVE tHIS
     private int bonusEarnings;
     private int costReduction;
     private int waterBonusLimit;
     private int fertilizerBonusLimit;
-    private String currentTool; // REMOVE THIS
     private String farmerType;
     private Wallet wallet;
     private SeedPouch seedPouch;
@@ -43,8 +41,6 @@ public class Farmer {
         this.costReduction = 0;
         this.waterBonusLimit = 0;
         this.fertilizerBonusLimit = 0;
-        this.currentTool = "None";
-        this.equipped = false;
         this.farmerType = "Farmer";
         this.canUpgrade = -1;
         this.wallet = new Wallet();
@@ -164,82 +160,47 @@ public class Farmer {
      * Harvests a harvestable crop from a selected Tile
      * @param tile Tile containing harvestable crop
      */
-    public void harvestCrop(Tile tile) {
+    public boolean harvestCrop(Tile tile) {
 
         // ACCOUNT FOR FLOWERS
         Crop harvestedCrop = tile.getCrop();
-        // Add to the farmer's current xp
-        addXP((harvestedCrop.getXpYield()));
 
-        // Get how many times the crop was fertilized and watered
-        int fertilizerCount = harvestedCrop.getFertilizerCount();
-        int waterCount = harvestedCrop.getWaterCount();
+        if (harvestedCrop.isHarvestable()) {
+            System.out.println("harvested crop!");
+            // Add to the farmer's current xp
+            addXP((harvestedCrop.getXpYield()));
 
-        // Bonuses for watering/fertilizing are capped by the Crop's bonus limit plus the Farmer's bonus increase
-        if (waterCount > harvestedCrop.getWaterBonusLimit() + this.waterBonusLimit) {
-            waterCount = harvestedCrop.getWaterBonusLimit();
+            // Get how many times the crop was fertilized and watered
+            int fertilizerCount = harvestedCrop.getFertilizerCount();
+            int waterCount = harvestedCrop.getWaterCount();
+
+            // Bonuses for watering/fertilizing are capped by the Crop's bonus limit plus the Farmer's bonus increase
+            if (waterCount > harvestedCrop.getWaterBonusLimit() + this.waterBonusLimit) {
+                waterCount = harvestedCrop.getWaterBonusLimit();
+            }
+            if (fertilizerCount > harvestedCrop.getFertilizerBonusLimit() + this.fertilizerBonusLimit) {
+                fertilizerCount = harvestedCrop.getFertilizerBonusLimit();
+            }
+
+            // Compute for the final harvest price
+            double harvestTotal = harvestedCrop.getProduce() * (harvestedCrop.getSellingPrice() + this.bonusEarnings);
+            double waterBonus = harvestTotal * 0.2 * (waterCount - 1);
+            double fertilizerBonus = harvestTotal * 0.5 * fertilizerCount;
+            double finalHarvestPrice = harvestTotal + waterBonus + fertilizerBonus;
+
+            if (harvestedCrop.getType().equals("Flower")) {
+                finalHarvestPrice *= 1.1;
+            }
+
+            this.wallet.setObjectCoins(finalHarvestPrice);
+            tile.removeCrop();
+
+            return true;
+        } else {
+            return false;
         }
-        if (fertilizerCount > harvestedCrop.getFertilizerBonusLimit() + this.fertilizerBonusLimit) {
-            fertilizerCount = harvestedCrop.getFertilizerBonusLimit();
-        }
 
-        // Compute for the final harvest price
-        double harvestTotal = harvestedCrop.getProduce() * (harvestedCrop.getSellingPrice() + this.bonusEarnings);
-        double waterBonus = harvestTotal * 0.2 * (waterCount - 1);
-        double fertilizerBonus = harvestTotal * 0.5 * fertilizerCount;
-        double finalHarvestPrice = harvestTotal + waterBonus + fertilizerBonus;
-
-        if (harvestedCrop.getType().equals("Flower")) {
-            finalHarvestPrice *= 1.1;
-        }
-
-        this.wallet.setObjectCoins(finalHarvestPrice);
-        tile.removeCrop();
     }
-
-    // Get rid of all the tool-related equip and use methods
-
-    /**
-     * Equips Plough tool
-     */
-    public void equipPlough() {
-        this.currentTool = "Plough";
-        this.equipped = true;
-    }
-
-    /**
-     * Equips Watering Can tool
-     */
-    public void equipWateringCan() {
-        this.currentTool = "Watering Can";
-        this.equipped = true;
-    }
-
-    /**
-     * Equips Fertilizer tool
-     */
-    public void equipFertilizer() {
-        this.currentTool = "Fertilizer";
-        this.equipped = true;
-    }
-
-    /**
-     * Equips Pickaxe tool
-     */
-    public void equipPickaxe() {
-        this.currentTool = "Pickaxe";
-        this.equipped = true;
-    }
-
-    /**
-     * Equips Shovel tool
-     */
-    public void equipShovel() {
-        this.currentTool = "Shovel";
-        this.equipped = true;
-    }
-
-
 
     /**
      * Uses Plough tool
@@ -357,14 +318,6 @@ public class Farmer {
      */
     public int getCostReduction() {
         return this.costReduction;
-    }
-
-    /**
-     * Gets farmer's current tool
-     * @return name of tool as String
-    */
-    public String getCurrentTool() {
-        return this.currentTool;
     }
 
     /**
