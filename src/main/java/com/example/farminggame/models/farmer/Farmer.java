@@ -134,6 +134,7 @@ public class Farmer {
      * @param seedName name of seed to be planted
      */
     public void plantSeed(Tile tile, String seedName) {
+
         if (tile.isPlowed() && !tile.hasCrop())  {
             if (seedName.equals("Carrot")) {
                 tile.setCrop(new Carrot());

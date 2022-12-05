@@ -1,3 +1,5 @@
+
+
 .imgBtn {
     -fx-background-size: cover;
     -fx-background-repeat: no-repeat;
@@ -10,20 +12,20 @@
 }
 
 .unplowed-tile {
-    -fx-background-image: url("../assets/farm/default-tile.png");
+    -fx-background-image: url("../new-assets/environment/default-tile.png");
 }
 
 .plowed-tile {
-    -fx-background-image: url("../assets/farm/plowed-tile.png")
+    -fx-background-image: url("../new-assets/environment/plowed-tile.png")
 }
 
 .rock-tile {
-    -fx-background-image: url("../assets/environment/rock.png");
+    -fx-background-image: url("../new-assets/environment/rock.png");
 
 }
 
 .farmer-icon {
-    -fx-background-image: url("../assets/farmers/default-farmer.png");
+    -fx-background-image: url("../new-assets/misc/default-farmer.png");
     -fx-min-width: 100px;
     -fx-min-height: 100px;
 }
@@ -63,7 +65,7 @@
 
 
 #openMarketBtn {
-    -fx-background-image:  url("../assets/miscellaneous/market.png");
+    -fx-background-image:  url("../new-assets/misc/market.png");
     -fx-min-width: 75px;
     -fx-min-height: 75px;
     -fx-background-size: 85% 85%;
@@ -71,67 +73,92 @@
 }
 
 #carrotBtn {
-    -fx-background-image: url("../assets/crops/carrot.jpg");
+    -fx-background-image: url("../new-assets/crops/carrot.png");
 }
 
 #appleBtn {
-    -fx-background-image: url("../assets/crops/apple.jpg");
+    -fx-background-image: url("../new-assets/crops/apple.png");
 }
 
 #mangoBtn {
-    -fx-background-image: url("../assets/crops/mango.jpg");
+    -fx-background-image: url("../new-assets/crops/mango.png");
 }
 
 #potatoBtn {
-    -fx-background-image: url("../assets/crops/potato.jpg");
+    -fx-background-image: url("../new-assets/crops/potato.png");
 }
 
 #turnipBtn {
-    -fx-background-image: url("../assets/crops/turnip.jpg");
+    -fx-background-image: url("../new-assets/crops/turnip.png");
 }
+
+#roseBtn {
+    -fx-background-image: url("../new-assets/crops/rose.png");
+}
+
+#sunflowerBtn {
+    -fx-background-image: url("../new-assets/crops/sunflowers.png");
+}
+
+#tulipBtn {
+    -fx-background-image: url("../new-assets/crops/tulip.png");
+}
+
 
 
 
 #marketCarrotBtn {
-    -fx-background-image: url("../assets/crops/carrot.jpg");
+    -fx-background-image: url("../new-assets/market/market-carrot.png");
 }
 
 #marketAppleBtn {
-    -fx-background-image: url("../assets/crops/apple.jpg");
+    -fx-background-image: url("../new-assets/market/market-apple.png");
 }
 
 #marketMangoBtn {
-    -fx-background-image: url("../assets/crops/mango.jpg");
+    -fx-background-image: url("../new-assets/market/market-mango.png");
 }
 
 #marketPotatoBtn {
-    -fx-background-image: url("../assets/crops/potato.jpg");
+    -fx-background-image: url("../new-assets/market/market-potato.png");
 }
 
 #marketTurnipBtn {
-    -fx-background-image: url("../assets/crops/turnip.jpg");
+    -fx-background-image: url("../new-assets/market/market-turnip.png");
+}
+
+#marketRoseBtn {
+    -fx-background-image: url("../new-assets/market/market-rose.png");
+}
+
+#marketSunflowerBtn {
+    -fx-background-image: url("../new-assets/market/market-sunflower.png");
+}
+
+#marketTulipBtn {
+    -fx-background-image: url("../new-assets/market/market-tulip.png");
 }
 
 #ploughBtn {
-    -fx-background-image: url("../assets/tools/plough.jpg");
+    -fx-background-image: url("../new-assets/tools/plough.png");
 }
 
 #shovelBtn {
-    -fx-background-image: url("../assets/tools/shovel.jpg");
+    -fx-background-image: url("../new-assets/tools/shovel.png");
 }
 
 #pickaxeBtn {
-    -fx-background-image: url("../assets/tools/pickaxe.jpg");
+    -fx-background-image: url("../new-assets/tools/pickaxe.png");
 }
 
 #fertilizerBtn {
-    -fx-background-image: url("../assets/tools/fertilizer.jpg");
+    -fx-background-image: url("../new-assets/tools/fertilizer.png");
 }
 
 #wateringCanBtn {
-    -fx-background-image: url("../assets/tools/watering-can.jpg");
+    -fx-background-image: url("../new-assets/tools/watering-can.png");
 }
 
 #harvestBtn {
-    -fx-background-image: url("../assets/tools/harvest.jpg");
+    -fx-background-image: url("../new-assets/tools/harvest.png");
 }
