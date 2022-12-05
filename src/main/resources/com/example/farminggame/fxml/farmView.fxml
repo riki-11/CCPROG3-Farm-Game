@@ -14,37 +14,44 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextArea?>
 
-<?import javafx.scene.control.Label?>
 <BorderPane fx:id="farmView" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <FlowPane>
+            <BorderPane.margin>
+                <Insets left="20" top="20"></Insets>
+            </BorderPane.margin>
             <Button fx:id="profileBtn" styleClass="imgBtn, farmer-icon" onAction="#openProfile"/>
-            <Text fx:id="nameDisplay" styleClass="farmerInformation" >
-                <FlowPane.margin>
-                    <Insets left="10.0" right="10.0" />
-                </FlowPane.margin>
-            </Text>
-            <Text fx:id="levelDisplay" styleClass="farmerInformation" >
-                <FlowPane.margin>
-                    <Insets left="10.0" right="10.0" />
-                </FlowPane.margin>
-            </Text>
-            <Text fx:id="xpDisplay" styleClass="farmerInformation">
-                <FlowPane.margin>
-                    <Insets left="10.0" right="10.0" />
-                </FlowPane.margin>
-            </Text>
-            <Text fx:id="balanceDisplay" styleClass="farmerInformation">
-                <FlowPane.margin>
-                    <Insets left="10.0" right="10.0" />
-                </FlowPane.margin>
-            </Text>
-            <Text fx:id="dayDisplay">
-                <FlowPane.margin>
-                    <Insets left="30.0" right="30.0"/>
-                </FlowPane.margin>
-            </Text>
+            <VBox>
+                <VBox.margin>
+                    <Insets left="10"></Insets>
+                </VBox.margin>
+                <Text fx:id="nameDisplay" styleClass="farmerInformation" >
+                    <FlowPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </FlowPane.margin>
+                </Text>
+                <Text fx:id="levelDisplay" styleClass="farmerInformation" >
+                    <FlowPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </FlowPane.margin>
+                </Text>
+                <Text fx:id="xpDisplay" styleClass="farmerInformation">
+                    <FlowPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </FlowPane.margin>
+                </Text>
+                <Text fx:id="balanceDisplay" styleClass="farmerInformation">
+                    <FlowPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                    </FlowPane.margin>
+                </Text>
+
+            </VBox>
+            <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                <Button fx:id="exitBtn" text="Return to Main Menu" />
+            </HBox>
         </FlowPane>
 
     </top>
@@ -57,54 +64,56 @@
             <GridPane fx:id="farmLotGrid" alignment="center">
                 <!-- Column Span is an arbitrarily large number to let it take up the remaining columns as needed -->
             </GridPane>
+
+
             <!-- POP UP PROFILE -->
-            <GridPane fx:id="profilePane" alignment="center" styleClass="popUp" visible="false">
-                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="palegreen" height="400.0" stroke="BLACK" strokeType="INSIDE" width="500.0" />
-                <BorderPane>
-                    <right>
+            <StackPane fx:id="profilePane" styleClass="popUp" visible="false">
+                <StackPane.margin>
+                    <Insets left="150"></Insets>
+                </StackPane.margin>
+                <StackPane>
+
+                    <ImageView fx:id="farmerProfileDesc" fitHeight="400" fitWidth="675">
+                        <VBox.margin>
+                            <Insets left="100" bottom="30"></Insets>
+                        </VBox.margin>
+                        <image>
+                            <Image url="@../new-assets/profile/farmer.png"></Image>
+                        </image>
+                    </ImageView>
+
+                    <VBox>
+
                         <Button fx:id="exitProfile" layoutX="200" layoutY="200" styleClass="exit" text="X" onAction="#exitProfile">
-                            <BorderPane.margin>
-                                <Insets right="10.0" top="10.0" />
-                            </BorderPane.margin>
+                            <VBox.margin>
+                                <Insets left="650.0" top="100.0" />
+                            </VBox.margin>
                         </Button>
-                    </right>
-                    <!-- FARMER ICON -->
-                    <left>
-                        <FlowPane>
 
-                            <ImageView fitHeight="100.0" fitWidth="100.0">
-                                <image>
-                                    <Image url="@../assets/farmers/default-farmer.png" />
-                                </image>
-                            </ImageView>
-                            <VBox>
-                                <Text fx:id="farmerNamePopUp" text="FARMER NAME" />
-                                <Text fx:id="farmerRankPopUp" text="Rank: FARMER" />
-                                <FlowPane.margin>
-                                    <Insets top="25" />
-                                </FlowPane.margin>
-                            </VBox>
-                            <BorderPane.margin>
-                                <Insets left="10" top="20" />
-                            </BorderPane.margin>
-                        </FlowPane>
-                    </left>
-                    <bottom>
-                        <!-- UPGRADE NOW -->
-                        <Button fx:id="upgradeFarmerBtn" text="UPGRADE FARMER" BorderPane.alignment="CENTER" disable="true" onAction="#upgradeFarmer">
-                            <BorderPane.margin>
-                                <Insets bottom="35.0" />
-                            </BorderPane.margin>
+                        <Button fx:id="upgradeFarmerBtn" text="UPGRADE FARMER" disable="true" onAction="#upgradeFarmer">
+                            <VBox.margin>
+                                <Insets left="420.0" top="250.0" />
+                            </VBox.margin>
+
                         </Button>
-                    </bottom>
-                </BorderPane>
+                    </VBox>
 
-            </GridPane>
+                </StackPane>
+
+            </StackPane>
 
             <!-- POP UP MARKET -->
             <GridPane fx:id="marketPane" alignment="center" styleClass="popUp" visible="false">
-                <Rectangle fx:id="marketRectangle" styleClass="popUp" arcHeight="10.0" arcWidth="10.0" fill="indianred" height="500.0" stroke="BLACK" strokeType="INSIDE" width="500.0" />
-                <Rectangle fx:id="descriptionRectangle" arcHeight="10.0" arcWidth="10.0" fill="sandybrown" height="500.0" width="300.0" visible="false"/>
+                <StackPane.margin>
+                    <Insets left="100"></Insets>
+                </StackPane.margin>
+
+                <StackPane>
+
+                </StackPane>
+                <Rectangle fx:id="marketRectangle" styleClass="popUp" arcHeight="10.0" arcWidth="10.0" fill="indianred" height="475.0" stroke="BLACK" strokeType="INSIDE" width="500.0" />
+                <Rectangle fx:id="descriptionRectangle" arcHeight="10.0" arcWidth="10.0" fill="sandybrown" height="475.0" width="300.0" visible="false"/>
+                
                 <BorderPane>
                     <right>
                         <Button fx:id="exitMarket" layoutX="200" layoutY="200" styleClass="exit" text="X" onAction="#exitMarket">
@@ -116,201 +125,96 @@
 
                     <center>
                         <StackPane>
-                            <!-- Display Information, Default: Carrot -->
-                            <VBox fx:id="cropDescription" visible="false">
-                                <StackPane.margin>
-                                    <Insets top="70"/>
-                                </StackPane.margin>
-                                <ImageView fx:id="cropDescImage" fitHeight="70.0" fitWidth="70.0" pickOnBounds="true"
-                                           preserveRatio="true">
-                                    <VBox.margin>
-                                        <Insets top="30" left="58"></Insets>
-                                    </VBox.margin>
-                                    <Image url="@../assets/crops/carrot.jpg"/>
+                                <ImageView fx:id="cropDescription" visible="false" fitHeight="400" fitWidth="275">
+                                    <image>
+                                        <Image url="@../new-assets/market/displays/carrot-desc.png" />
+                                    </image>
                                 </ImageView>
-
-                                <TextField fx:id="cropNameDesc" text="CARROT" alignment = "center" maxWidth="100">
-                                    <VBox.margin>
-                                        <Insets top="5" left="45"></Insets>
-                                    </VBox.margin>
-                                </TextField>
-
-                                <FlowPane>
-                                    <ImageView fitHeight="20" fitWidth="20">
-                                        <FlowPane.margin>
-                                            <Insets top="2" left="45"></Insets>
-                                        </FlowPane.margin>
-                                        <image>
-                                            <Image url="@../assets/miscellaneous/coin.jpg"></Image>
-                                        </image>
-                                    </ImageView>
-                                    <ImageView fitHeight="20" fitWidth="20">
-                                        <FlowPane.margin>
-                                            <Insets top="2" left="60"></Insets>
-                                        </FlowPane.margin>
-                                        <image>
-                                            <Image url="@../assets/miscellaneous/star.jpg"></Image>
-                                        </image>
-                                    </ImageView>
-                                </FlowPane>
-                                <Text fx:id="harvestTimeDesc" styleClass="cropDescription" text="Harvest Time: ">
-                                    <VBox.margin>
-                                        <Insets top="10"></Insets>
-                                    </VBox.margin>
-                                </Text>
-                                <Text fx:id="waterNeedsDesc" styleClass="cropDescription" text="Water Needs: ">
-                                    <VBox.margin>
-                                        <Insets top="3"></Insets>
-                                    </VBox.margin>
-                                </Text>
-                                <Text fx:id="fertilizerNeedsDesc" styleClass="cropDescription" text="Fertilizer Needs: ">
-                                    <VBox.margin>
-                                        <Insets top="3"></Insets>
-                                    </VBox.margin>
-                                </Text>
-                                <Text fx:id="basePriceDesc" styleClass="cropDescription" text="Base Selling Price: ">
-                                    <VBox.margin>
-                                        <Insets top="3"></Insets>
-                                    </VBox.margin>
-                                </Text>
-                            </VBox>
-
                             <VBox>
-                                <TextField text="MARKET" alignment = "center" maxWidth="100">
-                                    <VBox.margin>
-                                        <Insets top="45" left="200"></Insets>
-                                    </VBox.margin>
-                                </TextField>
 
+                                <Text text="MARKET" style="-fx-font-size: 25;">
+                                    <VBox.margin>
+                                        <Insets top="50" left="200"></Insets>
+                                    </VBox.margin>
+                                </Text>
                                 <!-- FIRST ROW -->
                                 <FlowPane>
+                                    <VBox.margin>
+                                        <Insets top="40"></Insets>
+                                    </VBox.margin>
                                     <!-- CARROT -->
-                                    <VBox>
-                                        <Text text = "CARROT" styleClass="marketNames">
-                                            <VBox.margin>
-                                                <Insets left="40.0" top="20.0" />
-                                            </VBox.margin>
-                                        </Text>
-                                        <Button fx:id="marketCarrotBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
-                                            <VBox.margin>
-                                                <Insets left="40.0"/>
-                                            </VBox.margin>
-                                        </Button>
-                                    </VBox>
+                                    <Button fx:id="marketCarrotBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
+                                        <FlowPane.margin>
+                                            <Insets left="40.0"/>
+                                        </FlowPane.margin>
+                                    </Button>
 
                                     <!-- APPLE -->
-                                    <VBox>
-                                        <Text text = "APPLE" styleClass="marketNames">
-                                            <VBox.margin>
-                                                <Insets left="30.0" top="20.0" />
-                                            </VBox.margin>
-                                        </Text>
-                                        <Button fx:id="marketAppleBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
-                                            <VBox.margin>
-                                                <Insets left="30.0"/>
-                                            </VBox.margin>
-                                        </Button>
-                                    </VBox>
+                                    <Button fx:id="marketAppleBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
+                                        <FlowPane.margin>
+                                            <Insets left="30.0"/>
+                                        </FlowPane.margin>
+                                    </Button>
 
                                     <!-- MANGO -->
-                                    <VBox>
-                                        <Text text = "MANGO" styleClass="marketNames">
-                                            <VBox.margin>
-                                                <Insets left="30.0" top="20.0" />
-                                            </VBox.margin>
-                                        </Text>
-                                        <Button fx:id="marketMangoBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
-                                            <VBox.margin>
-                                                <Insets left="30.0"/>
-                                            </VBox.margin>
-                                        </Button>
-
-                                    </VBox>
+                                    <Button fx:id="marketMangoBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
+                                        <FlowPane.margin>
+                                            <Insets left="30.0"/>
+                                        </FlowPane.margin>
+                                    </Button>
 
                                     <!-- POTATO -->
-                                    <VBox>
-                                        <Text text = "POTATO" styleClass="marketNames">
-                                            <VBox.margin>
-                                                <Insets left="30.0" top="20.0" />
-                                            </VBox.margin>
-                                        </Text>
-                                        <Button fx:id="marketPotatoBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
-                                            <VBox.margin>
-                                                <Insets left="30.0"/>
-                                            </VBox.margin>
-                                        </Button>
-
-                                    </VBox>
+                                    <Button fx:id="marketPotatoBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
+                                        <FlowPane.margin>
+                                            <Insets left="30.0"/>
+                                        </FlowPane.margin>
+                                    </Button>
                                 </FlowPane>
 
                                 <!-- SECOND ROW -->
-                                <!-- TURNIP -->
                                 <FlowPane>
+                                    <!-- TURNIP -->
+                                    <VBox.margin>
+                                        <Insets top="50"></Insets>
+                                    </VBox.margin>
+                                    <Button fx:id="marketTurnipBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
+                                        <FlowPane.margin>
+                                            <Insets left="40.0"/>
+                                        </FlowPane.margin>
+                                    </Button>
 
-                                    <VBox>
-                                        <Text text = "TURNIP" styleClass="marketNames">
-                                            <VBox.margin>
-                                                <Insets left="40.0" top="60.0" />
-                                            </VBox.margin>
-                                        </Text>
-                                        <Button fx:id="marketTurnipBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
-                                            <VBox.margin>
-                                                <Insets left="40.0"/>
-                                            </VBox.margin>
-                                        </Button>
-                                    </VBox>
                                     <!-- Rose -->
-                                    <VBox>
-                                        <Text text = "ROSE" styleClass="marketNames">
-                                            <VBox.margin>
-                                                <Insets left="30.0" top="60.0" />
-                                            </VBox.margin>
-                                        </Text>
-                                        <Button fx:id="marketRoseBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
-                                            <VBox.margin>
-                                                <Insets left="30.0"/>
-                                            </VBox.margin>
-                                        </Button>
-                                    </VBox>
+                                    <Button fx:id="marketRoseBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
+                                        <FlowPane.margin>
+                                            <Insets left="30.0"/>
+                                        </FlowPane.margin>
+                                    </Button>
+
                                     <!-- Sunflower -->
-                                    <VBox>
-                                        <Text text = "SUNFLOWER" styleClass="marketNames">
-                                            <VBox.margin>
-                                                <Insets left="30.0" top="60.0" />
-                                            </VBox.margin>
-                                        </Text>
-                                        <Button fx:id="marketSunflowerBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
-                                            <VBox.margin>
-                                                <Insets left="30.0"/>
-                                            </VBox.margin>
-                                        </Button>
-                                    </VBox>
+                                    <Button fx:id="marketSunflowerBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
+                                        <FlowPane.margin>
+                                            <Insets left="30.0"/>
+                                        </FlowPane.margin>
+                                    </Button>
+
                                     <!-- Tulip -->
-                                    <VBox>
-                                        <Text text = "TULIP" styleClass="marketNames">
-                                            <VBox.margin>
-                                                <Insets left="30.0" top="60.0" />
-                                            </VBox.margin>
-                                        </Text>
-                                        <Button fx:id="marketTulipBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
-                                            <VBox.margin>
-                                                <Insets left="30.0"/>
-                                            </VBox.margin>
-                                        </Button>
-                                    </VBox>
+                                    <Button fx:id="marketTulipBtn" styleClass="marketBtn" prefHeight="82.0" prefWidth="82.0" onAction="#displayMarketInformation">
+                                        <FlowPane.margin>
+                                            <Insets left="30.0"/>
+                                        </FlowPane.margin>
+                                    </Button>
                                 </FlowPane>
                                 <StackPane>
                                     <Text fx:id="successText" text="success!" visible="false">
                                         <StackPane.margin>
-                                            <Insets top="90" right="40"></Insets>
+                                            <Insets top="50" right="40"></Insets>
                                         </StackPane.margin>
                                     </Text>
                                     <Text fx:id="failedText" text="purchase failed" visible="false">
                                         <StackPane.margin>
-                                            <Insets top="90" right="40"></Insets>
+                                            <Insets top="50" right="40"></Insets>
                                         </StackPane.margin>
                                     </Text>
-
                                 </StackPane>
                                 <FlowPane>
                                     <TextField fx:id="cropNumber" promptText="how many?" prefWidth="100" alignment="center">
@@ -333,28 +237,53 @@
                     </center>
                 </BorderPane>
             </GridPane>
+
+
+
         </StackPane>
 
     </center>
 
 
     <right>
-        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
-            <Button fx:id="exitBtn" text="Return to Main Menu" />
-        </HBox>
+
+        <!-- POP UP DESCRIPTION -->
+        <StackPane fx:id="tileDescription" visible="false">
+            <Rectangle arcHeight="10.0" arcWidth="10.0" fill="sandybrown" height="300.0" width="200.0">
+                <StackPane.margin>
+                    <Insets right="70"></Insets>
+                </StackPane.margin>
+            </Rectangle>
+            <VBox>
+
+                <ImageView fx:id="tileDescImage" fitHeight="82" fitWidth="82">
+                    <image>
+                        <Image url="@../new-assets/environment/default-tile.png"></Image>
+                    </image>
+                    <VBox.margin>
+                        <Insets left="60" top="125"></Insets>
+                    </VBox.margin>
+                </ImageView>
+                <TextField fx:id="tileDescLabel" maxWidth="150" text="UNPLOWED TILE" alignment="CENTER" editable="false">
+                    <VBox.margin>
+                        <Insets left="30" top="20"></Insets>
+                    </VBox.margin>
+                </TextField>
+                <Text fx:id="tileDescText" textAlignment="CENTER" text="Plow tile to plant a crop">
+                    <VBox.margin>
+                        <Insets left="40" top="20"></Insets>
+                    </VBox.margin>
+                </Text>
+            </VBox>
+
+        </StackPane>
     </right>
     <bottom>
 
         <StackPane>
 
                 <BorderPane>
-                    <left>
-                        <Button fx:id="openMarketBtn" styleClass="imgBtn" onAction="#openMarket">
-                            <BorderPane.margin>
-                                <Insets left="20" bottom="20"></Insets>
-                            </BorderPane.margin>
-                        </Button>
-                    </left>
+
                     <!-- Button options -->
                     <top>
                         <StackPane>
@@ -471,13 +400,37 @@
                         </StackPane>
 
                     </top>
+                    <left>
+                        <Button fx:id="openMarketBtn" styleClass="imgBtn" onAction="#openMarket">
+                            <BorderPane.margin>
+                                <Insets left="20" bottom="20"></Insets>
+                            </BorderPane.margin>
+                        </Button>
+                    </left>
 
                     <right>
-                        <Button fx:id="nextDayBtn" text="Next Day" onAction="#nextDay">
+                        <VBox>
                             <BorderPane.margin>
                                 <Insets right="20" bottom="20"></Insets>
                             </BorderPane.margin>
-                        </Button>
+                            <StackPane>
+                                <ImageView fitWidth="82" fitHeight="82">
+                                    <image>
+                                        <Image url="@../new-assets/misc/calendar.png" />
+                                    </image>
+                                </ImageView>
+                                <Text fx:id="dayDisplay">
+                                    <FlowPane.margin>
+                                        <Insets left="30.0" right="30.0"/>
+                                    </FlowPane.margin>
+                                </Text>
+                            </StackPane>
+
+                            <Button fx:id="nextDayBtn" text="Next Day" onAction="#nextDay">
+
+                            </Button>
+                        </VBox>
+
                     </right>
 
             </BorderPane>
