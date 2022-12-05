@@ -15,18 +15,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 
 public class FarmController {
@@ -71,6 +70,8 @@ public class FarmController {
 
     // Game-Wide FXML Variables
     @FXML private Button exitBtn;
+    @FXML private Button nextDayBtn;
+    @FXML private BorderPane gameOver;
 
     @FXML
     private SceneController sceneController;
@@ -119,6 +120,8 @@ public class FarmController {
     @FXML private Text sunflowerCount;
     @FXML private Text tulipCount;
     @FXML private Text turnipCount;
+
+
 
     public void createStage(Stage stage) {
         this.stage = stage;
@@ -611,6 +614,8 @@ public class FarmController {
 
     }
 
+
+
     // Expand the market when any of the plant buttons are pressed
     // NEXT DAY
     @FXML
@@ -632,8 +637,11 @@ public class FarmController {
         exitBtn.setDisable(true);
         profileBtn.setDisable(true);
         openMarketBtn.setDisable(true);
+        nextDayBtn.setDisable(true);
+        exitBtn.setDisable(true);
         toolButtons.setVisible(false);
         cropButtons.setVisible(false);
+
     }
 
     private void enableButtons() {
@@ -679,6 +687,10 @@ public class FarmController {
         levelDisplay.setText("Level: " + farmer.getLevel());
         xpDisplay.setText("XP: " + farmer.getCurrentXP());
         balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
+
+        // check game over conditions
+        gameOver();
+
     }
 
     @FXML
@@ -692,6 +704,9 @@ public class FarmController {
         // Hide any tile-related buttons
         toolButtons.setVisible(false);
         cropButtons.setVisible(false);
+
+        // check game over conditions
+        gameOver();
     }
 
     private void updateHarvestableCrops() {
@@ -865,6 +880,9 @@ public class FarmController {
         sceneController.switchToStartView();
     }
 
+    @FXML protected void exitProgram() {
+        stage.close();
+    }
     private void setBtnImage(Button button, String imagePath) {
         button.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + imagePath));
     }
@@ -873,6 +891,48 @@ public class FarmController {
         this.selectedButton = button;
     }
 
+    private boolean checkGameOver() {
+        boolean foundNotWithered = false;
+        boolean hasSeeds = false;
+        boolean hasCoins = false;
+
+        ArrayList<String> seedList = new ArrayList<>(List.of("Apple", "Carrot", "Mango", "Potato", "Rose", "Sunflower", "Tulip", "Turnip"));
+
+
+        // check if all tiles contain a withered crop
+        for (int i = 0; i < lot.getLot().size(); i++) {
+            if (!lot.getTile(i).hasWitheredCrop()) {
+                foundNotWithered = true;
+            }
+        }
+
+
+        // check if farmer still has seeds or money to buy seeds
+        for (int i = 0; i < seedList.size(); i++) {
+            if (seedPouch.getSeedCount(seedList.get(i)) > 0) {
+                hasSeeds = true;
+            }
+        }
+
+        if (hasSeeds == false) {
+            if (farmer.getWallet().getObjectCoins() >= 5) {
+                hasCoins = true;
+            }
+        }
+
+        if ((hasSeeds == false && hasCoins == false) || foundNotWithered == false) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void gameOver() {
+        if (checkGameOver()) {
+            disableButtons();
+            gameOver.setVisible(true);
+        }
+    }
     // GETTERS AND SETTERS
 
     public void setFarmer(Farmer farmer) {
