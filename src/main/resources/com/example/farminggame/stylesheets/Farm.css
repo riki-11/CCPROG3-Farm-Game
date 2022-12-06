@@ -1,4 +1,6 @@
-
+.gameFont {
+    -fx-font-family: "Futura";
+}
 
 .imgBtn {
     -fx-background-size: cover;
@@ -31,16 +33,15 @@
 }
 
 .farmerInformation {
-    -fx-fill: red;
-    -fx-margin: 10px 10px;
+    -fx-font-size: 18px;
+}
+
+.farmTitle {
+    -fx-font-size: 24px;
 }
 
 .popUp {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);
-}
-
-.marketNames {
-
 }
 
 .exit {
@@ -62,7 +63,9 @@
     -fx-min-height: 75px;
 }
 
-
+.exitBtn {
+    -fx-padding: 50px;
+}
 
 #openMarketBtn {
     -fx-background-image:  url("../new-assets/misc/market.png");

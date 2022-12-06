@@ -35,8 +35,8 @@ public class FarmController {
     private Stage stage;
     private StartController startController;
     private Model model;
-    private final int SCENE_WIDTH = 1300;
-    private final int SCENE_HEIGHT = 700;
+    private final int SCENE_WIDTH = 1350;
+    private final int SCENE_HEIGHT = 850;
 
     // ASSET VARIABLES
     private final String ASSETS_URL = FarmController.class.getResource("/com/example/farminggame" +
@@ -676,9 +676,10 @@ public class FarmController {
         updateWitheredCrops();
         updateHarvestableCrops();
 
-        // Hide any tile-related buttons
+        // Hide any tile-related buttons or panes
         toolButtons.setVisible(false);
         cropButtons.setVisible(false);
+        tileDescription.setVisible(false);
     }
 
     private void updateHarvestableCrops() {

@@ -31,8 +31,8 @@ public class StartController {
     @FXML
     private Button startButton;
 
-    private final int SCENE_WIDTH = 1300;
-    private final int SCENE_HEIGHT = 700;
+    private final int SCENE_WIDTH = 1350;
+    private final int SCENE_HEIGHT = 850;
 
     // Model Variables
     private Farmer farmer = new Farmer();
@@ -40,8 +40,6 @@ public class StartController {
 
     public void createStage(Stage stage) {
         this.stage = stage;
-
-
         try {
 
             // Designate .fxml file as root node
