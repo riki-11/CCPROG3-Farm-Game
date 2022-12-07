@@ -12,7 +12,7 @@ public class FarmLot {
     private ArrayList<Tile> lot;
 
     /**
-     * Creates an ArrayList of Tiles (contains 1 Tile for now)
+     * Creates an ArrayList of Tiles
      */
     public FarmLot() {
         this.lot = new ArrayList<>();
@@ -56,6 +56,10 @@ public class FarmLot {
         return lot;
     }
 
+    /**
+     * Puts a rock in a specified tile
+     * @param rockPosition Index of the tile to add a rock in
+     */
     public void setRockPosition(int rockPosition) {
         getTile(rockPosition - 1).placeRock();
     }
