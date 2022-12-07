@@ -10,7 +10,6 @@ public class Tile {
     private boolean plowed;
     private boolean rock;
     private Crop crop; // USE POLYMORPHISM
-    private String appearance; // REMOVE THIS
 
     /**
      *  Creates a basic tile in its default state
@@ -19,11 +18,6 @@ public class Tile {
         this.plowed = false;
         this.rock = false;
         this.crop = null;
-        this.appearance = String.format("-------\n" +
-                                        "|     |\n" +
-                                        "|     |\n" +
-                                        "|     |\n" +
-                                        "-------\n");
     }
 
     /**
@@ -84,20 +78,11 @@ public class Tile {
     }
 
     /**
-     * Gets the current appearance of the tile
-     * @return appearance of Tile as a string
-     */
-    public String getAppearance() {
-        return this.appearance;
-    }
-
-    /**
      * Gets the currently planted crop's information
      * @return information of Crop as a String
      */
     public String getCropInfo() {
 
-        // MODIFY THIS TO FIT THE GAME INSTEAD OF TERMINAL
         if (hasCrop()) {
             return String.format("""
                                 Withered: %s
@@ -131,7 +116,6 @@ public class Tile {
 
     /**
      * Modifies the existence of a rock on the tile
-     *
      */
     public void placeRock() {
         this.rock = true;
