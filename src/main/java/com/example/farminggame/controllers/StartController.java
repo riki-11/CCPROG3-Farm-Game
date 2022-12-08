@@ -19,8 +19,6 @@ public class StartController {
 
     private Stage stage;
 
-    private Model model;
-
     private SceneController sceneController;
 
     private final String fxmlURL = "/com/example/farminggame/fxml/";
@@ -79,10 +77,6 @@ public class StartController {
 
     public void storeFarmerName(String name) {
         this.farmer.setName(name);
-    }
-
-    public void setModel(Model model) {
-        this.model = model;
     }
 
     public void setSceneController(SceneController sceneController) {

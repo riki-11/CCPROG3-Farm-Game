@@ -39,7 +39,8 @@
             </left>
             <center>
                 <HBox alignment="CENTER">
-                    <Text styleClass="gameFont, farmTitle">Enrique's Farm</Text>
+                    <!-- CHANGE THE TEXT HERE -->
+                    <Text fx:id="farmTitle" styleClass="gameFont, farmTitle"/>
                 </HBox>
             </center>
             <right>
@@ -50,10 +51,17 @@
         </BorderPane>
     </top>
     <left>
-        <HBox minWidth="200.0" maxWidth="200.0"/>
+        <HBox prefWidth="200" styleClass="farmBackground">
+            <BorderPane.margin>
+                <Insets top="15.0"/>
+            </BorderPane.margin>
+        </HBox>
     </left>
     <center>
-        <BorderPane>
+        <BorderPane styleClass="farmBackground">
+            <BorderPane.margin>
+                <Insets top="15.0"/>
+            </BorderPane.margin>
             <center>
                 <StackPane>
                     <GridPane fx:id="farmLotGrid" alignment="center">
@@ -73,7 +81,7 @@
                             <VBox>
                                 <Button fx:id="exitProfile" layoutX="200" layoutY="200" styleClass="exit" text="X" onAction="#exitProfile">
                                     <VBox.margin>
-                                        <Insets left="650.0" top="100.0" />
+                                        <Insets left="665.0" top="100.0"/>
                                     </VBox.margin>
                                 </Button>
                                 <Button fx:id="upgradeFarmerBtn" text="UPGRADE FARMER" disable="true" onAction="#upgradeFarmer">
@@ -303,47 +311,38 @@
                 </StackPane>
             </bottom>
         </BorderPane>
-
     </center>
 
-
     <right>
-        <GridPane alignment="CENTER">
-            <!-- NOT YET DONE WITH THIS -->
-            <!-- POP UP DESCRIPTION -->
-            <StackPane fx:id="tileDescription" style="-fx-background-color: orange;" visible="false" >
-                <Rectangle arcHeight="10.0" arcWidth="10.0" fill="sandybrown" height="300.0" width="200.0">
-                </Rectangle>
-                <VBox>
-                    <ImageView fx:id="tileDescImage" fitHeight="82" fitWidth="82">
-                        <image>
-                            <Image url="@../new-assets/environment/default-tile.png"></Image>
-                        </image>
-                        <VBox.margin>
-                            <Insets left="60" top="125"></Insets>
-                        </VBox.margin>
-                    </ImageView>
-                    <TextField fx:id="tileDescLabel" maxWidth="150" text="UNPLOWED TILE" alignment="CENTER" editable="false">
-                        <VBox.margin>
-                            <Insets left="30" top="20"></Insets>
-                        </VBox.margin>
-                    </TextField>
-                    <Text fx:id="tileDescText" textAlignment="CENTER" text="Plow tile to plant a crop">
-                        <VBox.margin>
-                            <Insets left="40" top="20"></Insets>
-                        </VBox.margin>
-                    </Text>
-                </VBox>
-            </StackPane>
-        </GridPane>
+        <!-- POP UP DESCRIPTION -->
+        <StackPane fx:id="tileDescription" styleClass="farmBackground" alignment="TOP_CENTER">
+            <BorderPane.margin>
+                <Insets top="15.0"/>
+            </BorderPane.margin>
+            <padding>
+                <Insets top="55" right="15"/>
+            </padding>
+            <VBox fx:id="tileDescriptionBox" alignment="TOP_CENTER" spacing="25" minWidth="240" maxHeight="250" visible="false">
+                <padding>
+                    <Insets topRightBottomLeft="25"/>
+                </padding>
+                <ImageView fx:id="tileDescImage" fitHeight="82" fitWidth="82">
+                    <image>
+                        <Image url="@../new-assets/environment/default-tile.png"/>
+                    </image>
+                </ImageView>
+                <TextField fx:id="tileDescLabel" styleClass="gameFont, tileInfoText" maxWidth="150" text="UNPLOWED TILE" alignment="CENTER" editable="false"/>
+                <Text fx:id="tileDescText" styleClass="gameFont,tileInfoText" textAlignment="CENTER" text="Plow tile to plant a crop">
+                </Text>
+            </VBox>
+        </StackPane>
     </right>
     <bottom>
         <StackPane>
+            <BorderPane.margin>
+                <Insets bottom="10.0"/>
+            </BorderPane.margin>
                 <BorderPane>
-                    <!-- Button options -->
-                    <top>
-                        <!-- PUT TOOL AND CROP BTNS BACK HERE -->
-                    </top>
                     <left>
                         <Button fx:id="openMarketBtn" styleClass="imgBtn" onAction="#openMarket">
                             <BorderPane.margin>
@@ -351,27 +350,19 @@
                             </BorderPane.margin>
                         </Button>
                     </left>
-
                     <right>
-                        <VBox>
-                            <BorderPane.margin>
-                                <Insets right="20" bottom="20"></Insets>
-                            </BorderPane.margin>
+                        <VBox alignment="CENTER">
                             <StackPane>
-                                <ImageView fitWidth="82" fitHeight="82">
+                                <ImageView fitWidth="100" fitHeight="100">
                                     <image>
                                         <Image url="@../new-assets/misc/calendar.png" />
                                     </image>
                                 </ImageView>
-                                <Text fx:id="dayDisplay">
-                                    <FlowPane.margin>
-                                        <Insets left="30.0" right="30.0"/>
-                                    </FlowPane.margin>
+                                <Text fx:id="dayDisplay" styleClass="gameFont" >
+
                                 </Text>
                             </StackPane>
-
                             <Button fx:id="nextDayBtn" styleClass="gameFont" text="Next Day" onAction="#nextDay">
-
                             </Button>
                         </VBox>
 

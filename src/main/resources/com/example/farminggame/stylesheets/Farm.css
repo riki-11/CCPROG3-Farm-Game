@@ -8,6 +8,10 @@
     -fx-content-display: graphic-only; 
 }
 
+.farmBackground {
+    -fx-background-color: rgb(208, 161, 95);
+}
+
 .farm-tile {
     -fx-min-width: 75px;
     -fx-min-height: 75px;
@@ -48,6 +52,19 @@
     -fx-background-radius: 70px;
 }
 
+#tileDescriptionBox {
+    -fx-background-color: rgb(216, 216, 216);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);
+}
+
+#tileDescLabel {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 10, 0.5, 0.0, 0.0);
+}
+
+.tileInfoText {
+    -fx-font-size: 16px;
+}
+
 .marketBtn {
     -fx-background-size: 100% 100%;
     -fx-background-repeat: no-repeat;
@@ -56,6 +73,8 @@
 .toolBtn {
     -fx-min-width: 75px;
     -fx-min-height: 75px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);
+    -fx-background-size: cover;
 }
 
 .cropBtn {
@@ -164,4 +183,8 @@
 
 #harvestBtn {
     -fx-background-image: url("../new-assets/tools/harvest.png");
+}
+
+#dayDisplay {
+    -fx-font-size: 16px;
 }

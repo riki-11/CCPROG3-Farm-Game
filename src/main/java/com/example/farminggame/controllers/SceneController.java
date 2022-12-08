@@ -26,8 +26,6 @@ public class SceneController {
     @FXML
     private FarmController farmController;
 
-    private Model model = new Model();
-
     static {
         SCENE_WIDTH = 1750;
         SCENE_HEIGHT = 1500;
@@ -43,7 +41,6 @@ public class SceneController {
 
     public void startGameView() {
         StartController startController = new StartController();
-        startController.setModel(model);
         startController.setSceneController(this);
         startController.createStage(this.stage);
         startController.showStage();
@@ -52,7 +49,6 @@ public class SceneController {
     public void switchToStartView() {
         // Grab the .fxml file that represents the view
         StartController startController = new StartController();
-        startController.setModel(model);
         startController.setSceneController(this);
         startController.createStage(this.stage);
         startController.showStage();
