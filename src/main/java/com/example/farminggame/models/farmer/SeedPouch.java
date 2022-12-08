@@ -8,7 +8,6 @@ import java.util.Map;
  * @author Enrique Lejano and Krizchelle Wong
  */
 
-// CHANGE THIS TO IMPLEMENT ALL THE TYPES OF SEEDS
 public class SeedPouch {
 
     // Stores seedName and no. of seeds as pairs
@@ -41,7 +40,7 @@ public class SeedPouch {
 
     /**
      * Adds seed/s to the SeedPouch
-     * @param index Index of specific seed to be added
+     * @param seedName Name of the seed
      * @param seedCount Number of seeds bought
      */
     public void updateSeedList(String seedName, int seedCount) {
@@ -49,26 +48,21 @@ public class SeedPouch {
         this.seedList.put(seedName, currentCount + seedCount);
     }
 
+    /**
+     * Gets the seed count for a specific seed
+     * @param seedName Name of the seed
+     * @return the number of seeds a specific seed has
+     */
     public int getSeedCount(String seedName) {
         return this.seedList.get(seedName);
     }
 
-
+    /**
+     * Gets the entire list of the seeds and their respective counts
+     * @return a dictionary of all the seeds and their counts
+     */
     public Hashtable<String, Integer> getSeedList() {
         return this.seedList;
     }
-/*
-    /**
-    /**
-     * Gets the total number of seeds
-     * @return number of seeds as int
 
-    public int getSeedPouchCount() {
-        int totalSeeds = 0;
-        for (int i = 0; i < 8; i++) {
-            totalSeeds += seeds[i];
-        }
-        return totalSeeds;
-    }
-    */
 }

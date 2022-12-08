@@ -14,10 +14,7 @@ import com.example.farminggame.models.tools.WateringCan;
  * @author Enrique Lejano and Krizchelle Wong
  */
 
-
-// TODO: UPDATE THE UML
 public class Farmer {
-    // REFLECT IN UML
     private String name;
     private int level;
     private double experience;
@@ -26,9 +23,9 @@ public class Farmer {
     private int waterBonusLimit;
     private int fertilizerBonusLimit;
     private String farmerType;
+    private int canUpgrade;
     private Wallet wallet;
     private SeedPouch seedPouch;
-    private int canUpgrade;
 
     /**
      * Creates a Farmer with default stats
@@ -88,18 +85,13 @@ public class Farmer {
         }
     }
 
-    /**
-     * Lets player buy as many seeds as they desire as long they can afford it
-     * @param count Number of seeds to be bought
-     * @return true for a successful transaction, false if otherwise
-    */
 
 
     /**
      * Buys seeds from the seed store
-     * @param cropToBuy
-     * @param count
-     * @return
+     * @param cropToBuy The class of the crop the player wants to buy
+     * @param count The number of seeds for the crop to be bought
+     * @return true if transaction was successful, false otherwise
      */
     public boolean buySeeds(Crop cropToBuy, int count) {
         String seedName = cropToBuy.getCropName();
@@ -115,7 +107,7 @@ public class Farmer {
 
             return true;
         }
-        // If not enough coins to buy seeds or if farmer cancelled transaction
+        // If there's not enough coins to buy seeds or if farmer cancelled transaction
         return false;
 
     }
@@ -159,10 +151,10 @@ public class Farmer {
     /**
      * Harvests a harvestable crop from a selected Tile
      * @param tile Tile containing harvestable crop
+     * @return true if crop was successfully  harvested, false otherwise
      */
     public boolean harvestCrop(Tile tile) {
 
-        // ACCOUNT FOR FLOWERS
         Crop harvestedCrop = tile.getCrop();
 
         if (harvestedCrop.isHarvestable()) {

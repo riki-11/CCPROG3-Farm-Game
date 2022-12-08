@@ -78,7 +78,7 @@ public abstract class Crop {
 
     /**
      * Gets the name of the Crop
-     * @return this Crop's name
+     * @return the crop's name
      */
     public String getCropName() {
         return this.name;
@@ -86,7 +86,7 @@ public abstract class Crop {
 
     /**
      * Gets the type of the Crop
-     * @return
+     * @return the type of crop
      */
     public String getType() {
         return this.type;
