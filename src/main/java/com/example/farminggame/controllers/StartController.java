@@ -19,8 +19,6 @@ public class StartController {
 
     private Stage stage;
 
-    private Model model;
-
     private SceneController sceneController;
 
     private final String fxmlURL = "/com/example/farminggame/fxml/";
@@ -31,8 +29,8 @@ public class StartController {
     @FXML
     private Button startButton;
 
-    private final int SCENE_WIDTH = 1300;
-    private final int SCENE_HEIGHT = 700;
+    private final int SCENE_WIDTH = 1350;
+    private final int SCENE_HEIGHT = 850;
 
     // Model Variables
     private Farmer farmer = new Farmer();
@@ -40,8 +38,6 @@ public class StartController {
 
     public void createStage(Stage stage) {
         this.stage = stage;
-
-
         try {
 
             // Designate .fxml file as root node
@@ -81,10 +77,6 @@ public class StartController {
 
     public void storeFarmerName(String name) {
         this.farmer.setName(name);
-    }
-
-    public void setModel(Model model) {
-        this.model = model;
     }
 
     public void setSceneController(SceneController sceneController) {

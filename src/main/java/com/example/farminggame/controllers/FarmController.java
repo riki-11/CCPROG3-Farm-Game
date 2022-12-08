@@ -33,9 +33,9 @@ public class FarmController {
     // STAGE VARIABLES
     private Stage stage;
     private StartController startController;
-    private Model model;
-    private final int SCENE_WIDTH = 1300;
-    private final int SCENE_HEIGHT = 700;
+
+    private final int SCENE_WIDTH = 1350;
+    private final int SCENE_HEIGHT = 850;
 
     // ASSET VARIABLES
     private final String ASSETS_URL = FarmController.class.getResource("/com/example/farminggame" +
@@ -86,6 +86,7 @@ public class FarmController {
 
     // Farm Lot FXML Variables
     @FXML private GridPane farmLotGrid;
+    @FXML private Text farmTitle;
 
     // Tool Buttons FXML Variables
     @FXML private FlowPane toolButtons;
@@ -100,7 +101,7 @@ public class FarmController {
     @FXML private ImageView tileDescImage;
     @FXML private TextField tileDescLabel;
     @FXML private Text tileDescText;
-    @FXML private StackPane tileDescription;
+    @FXML private VBox tileDescriptionBox;
 
     // Crop Buttons FXML Variables
     @FXML private FlowPane cropButtons;
@@ -236,7 +237,6 @@ public class FarmController {
             System.out.println("With crop");
             if (activeTile.hasHarvestableCrop()) {
                 setCropData(activeTile);
-
                 tileDescText.setText(activeTile.getCropInfo());
             } else if (activeTile.hasWitheredCrop()) {
                 tileDescImage.setImage(witheredImage);
@@ -249,7 +249,7 @@ public class FarmController {
                 tileDescText.setText(activeTile.getCropInfo());
             }
         }
-        tileDescription.setVisible(true);
+        tileDescriptionBox.setVisible(true);
     }
 
     private void displayButtons(){
@@ -351,7 +351,7 @@ public class FarmController {
 
         updateStats();
         toolButtons.setVisible(false);
-        tileDescription.setVisible(false);
+        tileDescriptionBox.setVisible(false);
     }
 
     private boolean hasAdjacentCrops() {
@@ -701,9 +701,10 @@ public class FarmController {
         updateWitheredCrops();
         updateHarvestableCrops();
 
-        // Hide any tile-related buttons
+        // Hide any tile-related buttons or panes
         toolButtons.setVisible(false);
         cropButtons.setVisible(false);
+        tileDescriptionBox.setVisible(false);
 
         // check game over conditions
         gameOver();
@@ -859,6 +860,7 @@ public class FarmController {
 
         // Initializing UI elements
         nameDisplay.setText(farmer.getName());
+        farmTitle.setText(farmer.getName() + "'s Farm");
         updateDay();
         updateStats();
 
