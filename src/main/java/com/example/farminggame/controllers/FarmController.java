@@ -72,6 +72,7 @@ public class FarmController {
     @FXML private Button exitBtn;
     @FXML private Button nextDayBtn;
     @FXML private BorderPane gameOverScreen;
+    @FXML private Text gameOverText;
 
     @FXML
     private SceneController sceneController;
@@ -97,6 +98,7 @@ public class FarmController {
     @FXML private Button fertilizerBtn;
     @FXML private Button wateringCanBtn;
     @FXML private Button harvestBtn;
+    @FXML private Text shovelNotif;
 
     // Tile Information FXML Variables
     @FXML private ImageView tileDescImage;
@@ -141,7 +143,8 @@ public class FarmController {
              stage.setScene(scene);
 
              // set the screen to full screen
-             // stage.setFullScreen(true);
+             stage.setFullScreen(true);
+
 
          } catch(Exception e) {
              e.printStackTrace();
@@ -257,15 +260,14 @@ public class FarmController {
 
         Tile activeTile = lot.getLot().get(this.activeTileIndex);
 
-        // buttons that appear will depend on the tile status
+        // set the tools to visible first
         toolButtons.setVisible(true);
-
         ploughBtn.setVisible(true);
         pickaxeBtn.setVisible(true);
         fertilizerBtn.setVisible(true);
         wateringCanBtn.setVisible(true);
         shovelBtn.setVisible(true);
-
+        harvestBtn.setVisible(true);
 
         cropButtons.setVisible(false);
 
@@ -318,6 +320,19 @@ public class FarmController {
             }
         }
 
+        // check if there are enough coins to use the tool
+        if (wallet.getObjectCoins() < shovel.getCost()) {
+            shovelBtn.setDisable(true);
+        } else if (wallet.getObjectCoins() < plough.getCost()) {
+            ploughBtn.setDisable(true);
+        } else if (wallet.getObjectCoins() < pickaxe.getCost()) {
+            pickaxeBtn.setDisable(true);
+        } else if (wallet.getObjectCoins() < fertilizer.getCost()) {
+            fertilizerBtn.setDisable(true);
+        } else if (wallet.getObjectCoins() < wateringCan.getCost()) {
+            wateringCanBtn.setDisable(true);
+        }
+
     }
 
     @FXML protected void useTool(ActionEvent event) {
@@ -337,6 +352,12 @@ public class FarmController {
         } else if (toolID.equals("shovelBtn") || toolID.equals("shovelCropBtn")) {
             if (activeTile.hasCrop()) {
                 setBtnImage(activeTileBtn, "environment/default-tile.png");
+            } else {
+                PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                shovelNotif.setVisible(true);
+                pause.setOnFinished(
+                        f -> shovelNotif.setVisible(false));
+                pause.play();
             }
             farmer.useShovel(activeTile, shovel);
         } else if (toolID.equals("fertilizerBtn")) {
@@ -640,7 +661,6 @@ public class FarmController {
         profileBtn.setDisable(true);
         openMarketBtn.setDisable(true);
         nextDayBtn.setDisable(true);
-        exitBtn.setDisable(true);
         toolButtons.setVisible(false);
         cropButtons.setVisible(false);
 
@@ -650,6 +670,7 @@ public class FarmController {
         exitBtn.setDisable(false);
         profileBtn.setDisable(false);
         openMarketBtn.setDisable(false);
+        nextDayBtn.setDisable(false);
     }
 
 
@@ -895,7 +916,7 @@ public class FarmController {
         this.selectedButton = button;
     }
 
-    private boolean checkGameOver() {
+    private String checkGameOver() {
         boolean foundNotWithered = false;
         boolean hasSeeds = false;
         boolean hasCoins = false;
@@ -927,17 +948,21 @@ public class FarmController {
         }
 
         // If farmer has no seeds, can't buy more, or if there are no more growing crops
-        if ((!hasSeeds && !hasCoins) || !foundNotWithered) {
-            return true;
+        if ((!hasSeeds && !hasCoins)) {
+            return "\n\nUh oh! You don't have enough coins to do anything!";
+        } else if (!foundNotWithered) {
+            return "\n\nOh no! All your tiles have dead crops!";
         }
 
-        return false;
+        return "";
     }
 
     private void gameOver() {
-        if (checkGameOver()) {
+        String gameOverReason = checkGameOver();
+        if (!gameOverReason.equals("")) {
             disableButtons();
             gameOverScreen.setVisible(true);
+            gameOverText.setText(gameOverReason);
         }
     }
     // GETTERS AND SETTERS
