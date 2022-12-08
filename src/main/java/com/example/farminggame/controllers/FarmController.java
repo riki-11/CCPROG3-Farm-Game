@@ -71,7 +71,7 @@ public class FarmController {
     // Game-Wide FXML Variables
     @FXML private Button exitBtn;
     @FXML private Button nextDayBtn;
-    @FXML private BorderPane gameOver;
+    @FXML private BorderPane gameOverScreen;
 
     @FXML
     private SceneController sceneController;
@@ -92,6 +92,7 @@ public class FarmController {
     @FXML private FlowPane toolButtons;
     @FXML private Button ploughBtn;
     @FXML private Button shovelBtn;
+    @FXML private Button shovelCropBtn; // to be displayed on tiles with crops
     @FXML private Button pickaxeBtn;
     @FXML private Button fertilizerBtn;
     @FXML private Button wateringCanBtn;
@@ -258,11 +259,14 @@ public class FarmController {
 
         // buttons that appear will depend on the tile status
         toolButtons.setVisible(true);
+
         ploughBtn.setVisible(true);
         pickaxeBtn.setVisible(true);
         fertilizerBtn.setVisible(true);
         wateringCanBtn.setVisible(true);
-        shovelBtn.setTranslateX(0);
+        shovelBtn.setVisible(true);
+
+
         cropButtons.setVisible(false);
 
         // Check the status of the last clicked tile (aka the active Tile)
@@ -283,21 +287,18 @@ public class FarmController {
         } else if (!(activeTile.hasCrop())) {
             // If tile is plowed
             // remove all tools except shovel
+            toolButtons.setVisible(false);
             ploughBtn.setVisible(false);
             pickaxeBtn.setVisible(false);
             fertilizerBtn.setVisible(false);
             wateringCanBtn.setVisible(false);
             harvestBtn.setVisible(false);
-            shovelBtn.setTranslateX(510);
-            shovelBtn.setTranslateY(15);
-            
+
             showCropBtns(); // method to show crops depending on seed inventory
-            
+
         } else {
             pickaxeBtn.setDisable(true);
             ploughBtn.setDisable(true);
-
-            Crop tileCrop = activeTile.getCrop();
 
             if (activeTile.hasHarvestableCrop()) {
                 // harvestable
@@ -333,7 +334,7 @@ public class FarmController {
         } else if (toolID.equals("pickaxeBtn")) {
             farmer.usePickaxe(activeTile, pickaxe);
             setBtnImage(activeTileBtn, "environment/default-tile.png");
-        } else if (toolID.equals("shovelBtn")) {
+        } else if (toolID.equals("shovelBtn") || toolID.equals("shovelCropBtn")) {
             if (activeTile.hasCrop()) {
                 setBtnImage(activeTileBtn, "environment/default-tile.png");
             }
@@ -351,6 +352,7 @@ public class FarmController {
 
         updateStats();
         toolButtons.setVisible(false);
+        cropButtons.setVisible(false);
         tileDescriptionBox.setVisible(false);
     }
 
@@ -898,31 +900,34 @@ public class FarmController {
         boolean hasSeeds = false;
         boolean hasCoins = false;
 
-        ArrayList<String> seedList = new ArrayList<>(List.of("Apple", "Carrot", "Mango", "Potato", "Rose", "Sunflower", "Tulip", "Turnip"));
+        ArrayList<String> seedList = new ArrayList<>(List.of("Apple", "Carrot", "Mango", "Potato", "Rose",
+                                                             "Sunflower", "Tulip", "Turnip"));
 
+        // NOTIFY THE USER HOW THEY LOST
 
-        // check if all tiles contain a withered crop
+        // Check if there are any tiles WITHOUT withered crops remaining
         for (int i = 0; i < lot.getLot().size(); i++) {
             if (!lot.getTile(i).hasWitheredCrop()) {
                 foundNotWithered = true;
             }
         }
 
-
-        // check if farmer still has seeds or money to buy seeds
-        for (int i = 0; i < seedList.size(); i++) {
-            if (seedPouch.getSeedCount(seedList.get(i)) > 0) {
+        // Check if farmer's seed pouch is empty.
+        for (String seed : seedList) {
+            if (seedPouch.getSeedCount(seed) > 0) {
                 hasSeeds = true;
             }
         }
 
-        if (hasSeeds == false) {
+        // If farmer still has enough money to at least buy some seeds
+        if (!hasSeeds) {
             if (farmer.getWallet().getObjectCoins() >= 5) {
                 hasCoins = true;
             }
         }
 
-        if ((hasSeeds == false && hasCoins == false) || foundNotWithered == false) {
+        // If farmer has no seeds, can't buy more, or if there are no more growing crops
+        if ((!hasSeeds && !hasCoins) || !foundNotWithered) {
             return true;
         }
 
@@ -932,7 +937,7 @@ public class FarmController {
     private void gameOver() {
         if (checkGameOver()) {
             disableButtons();
-            gameOver.setVisible(true);
+            gameOverScreen.setVisible(true);
         }
     }
     // GETTERS AND SETTERS

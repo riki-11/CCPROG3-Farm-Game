@@ -1,19 +1,15 @@
 Things left to do:
 - Polishing the UI
+    - Fix GAME OVER LOCATION
     - make success notification bigger
     - make failure notification
     - farm title (inputted name)
 - not being able to use tools if you don't have enough money
 - Game over conditions
     - (for no more money to buy seeds, do we check it upon going to the next day?
-- Game over screen?
+    - Insert reason as to why user lost?
 - Upgrade Farmer
     - Testing
-- UML
-
-Things left to do (maybe):
-- Notification for bonux xp or yield
-- Different Sprites fper Farmer Type
 
 potential bonus features:
 - animals
@@ -33,3 +29,5 @@ Useful articles:
 - Adding an image to a button: https://edencoding.com/how-to-add-an-image-to-a-button/
 - Probably useful for creating a board of tiles: https://docs.oracle.com/javase/8/javafx/layout-tutorial/size_align.htm
 - CSS Reference for all elements of JavaFX
+
+

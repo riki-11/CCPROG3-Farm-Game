@@ -8,6 +8,8 @@
     -fx-content-display: graphic-only; 
 }
 
+
+
 .farmBackground {
     -fx-background-color: rgb(208, 161, 95);
 }
@@ -70,20 +72,24 @@
     -fx-background-repeat: no-repeat;
 }
 
-.toolBtn {
+.toolBtn, .cropBtn {
     -fx-min-width: 75px;
     -fx-min-height: 75px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);
-    -fx-background-size: cover;
-}
-
-.cropBtn {
-    -fx-min-width: 75px;
-    -fx-min-height: 75px;
 }
 
 .exitBtn {
     -fx-padding: 50px;
+}
+
+#gameOverBox {
+    -fx-background-color: rgb(216, 216, 216);
+    -fx-max-height: 175px;
+    -fx-max-width: 350px;
+}
+
+#menuBar {
+    -fx-padding: 10px;
 }
 
 #openMarketBtn {
@@ -126,9 +132,6 @@
     -fx-background-image: url("../new-assets/crops/tulip.png");
 }
 
-
-
-
 #marketCarrotBtn {
     -fx-background-image: url("../new-assets/market/market-carrot.png");
 }
@@ -165,7 +168,7 @@
     -fx-background-image: url("../new-assets/tools/plough.png");
 }
 
-#shovelBtn {
+#shovelBtn, #shovelCropBtn {
     -fx-background-image: url("../new-assets/tools/shovel.png");
 }
 
