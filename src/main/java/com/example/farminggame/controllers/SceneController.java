@@ -26,11 +26,9 @@ public class SceneController {
     @FXML
     private FarmController farmController;
 
-    private Model model = new Model();
-
     static {
-        SCENE_WIDTH = 1300;
-        SCENE_HEIGHT = 700;
+        SCENE_WIDTH = 1750;
+        SCENE_HEIGHT = 1500;
         // Save location of assets folder
         fxmlURL = "/com/example/farminggame/fxml/";
         assetsURL = SceneController.class.getResource("/com/example/farminggame/assets/").toString();
@@ -43,7 +41,6 @@ public class SceneController {
 
     public void startGameView() {
         StartController startController = new StartController();
-        startController.setModel(model);
         startController.setSceneController(this);
         startController.createStage(this.stage);
         startController.showStage();
@@ -52,7 +49,6 @@ public class SceneController {
     public void switchToStartView() {
         // Grab the .fxml file that represents the view
         StartController startController = new StartController();
-        startController.setModel(model);
         startController.setSceneController(this);
         startController.createStage(this.stage);
         startController.showStage();

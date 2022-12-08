@@ -34,7 +34,7 @@ public class Farmer {
      * Creates a Farmer with default stats
      */
     public Farmer() {
-        this.name = "";
+        this.name = "Ed"; // If user doesn't input a name
         this.level = 0;
         this.experience = 0;
         this.bonusEarnings = 0;
