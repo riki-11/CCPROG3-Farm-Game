@@ -90,10 +90,34 @@
                                     </VBox.margin>
                                 </Button>
                             </VBox>
+                    </StackPane>
+              </center>
+                </BorderPane>
+
+            <BorderPane fx:id="gameOver" visible="false">
+                <center>
+                    <FlowPane>
+
+                        <StackPane>
+                            <Rectangle styleClass="popUp" arcHeight="10.0" arcWidth="10.0" fill="indianred" height="30.0" stroke="BLACK" strokeType="INSIDE" width="90.0" ></Rectangle>
+                            <Text text="Game Over!"></Text>
                         </StackPane>
 
-                    </StackPane>
-                    <!-- POP UP MARKET -->
+
+                        <Button fx:id="Restart" text="Restart" onAction="#exitGame">
+                            <FlowPane.margin>
+                                <Insets left="10"></Insets>
+                            </FlowPane.margin>
+                        </Button>
+                        <Button fx:id="exitGameBtn" onAction="#exitProgram" text="Exit">
+                            <FlowPane.margin>
+                                <Insets left="10"></Insets>
+                            </FlowPane.margin>
+                        </Button>
+                    </FlowPane>
+                </center>
+            </BorderPane>
+            <!-- POP UP MARKET -->
                     <GridPane fx:id="marketPane" alignment="center" styleClass="popUp" visible="false">
                         <Rectangle fx:id="marketRectangle" styleClass="popUp" arcHeight="10.0" arcWidth="10.0" fill="indianred" height="475.0" stroke="BLACK" strokeType="INSIDE" width="500.0" />
                         <Rectangle fx:id="descriptionRectangle" arcHeight="10.0" arcWidth="10.0" fill="sandybrown" height="475.0" width="300.0" visible="false"/>
@@ -105,7 +129,6 @@
                                     </BorderPane.margin>
                                 </Button>
                             </right>
-
                             <center>
                                 <StackPane>
                                     <ImageView fx:id="cropDescription" visible="false" fitHeight="400" fitWidth="275">
@@ -212,16 +235,16 @@
                                             </Button>
                                         </FlowPane>
                                     </VBox>
-
-
-
                                 </StackPane>
-
                             </center>
-                        </BorderPane>
+                             </BorderPane>
                     </GridPane>
-                </StackPane>
-            </center>
+      </StackPane>
+    </center>
+
+                      
+
+         
             <bottom>
                 <StackPane>
                         <!-- Tool buttons -->
@@ -249,7 +272,7 @@
                                 <Text fx:id="appleCount" text="0" textAlignment="CENTER"/>
                                 <Button fx:id="appleBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
                                     <FlowPane.margin>
-                                        <Insets left="10"></Insets>
+                                        <Insets left="105"></Insets>
                                     </FlowPane.margin>
                                 </Button>
                             </VBox>
@@ -264,8 +287,10 @@
                             </VBox>
 
                             <VBox>
+
                                 <Text fx:id="potatoCount" text="0" textAlignment="CENTER"/>
                                 <Button fx:id="potatoBtn" styleClass="cropBtn, imgBtn" visible="true" onAction="#plantCrop">
+
                                     <FlowPane.margin>
                                         <Insets left="10"></Insets>
                                     </FlowPane.margin>
@@ -273,6 +298,7 @@
                             </VBox>
 
                             <VBox>
+
                                 <Text fx:id="roseCount" text="0" textAlignment="CENTER"/>
                                 <Button fx:id="roseBtn" styleClass="cropBtn, imgBtn" visible="true" text="Rose" onAction="#plantCrop">
                                     <FlowPane.margin>
@@ -282,8 +308,13 @@
                             </VBox>
 
                             <VBox>
+
+                                <Text fx:id="roseCount" text="0" textAlignment="CENTER"/>
+                                <Button fx:id="roseBtn" styleClass="cropBtn, imgBtn" visible="true" text="Rose" onAction="#plantCrop">
+
                                 <Text fx:id="sunflowerCount" text="0" textAlignment="CENTER"/>
                                 <Button fx:id="sunflowerBtn" styleClass="cropBtn, imgBtn" visible="true" text="Sunflower" onAction="#plantCrop">
+
                                     <FlowPane.margin>
                                         <Insets left="10"></Insets>
                                     </FlowPane.margin>
@@ -291,8 +322,10 @@
                             </VBox>
 
                             <VBox>
+
                                 <Text fx:id="tulipCount" text="0" textAlignment="CENTER"/>
                                 <Button fx:id="tulipBtn" styleClass="cropBtn, imgBtn" visible="true" text="Tulip" onAction="#plantCrop">
+
                                     <FlowPane.margin>
                                         <Insets left="10"></Insets>
                                     </FlowPane.margin>
@@ -365,10 +398,11 @@
                             <Button fx:id="nextDayBtn" styleClass="gameFont" text="Next Day" onAction="#nextDay">
                             </Button>
                         </VBox>
-
-                    </right>
+                </right>
 
             </BorderPane>
+
+
         </StackPane>
 
     </bottom>
