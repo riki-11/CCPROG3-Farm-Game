@@ -5,15 +5,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <GridPane fx:id="startView"
-              xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10" styleClass="startBackground">
 
-    <Text id="welcome-text" text="Welcome to the Farming Game"
+    <Text id="welcome-text" text="Welcome to Ed's Farming Game"
           GridPane.columnIndex="0" GridPane.rowIndex="0"
-          GridPane.columnSpan="3"/>
+          GridPane.columnSpan="3" styleClass="farmText,gameFont"/>
 
-    <Label text="Please enter your Farmer Name:"
-           GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <Label text="Please enter your farmer name:"
+           GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="farmText,gameFont"/>
 
     <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
