@@ -262,6 +262,8 @@ public class FarmController {
 
         // set the tools to visible first
         toolButtons.setVisible(true);
+        toolButtons.setDisable(false);
+        shovelBtn.setDisable(false);
         ploughBtn.setVisible(true);
         pickaxeBtn.setVisible(true);
         fertilizerBtn.setVisible(true);
@@ -372,7 +374,7 @@ public class FarmController {
         }
 
         updateStats();
-        toolButtons.setVisible(false);
+        toolButtons.setDisable(true);
         cropButtons.setVisible(false);
         tileDescriptionBox.setVisible(false);
     }
@@ -579,6 +581,7 @@ public class FarmController {
     @FXML private Rectangle marketRectangle;
     @FXML private Rectangle descriptionRectangle;
     @FXML private ImageView cropDescription;
+    @FXML private VBox expandingPane;
     @FXML private Button exitMarket;
     @FXML private ImageView farmerProfileDesc;
 
@@ -661,7 +664,7 @@ public class FarmController {
         profileBtn.setDisable(true);
         openMarketBtn.setDisable(true);
         nextDayBtn.setDisable(true);
-        toolButtons.setVisible(false);
+        toolButtons.setDisable(true);
         cropButtons.setVisible(false);
 
     }
@@ -725,7 +728,6 @@ public class FarmController {
         updateHarvestableCrops();
 
         // Hide any tile-related buttons or panes
-        toolButtons.setVisible(false);
         cropButtons.setVisible(false);
         tileDescriptionBox.setVisible(false);
 
