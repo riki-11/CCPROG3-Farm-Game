@@ -8,8 +8,6 @@
     -fx-content-display: graphic-only; 
 }
 
-
-
 .farmBackground {
     -fx-background-color: rgb(208, 161, 95);
 }
@@ -43,7 +41,7 @@
 }
 
 .farmTitle {
-    -fx-font-size: 24px;
+    -fx-font-size: 44px;
 }
 
 .popUp {
@@ -61,6 +59,8 @@
 
 #tileDescLabel {
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.05), 10, 0.5, 0.0, 0.0);
+    -fx-highlight-fill: null;
+    -fx-highlight-text-fill: null;
 }
 
 .tileInfoText {
@@ -70,13 +70,22 @@
 .marketBtn {
     -fx-background-size: 100% 100%;
     -fx-background-repeat: no-repeat;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0.3, 0.0, 0.0);
 }
 
-.toolBtn, .cropBtn {
+.toolBtn  {
     -fx-min-width: 75px;
     -fx-min-height: 75px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);
 }
+.cropBtn {
+    -fx-min-width: 65px;
+    -fx-min-height: 65px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 10, 0.5, 0.0, 0.0);
+    -fx-background-size: 90%;
+    -fx-background-position: center;
+}
+
 
 .exitBtn {
     -fx-padding: 50px;
@@ -190,4 +199,20 @@
 
 #dayDisplay {
     -fx-font-size: 16px;
+}
+
+#shovelNotif {
+    -fx-font-size: 17px;
+}
+
+#successText, #failedText {
+    -fx-font-size: 15px;
+}
+
+#exitBtn {
+    -fx-background-image: url("../new-assets/misc/home.png");
+    -fx-background-size: 100% 100%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-radius: 200px;
+
 }
