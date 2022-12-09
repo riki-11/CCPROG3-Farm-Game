@@ -7,6 +7,14 @@
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 0,0,0,1);
 }
 
+.startBackground {
+    -fx-background-color: #f0d4ad;
+}
+
+.gameFont {
+    -fx-font-family: "Futura";
+}
+
 #welcome-text {
     -fx-font-size: 35px;
     -fx-font-weight: bold;
