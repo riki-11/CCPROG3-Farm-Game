@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -50,11 +51,14 @@ public class StartController {
             // Set the scene
             Scene scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
 
-            this.stage.setTitle("Farming Game");
+            this.stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/crops/turnip.png")));
+            this.stage.setTitle("Ed's Farming Game");
             this.stage.setScene(scene);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
     }
 
