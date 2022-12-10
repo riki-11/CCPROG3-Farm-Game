@@ -82,7 +82,6 @@ public class Tile {
      * @return information of Crop as a String
      */
     public String getCropInfo() {
-
         if (hasCrop()) {
             return String.format("""
                                 Withered: %s

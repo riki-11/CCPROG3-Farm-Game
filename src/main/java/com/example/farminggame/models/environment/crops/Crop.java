@@ -22,7 +22,6 @@ public abstract class Crop {
 
     /**
      * Creates a Crop with a specified type
-     *
      */
     public Crop() {
         this.fertilizerCount = 0;

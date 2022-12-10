@@ -7,12 +7,14 @@ import java.util.Map;
  * Represents a Seed Pouch that holds seeds in the Farmer's inventory
  * @author Enrique Lejano and Krizchelle Wong
  */
-
 public class SeedPouch {
 
     // Stores seedName and no. of seeds as pairs
     private Hashtable<String, Integer> seedList;
 
+    /**
+     * Creates a SeedPouch
+     */
     public SeedPouch() {
         this.seedList = new Hashtable<String, Integer>();
         // initialize hashtable with all crops

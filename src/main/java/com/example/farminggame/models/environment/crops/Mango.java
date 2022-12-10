@@ -1,10 +1,17 @@
 package com.example.farminggame.models.environment.crops;
 
+/**
+ * Represents a Mango which is one type of Crop
+ * @author Enrique Lejano and Krizchelle Wong
+ */
 public class Mango extends Crop {
 
     private final int MIN_PRODUCE = 5;
     private final int MAX_PRODUCE = 15;
 
+    /**
+     * Creates a Mango with its corresponding attributes
+     */
     public Mango() {
         super();
         this.name = "Mango";

@@ -1,10 +1,17 @@
 package com.example.farminggame.models.environment.crops;
 
+/**
+ * Represents a Potato which is one type of Crop
+ * @author Enrique Lejano and Krizchelle Wong
+ */
 public class Potato extends Crop {
 
     private final int MIN_PRODUCE = 1;
     private final int MAX_PRODUCE = 10;
 
+    /**
+     * Creates a Potato with its corresponding attributes
+     */
     public Potato() {
         super();
         this.name = "Potato";

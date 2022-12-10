@@ -1,8 +1,7 @@
 package com.example.farminggame.models.environment;
+
 import com.example.farminggame.models.environment.crops.Crop;
-
 import java.util.ArrayList;
-
 
 /**
  * Represents a farm lot with up to 50 Tiles

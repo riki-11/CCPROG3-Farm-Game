@@ -1,9 +1,16 @@
 package com.example.farminggame.models.environment.crops;
 
+/**
+ * Represents a Carrot which is one type of Crop
+ * @author Enrique Lejano and Krizchelle Wong
+ */
 public class Carrot extends Crop{
     private final int MIN_PRODUCE = 1;
     private final int MAX_PRODUCE = 2;
 
+    /**
+     * Creates a Carrot with its corresponding attributes
+     */
     public Carrot() {
         super();
         this.name = "Carrot";
