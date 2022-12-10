@@ -1,10 +1,17 @@
 package com.example.farminggame.models.environment.crops;
 
+/**
+ * Represents a Sunflower which is one type of Crop
+ * @author Enrique Lejano and Krizchelle Wong
+ */
 public class Sunflower extends Crop {
 
     private final int MIN_PRODUCE = 1;
     private final int MAX_PRODUCE = 1;
 
+    /**
+     * Creates a Sunflower with its corresponding attributes
+     */
     public Sunflower() {
         super();
         this.name = "Sunflower";

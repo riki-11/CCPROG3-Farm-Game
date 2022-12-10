@@ -1,10 +1,17 @@
 package com.example.farminggame.models.environment.crops;
 
+/**
+ * Represents a Turnip which is one type of Crop
+ * @author Enrique Lejano and Krizchelle Wong
+ */
 public class Turnip extends Crop {
 
     private final int MIN_PRODUCE = 1;
     private final int MAX_PRODUCE = 2;
 
+    /**
+     * Creates a Turnip with its corresponding attributes
+     */
     public Turnip() {
         super();
         this.name = "Turnip";

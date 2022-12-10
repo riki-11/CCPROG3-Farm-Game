@@ -58,7 +58,7 @@
                 <Insets top="40"></Insets>
             </BorderPane.margin>
             <image>
-                <Image url="@../new-assets/misc/farmhouse.png"></Image>
+                <Image url="@../assets/misc/farmhouse.png"></Image>
             </image>
 
         </ImageView>
@@ -83,7 +83,7 @@
                                         <Insets left="100" bottom="30"/>
                                     </VBox.margin>
                                     <image>
-                                        <Image url="@../new-assets/profile/farmer.png"/>
+                                        <Image url="@../assets/profile/farmer.png"/>
                                     </image>
                                 </ImageView>
                                 <VBox>
@@ -117,7 +117,7 @@
                                     <StackPane>
                                         <ImageView fx:id="cropDescription" visible="false" fitHeight="400" fitWidth="275">
                                             <image>
-                                                <Image url="@../new-assets/market/displays/carrot-desc.png" />
+                                                <Image url="@../assets/market/displays/carrot-desc.png" />
                                             </image>
                                         </ImageView>
                                         <VBox>
@@ -197,13 +197,19 @@
                                                 <!-- text that shows when the purchase is successful -->
                                                 <Text fx:id="successText" styleClass="gameFont" text="Success!" visible="false">
                                                     <StackPane.margin>
-                                                        <Insets top="50" right="40"></Insets>
+                                                        <Insets top="50" right="40"/>
                                                     </StackPane.margin>
                                                 </Text>
                                                 <!-- text that shows when the purchase is unsuccessful -->
                                                 <Text fx:id="failedText" styleClass="gameFont" text="You don't have enough coins to buy this" visible="false">
                                                     <StackPane.margin>
-                                                        <Insets top="50" right="40"></Insets>
+                                                        <Insets top="50" right="40"/>
+                                                    </StackPane.margin>
+                                                </Text>
+                                                <!-- text that shows when the user doesn't input the right value -->
+                                                <Text fx:id="misinputText" styleClass="gameFont" text="Transaction error. Please try again." visible="false">
+                                                    <StackPane.margin>
+                                                        <Insets top="50" right="40"/>
                                                     </StackPane.margin>
                                                 </Text>
                                             </StackPane>
@@ -211,12 +217,12 @@
                                                 <!-- prompts for the number of crops a user wants to buy -->
                                                 <TextField fx:id="cropNumber" promptText="how many?" prefWidth="100" alignment="center">
                                                     <FlowPane.margin>
-                                                        <Insets top="5" left="175"></Insets>
+                                                        <Insets top="5" left="175"/>
                                                     </FlowPane.margin>
                                                 </TextField>
 
                                                 <!-- buy button for the crops -->
-                                                <Button styleClass="buyBTN" text="BUY" onAction="#buyCrop">
+                                                <Button fx:id="buyBtnMarket" styleClass="buyBTN" text="BUY" onAction="#buyCrop">
                                                     <FlowPane.margin>
                                                         <Insets top="5" left="2"></Insets>
                                                     </FlowPane.margin>
@@ -338,7 +344,7 @@
                 <!-- Image of the tile -->
                 <ImageView fx:id="tileDescImage" fitHeight="82" fitWidth="82">
                     <image>
-                        <Image url="@../new-assets/environment/default-tile.png"/>
+                        <Image url="@../assets/environment/default-tile.png"/>
                     </image>
                 </ImageView>
                 <!-- Type of tile -->
@@ -370,7 +376,7 @@
                             <StackPane>
                                 <ImageView fitWidth="80" fitHeight="80">
                                     <image>
-                                        <Image url="@../new-assets/misc/calendar.png" />
+                                        <Image url="@../assets/misc/calendar.png" />
                                     </image>
                                 </ImageView>
                                 <Text fx:id="dayDisplay" styleClass="gameFont" >

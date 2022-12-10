@@ -16,7 +16,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         SceneController sceneController = new SceneController(stage);
-        sceneController.startGameView();
+        sceneController.switchToStartView();
     }
 
 }

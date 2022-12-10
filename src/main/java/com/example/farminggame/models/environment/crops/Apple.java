@@ -1,10 +1,17 @@
 package com.example.farminggame.models.environment.crops;
 
+/**
+ * Represents an Apple which is one type of Crop
+ * @author Enrique Lejano and Krizchelle Wong
+ */
 public class Apple extends Crop {
 
     private final int MIN_PRODUCE = 10;
     private final int MAX_PRODUCE = 15;
 
+    /**
+     * Creates an Apple with its corresponding attributes
+     */
     public Apple() {
         super();
         this.name = "Apple";
