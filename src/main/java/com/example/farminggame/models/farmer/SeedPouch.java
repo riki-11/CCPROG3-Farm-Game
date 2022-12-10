@@ -30,7 +30,6 @@ public class SeedPouch {
      * Prints all seeds present in SeedPouch
      */
     public void showSeedList() {
-        System.out.println("Seed List:");
         for (Map.Entry<String, Integer> entry : seedList.entrySet()) {
             String cropName = entry.getKey();
             int count = entry.getValue();

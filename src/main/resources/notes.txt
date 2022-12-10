@@ -1,15 +1,12 @@
+REMOVE THIS BEFORE SUBMITTING
+
+
 Things left to do:
 - Polishing the UI
-    - Fix GAME OVER LOCATION
-    - make success notification bigger
-    - make failure notification
-    - farm title (inputted name)
-- not being able to use tools if you don't have enough money
-- Game over conditions
-    - (for no more money to buy seeds, do we check it upon going to the next day?
-    - Insert reason as to why user lost?
-- Upgrade Farmer
-    - Testing
+    - u cant input negative values when buying seeds
+
+- TEST upgrade farmer
+
 
 potential bonus features:
 - animals

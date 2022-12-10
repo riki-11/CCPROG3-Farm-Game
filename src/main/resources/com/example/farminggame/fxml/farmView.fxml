@@ -197,13 +197,19 @@
                                                 <!-- text that shows when the purchase is successful -->
                                                 <Text fx:id="successText" styleClass="gameFont" text="Success!" visible="false">
                                                     <StackPane.margin>
-                                                        <Insets top="50" right="40"></Insets>
+                                                        <Insets top="50" right="40"/>
                                                     </StackPane.margin>
                                                 </Text>
                                                 <!-- text that shows when the purchase is unsuccessful -->
                                                 <Text fx:id="failedText" styleClass="gameFont" text="You don't have enough coins to buy this" visible="false">
                                                     <StackPane.margin>
-                                                        <Insets top="50" right="40"></Insets>
+                                                        <Insets top="50" right="40"/>
+                                                    </StackPane.margin>
+                                                </Text>
+                                                <!-- text that shows when the user doesn't input the right value -->
+                                                <Text fx:id="misinputText" styleClass="gameFont" text="Transaction error. Please try again." visible="false">
+                                                    <StackPane.margin>
+                                                        <Insets top="50" right="40"/>
                                                     </StackPane.margin>
                                                 </Text>
                                             </StackPane>
@@ -211,7 +217,7 @@
                                                 <!-- prompts for the number of crops a user wants to buy -->
                                                 <TextField fx:id="cropNumber" promptText="how many?" prefWidth="100" alignment="center">
                                                     <FlowPane.margin>
-                                                        <Insets top="5" left="175"></Insets>
+                                                        <Insets top="5" left="175"/>
                                                     </FlowPane.margin>
                                                 </TextField>
 
