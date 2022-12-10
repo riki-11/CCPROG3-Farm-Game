@@ -1,6 +1,5 @@
 module com.example.farminggame {
     requires javafx.fxml;
-    requires javafx.graphics;
     requires javafx.controls;
 
     exports com.example.farminggame.models.environment.crops;

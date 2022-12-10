@@ -103,7 +103,6 @@ public class Farmer {
 
             this.seedPouch.updateSeedList(seedName, count);
             this.wallet.setObjectCoins(-1 * totalPrice);
-            System.out.printf("Successfully bought %d seeds of %s\n", count, seedName);
 
             return true;
         }
@@ -141,10 +140,6 @@ public class Farmer {
             // Deduct seed from seed pouch
             int currentSeedCount = seedPouch.getSeedCount(seedName);
             seedPouch.getSeedList().put(seedName, currentSeedCount - 1);
-
-            System.out.printf("\nA %s has been successfully planted.\n", seedName);
-        } else {
-            System.out.println("\nA seed can't be planted here.\n");
         }
     }
 
@@ -158,7 +153,6 @@ public class Farmer {
         Crop harvestedCrop = tile.getCrop();
 
         if (harvestedCrop.isHarvestable()) {
-            System.out.println("harvested crop!");
             // Add to the farmer's current xp
             addXP((harvestedCrop.getXpYield()));
 
@@ -212,7 +206,6 @@ public class Farmer {
             addXP(plough.getXP());
         }
 
-        // Unequip tool after using
     }
 
     /**
@@ -255,8 +248,6 @@ public class Farmer {
             shovel.removePlant(tile);
             addXP(shovel.getXP());
 
-        } else {
-            System.out.println("Nothing happened. We can't use the shovel here.");
         }
 
         // Deduct from wallet
@@ -274,8 +265,6 @@ public class Farmer {
             addXP(pickaxe.getXP());
             // Deduct from wallet
             this.wallet.setObjectCoins(-1 * pickaxe.getCost());
-        } else {
-            System.out.println("Nothing happened. We can't use the pickaxe here.");
         }
     }
 

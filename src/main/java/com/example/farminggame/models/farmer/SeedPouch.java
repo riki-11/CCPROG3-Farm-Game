@@ -35,7 +35,6 @@ public class SeedPouch {
         for (Map.Entry<String, Integer> entry : seedList.entrySet()) {
             String cropName = entry.getKey();
             int count = entry.getValue();
-            System.out.println(cropName + " - " + count);
         }
     }
 
