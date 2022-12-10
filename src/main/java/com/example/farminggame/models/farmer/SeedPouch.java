@@ -16,7 +16,7 @@ public class SeedPouch {
      * Creates a SeedPouch
      */
     public SeedPouch() {
-        this.seedList = new Hashtable<String, Integer>();
+        this.seedList = new Hashtable<>();
         // initialize hashtable with all crops
         this.seedList.put("Turnip", 0);
         this.seedList.put("Carrot", 0);
@@ -26,16 +26,6 @@ public class SeedPouch {
         this.seedList.put("Sunflower", 0);
         this.seedList.put("Mango", 0);
         this.seedList.put("Apple", 0);
-    }
-
-    /**
-     * Prints all seeds present in SeedPouch
-     */
-    public void showSeedList() {
-        for (Map.Entry<String, Integer> entry : seedList.entrySet()) {
-            String cropName = entry.getKey();
-            int count = entry.getValue();
-        }
     }
 
     /**

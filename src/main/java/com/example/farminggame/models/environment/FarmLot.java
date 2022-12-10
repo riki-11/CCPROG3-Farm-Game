@@ -24,6 +24,15 @@ public class FarmLot {
     }
 
     /**
+     * Gets an individual tile from the lot via index
+     * @param index Index of desired Tile
+     * @return one Tile from the FarmLot
+     */
+    public Tile getTile(int index) {
+        return lot.get(index);
+    }
+
+    /**
      * Gets the number of active/growing crops
      * @return the number of active/growing crops
      */
@@ -36,15 +45,6 @@ public class FarmLot {
         }
 
         return cropList;
-    }
-
-    /**
-     * Gets an individual tile from the lot via index
-     * @param index Index of desired Tile
-     * @return one Tile from the FarmLot
-     */
-    public Tile getTile(int index) {
-        return lot.get(index);
     }
 
     /**
