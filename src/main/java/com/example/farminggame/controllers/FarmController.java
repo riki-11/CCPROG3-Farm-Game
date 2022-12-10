@@ -23,6 +23,7 @@ import javafx.util.Duration;
 
 import java.io.*;
 import java.lang.reflect.Array;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -125,6 +126,17 @@ public class FarmController {
     @FXML private Text tulipCount;
     @FXML private Text turnipCount;
 
+    // Market variables
+    @FXML private TextField cropNumber;
+    @FXML private Button buyBtnMarket;
+
+    @FXML private Text successText;
+    @FXML private Text failedText;
+
+    // Profile
+    @FXML private Button upgradeFarmerBtn;
+
+
 
 
     public void createStage(Stage stage) {
@@ -186,7 +198,7 @@ public class FarmController {
         } else if (seedName.equals("Mango")) {
             tileDescImage.setImage(mangoImage);
             tileDescLabel.setText("MANGO");
-        } else if (seedName.equals("POtato")) {
+        } else if (seedName.equals("Potato")) {
             tileDescImage.setImage(potatoImage);
             tileDescLabel.setText("POTATO");
         } else if (seedName.equals("Rose")) {
@@ -367,13 +379,19 @@ public class FarmController {
         } else if (toolID.equals("harvestBtn")) {
             // Harvest crop returns boolean. Use this to notify the user.
             farmer.harvestCrop(activeTile);
+            PauseTransition pause = new PauseTransition(Duration.seconds(1));
+            shovelNotif.setText("Crop was successfully harvested");
+            shovelNotif.setVisible(true);
+            pause.setOnFinished(
+                    f -> shovelNotif.setVisible(false));
+            pause.play();
             // Change the tile image back to the default state
             setBtnImage(activeTileBtn, "environment/default-tile.png");
         }
 
         updateStats();
         toolButtons.setDisable(true);
-        cropButtons.setVisible(false);
+        cropButtons.setDisable(true);
         tileDescriptionBox.setVisible(false);
     }
 
@@ -520,7 +538,7 @@ public class FarmController {
             } else {
                 canPlant = false;
                 PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                shovelNotif.setText("Fruit trees cannot be planted on edge tiles or tiles with adjacent crops");
+                shovelNotif.setText("Fruit trees cannot be planted on edge tiles or tiles with adjacent crops or rocks");
                 shovelNotif.setVisible(true);
                 pause.setOnFinished(
                         f -> shovelNotif.setVisible(false));
@@ -535,14 +553,11 @@ public class FarmController {
         }
 
         updateStats();
-        cropButtons.setVisible(false);
+        tileDescriptionBox.setVisible(false);
+        cropButtons.setDisable(true);
     }
 
 
-    @FXML TextField cropNumber;
-
-    @FXML Text successText;
-    @FXML Text failedText;
 
     @FXML
     protected void buyCrop() {
@@ -578,6 +593,9 @@ public class FarmController {
         }
 
         cropNumber.setText("");
+        setSelectedButton("");
+        buyBtnMarket.setDisable(true);
+        cropNumber.setDisable(true);
         seedPouch.showSeedList();
         updateStats();
     }
@@ -591,7 +609,6 @@ public class FarmController {
     @FXML private Rectangle marketRectangle;
     @FXML private Rectangle descriptionRectangle;
     @FXML private ImageView cropDescription;
-    @FXML private VBox expandingPane;
     @FXML private Button exitMarket;
     @FXML private ImageView farmerProfileDesc;
 
@@ -628,11 +645,15 @@ public class FarmController {
         enableButtons();
     }
 
+
     @FXML
     protected void openMarket(){
         System.out.println("Called market");
 
         marketPane.setVisible(true);
+
+        buyBtnMarket.setDisable(true);
+        cropNumber.setDisable(true);
 
         cropNumber.setText("");
         disableButtons();
@@ -690,6 +711,10 @@ public class FarmController {
     private void expandMarket() {
         marketRectangle.setWidth(800);
         descriptionRectangle.setTranslateX(500);
+
+        buyBtnMarket.setDisable(false);
+        cropNumber.setDisable(false);
+
         cropDescription.setTranslateX(250);
         cropDescription.setVisible(true);
         descriptionRectangle.setVisible(true);
@@ -697,11 +722,8 @@ public class FarmController {
         exitMarket.toFront();
     }
 
-    // Variables
 
-    @FXML private Button upgradeFarmerBtn;
-    @FXML private Text farmerNamePopUp;
-    @FXML private Text farmerRankPopUp;
+
     private void farmerUpgradeButton() {
         // check if a farmer can be upgraded
         if (farmer.getCanUpgrade() != -1) {
@@ -716,13 +738,14 @@ public class FarmController {
     @FXML
     protected void upgradeFarmer() {
         farmer.upgradeFarmer();
-        farmerRankPopUp.setText(farmer.getFarmerType());
+        exitProfile();
     }
     @FXML
     protected void updateStats() {
         levelDisplay.setText("Level: " + farmer.getLevel());
         xpDisplay.setText("XP: " + farmer.getCurrentXP());
-        balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
+        DecimalFormat format = new DecimalFormat("#.##");
+        balanceDisplay.setText("Balance: " + format.format(wallet.getObjectCoins()));
 
         // check game over conditions
         gameOver();
@@ -932,16 +955,19 @@ public class FarmController {
         boolean foundNotWithered = false;
         boolean hasSeeds = false;
         boolean hasCoins = false;
+        boolean foundActiveCrop = false;
 
         ArrayList<String> seedList = new ArrayList<>(List.of("Apple", "Carrot", "Mango", "Potato", "Rose",
                                                              "Sunflower", "Tulip", "Turnip"));
 
-        // NOTIFY THE USER HOW THEY LOST
-
-        // Check if there are any tiles WITHOUT withered crops remaining
         for (int i = 0; i < lot.getLot().size(); i++) {
+            // Check if there are any tiles WITHOUT withered crops remaining
             if (!lot.getTile(i).hasWitheredCrop()) {
                 foundNotWithered = true;
+            }
+            // Check if a tile still has active crops
+            if (lot.getTile(i).hasCrop() && !(lot.getTile(i).getCrop().isWithered())) {
+                foundActiveCrop = true;
             }
         }
 
@@ -959,8 +985,8 @@ public class FarmController {
             }
         }
 
-        // If farmer has no seeds, can't buy more, or if there are no more growing crops
-        if ((!hasSeeds && !hasCoins)) {
+        // If farmer has no seeds, can't buy more, and if there are no more growing crops
+        if ((!hasSeeds && !hasCoins) && !foundActiveCrop) {
             return "\n\nUh oh! You don't have enough coins to do anything!";
         } else if (!foundNotWithered) {
             return "\n\nOh no! All your tiles have dead crops!";
