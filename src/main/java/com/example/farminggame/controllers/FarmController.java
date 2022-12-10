@@ -575,8 +575,6 @@ public class FarmController {
 
         updateStats();
         toolButtons.setDisable(true);
-        toolButtons.setVisible(false);
-        cropButtons.setVisible(false);
         cropButtons.setDisable(true);
         tileDescriptionBox.setVisible(false);
     }
