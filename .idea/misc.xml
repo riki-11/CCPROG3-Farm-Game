@@ -2,6 +2,7 @@
 <project version="4">
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" value="$USER_HOME$/Downloads/javadoc test" />
+    <option name="OTHER_OPTIONS" value="--module-path /Users/riki/Coding Projects/JavaFX/javafx-sdk-19/lib --add-modules javafx.controls,javafx.fxml" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
