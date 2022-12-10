@@ -40,7 +40,7 @@ public class FarmController {
 
     // RESOURCE/PATH variables
     private final String ASSETS_URL = FarmController.class.getResource("/com/example/farminggame" +
-            "/new-assets").toExternalForm();
+            "/assets").toExternalForm();
     private final String FXML_URL = "/com/example/farminggame/fxml/";
 
     // GAME-WIDE VARIABLES
@@ -91,6 +91,8 @@ public class FarmController {
     @FXML private Text xpDisplay;
     @FXML private Text balanceDisplay;
     @FXML private Text dayDisplay;
+    @FXML private Button upgradeFarmerBtn;
+    @FXML private Text farmerRankPopUp;
 
     // Farm Lot FXML Variables
     @FXML private GridPane farmLotGrid;
@@ -265,8 +267,7 @@ public class FarmController {
     }
 
     private void displayData() {
-
-        final String ENVIRONMENT_ASSETS = "/com/example/farminggame/new-assets/environment/";
+        final String ENVIRONMENT_ASSETS = "/com/example/farminggame/assets/environment/";
 
         Image rockImage = new Image(getClass().getResourceAsStream(ENVIRONMENT_ASSETS + "rock.png"));
         Image unplowedImage = new Image(getClass().getResourceAsStream(ENVIRONMENT_ASSETS + "default-tile.png"));
@@ -319,7 +320,7 @@ public class FarmController {
     // Displays the corresponding crop data based on what crop is currently planted on the tile
     private void setCropData(Tile activeTile) {
         // Path to assets folder containing all the crop images
-        final String CROP_ASSETS = "/com/example/farminggame/new-assets/environment/";
+        final String CROP_ASSETS = "/com/example/farminggame/assets/environment/";
 
         // Name of the seed currently planted in the active tile
         String seedName = activeTile.getCrop().getCropName();
@@ -601,7 +602,6 @@ public class FarmController {
     }
 
     // Buys a seed from the seed market
-    // TODO: How many seeds were purchased (right now we can accept negative values for buying seeds which ADDS to our balance)
     @FXML
     protected void buyCrop() {
         PauseTransition pause = new PauseTransition(Duration.seconds(1));
@@ -728,52 +728,79 @@ public class FarmController {
         cropButtons.setVisible(false);
     }
 
-    private void setProfilePane() {
-        Image farmerImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/profile/farmer.png"));
-        Image registeredFarmerImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/profile/registered.png"));
-        Image distinguishedFarmerImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/profile/distinguished.png"));
-        Image legendaryFarmerImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/profile/legendary.png"));
-
-        if (farmer.getFarmerType().equals("Farmer")) {
-            farmerProfileDesc.setImage(farmerImage);
-        } else if (farmer.getFarmerType().equals("Registered Farmer")) {
-            farmerProfileDesc.setImage(registeredFarmerImage);
-        } else if (farmer.getFarmerType().equals("Distinguished Farmer")) {
-            farmerProfileDesc.setImage(distinguishedFarmerImage);
-        } else if (farmer.getFarmerType().equals("Legendary Farmer")) {
-            farmerProfileDesc.setImage(legendaryFarmerImage);
-        }
-    }
-
+    // Opens the profile pane
     @FXML
     protected void openProfile(){
-        System.out.println("Called profile");
         farmerUpgradeButton();
         setProfilePane();
         profilePane.setVisible(true);
         disableButtons();
     }
 
+    // Enables/disables the upgrade button based on whether farmer can upgrade ornot
+    private void farmerUpgradeButton() {
+        if (farmer.getCanUpgrade() != -1) {
+            upgradeFarmerBtn.setDisable(false);
+        } else {
+            upgradeFarmerBtn.setDisable(true);
+        }
+    }
+
+    // Sets the data to be displayed on the profile pane
+    private void setProfilePane() {
+        final String PROFILE_ASSETS = "/com/example/farminggame/assets/profile/";
+
+        Image farmerImage = new Image(getClass().getResourceAsStream(PROFILE_ASSETS + "farmer.png"));
+        Image registeredFarmerImage = new Image(getClass().getResourceAsStream(PROFILE_ASSETS + "registered.png"));
+        Image distinguishedFarmerImage = new Image(getClass().getResourceAsStream(PROFILE_ASSETS + "distinguished.png"));
+        Image legendaryFarmerImage = new Image(getClass().getResourceAsStream(PROFILE_ASSETS + "legendary.png"));
+
+        String farmerType = farmer.getFarmerType();
+
+        switch (farmerType) {
+            case "Farmer" -> farmerProfileDesc.setImage(farmerImage);
+            case "Registered Farmer" -> farmerProfileDesc.setImage(registeredFarmerImage);
+            case "Distinguished Farmer" -> farmerProfileDesc.setImage(distinguishedFarmerImage);
+            case "Legendary Farmer" -> farmerProfileDesc.setImage(legendaryFarmerImage);
+        }
+    }
+
+    // Exits the profile pane
     @FXML
     protected void exitProfile() {
-        System.out.println("Exit profile");
         profilePane.setVisible(false);
         enableButtons();
     }
 
+    // Upgrades the farmer to the next level
+    @FXML
+    protected void upgradeFarmer() {
+        farmer.upgradeFarmer();
+        farmerRankPopUp.setText(farmer.getFarmerType());
+    }
+
+    // Updates the stats of the farmer based on their farmer type
+    @FXML
+    protected void updateStats() {
+        levelDisplay.setText("Level: " + farmer.getLevel());
+        xpDisplay.setText("XP: " + farmer.getCurrentXP());
+        balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
+
+        // check game over conditions
+        gameOver();
+    }
+
+    // Opens the market pane
     @FXML
     protected void openMarket(){
-        System.out.println("Called market");
-
         marketPane.setVisible(true);
-
         cropNumber.setText("");
         disableButtons();
     }
 
+    // Exits the market pane
     @FXML
     protected void exitMarket() {
-        System.out.println("Exit market");
         descriptionRectangle.setVisible(false);
         marketPane.setVisible(false);
         marketRectangle.setWidth(500);
@@ -783,43 +810,66 @@ public class FarmController {
 
     }
 
-
-
-    // Expand the market when any of the plant buttons are pressed
-    // NEXT DAY
+    // Displays information of whichever seed the user selects
     @FXML
-    protected void nextDay() {
-        this.days++;
+    protected void displayMarketInformation(ActionEvent event) throws IOException {
 
-        // Grab all the crops currently planted
-        ArrayList<Crop> cropList = lot.getCropsPlanted();
+        final String MARKET_DISPLAY_ASSETS = "/com/example/farminggame/assets/market/displays/";
 
-        // advance the days planted for each crop
-        for (Crop crop : cropList) {
-            crop.addDayPlanted();
+        // Switch image in the market description
+        Image carrotImage = new Image(getClass().getResourceAsStream(MARKET_DISPLAY_ASSETS + "carrot-desc.png"));
+        Image appleImage = new Image(getClass().getResourceAsStream(MARKET_DISPLAY_ASSETS + "apple-desc.png"));
+        Image mangoImage = new Image(getClass().getResourceAsStream(MARKET_DISPLAY_ASSETS + "mango-desc.png"));
+        Image potatoImage = new Image(getClass().getResourceAsStream(MARKET_DISPLAY_ASSETS + "potato-desc.png"));
+        Image roseImage = new Image(getClass().getResourceAsStream(MARKET_DISPLAY_ASSETS + "rose-desc.png"));
+        Image sunflowerImage = new Image(getClass().getResourceAsStream(MARKET_DISPLAY_ASSETS + "sunflower-desc.png"));
+        Image tulipImage = new Image(getClass().getResourceAsStream(MARKET_DISPLAY_ASSETS + "tulip-desc.png"));
+        Image turnipImage = new Image(getClass().getResourceAsStream(MARKET_DISPLAY_ASSETS + "turnip-desc.png"));
+
+        expandMarket();
+
+        Object node = event.getSource();
+        Button button = (Button) node;
+        String buttonId = button.getId();
+
+        // Shows seed information corresponding to the button pressed
+        switch (buttonId) {
+            case "marketCarrotBtn" -> {
+                setSelectedButton("Carrot");
+                cropDescription.setImage(carrotImage);
+            }
+            case "marketAppleBtn" -> {
+                setSelectedButton("Apple");
+                cropDescription.setImage(appleImage);
+            }
+            case "marketMangoBtn" -> {
+                setSelectedButton("Mango");
+                cropDescription.setImage(mangoImage);
+            }
+            case "marketPotatoBtn" -> {
+                setSelectedButton("Potato");
+                cropDescription.setImage(potatoImage);
+            }
+            case "marketRoseBtn" -> {
+                setSelectedButton("Rose");
+                cropDescription.setImage(roseImage);
+            }
+            case "marketSunflowerBtn" -> {
+                setSelectedButton("Sunflower");
+                cropDescription.setImage(sunflowerImage);
+            }
+            case "marketTulipBtn" -> {
+                setSelectedButton("Tulip");
+                cropDescription.setImage(tulipImage);
+            }
+            case "marketTurnipBtn" -> {
+                setSelectedButton("Turnip");
+                cropDescription.setImage(turnipImage);
+            }
         }
-
-        // Update the view
-        updateDay();
-    }
-    private void disableButtons() {
-        exitBtn.setDisable(true);
-        profileBtn.setDisable(true);
-        openMarketBtn.setDisable(true);
-        nextDayBtn.setDisable(true);
-        toolButtons.setDisable(true);
-        cropButtons.setDisable(true);
-
     }
 
-    private void enableButtons() {
-        exitBtn.setDisable(false);
-        profileBtn.setDisable(false);
-        openMarketBtn.setDisable(false);
-        nextDayBtn.setDisable(false);
-    }
-
-
+    // Expands the market pane to show seed information
     private void expandMarket() {
         marketRectangle.setWidth(800);
         descriptionRectangle.setTranslateX(500);
@@ -830,38 +880,24 @@ public class FarmController {
         exitMarket.toFront();
     }
 
-    // Variables
+    // Move to the next in-game day and update any necessary game elements
+    @FXML
+    protected void nextDay() {
+        this.days++;
 
-    @FXML private Button upgradeFarmerBtn;
-    @FXML private Text farmerNamePopUp;
-    @FXML private Text farmerRankPopUp;
-    private void farmerUpgradeButton() {
-        // check if a farmer can be upgraded
-        if (farmer.getCanUpgrade() != -1) {
-            upgradeFarmerBtn.setDisable(false);
-        } else {
-            upgradeFarmerBtn.setDisable(true);
+        // Grab all the crops currently planted
+        ArrayList<Crop> cropList = lot.getCropsPlanted();
+
+        // Advance the days planted for each crop
+        for (Crop crop : cropList) {
+            crop.addDayPlanted();
         }
+
+        // Update the view
+        updateDay();
     }
 
-    // FARMER PROFILE CODE
-
-    @FXML
-    protected void upgradeFarmer() {
-        farmer.upgradeFarmer();
-        farmerRankPopUp.setText(farmer.getFarmerType());
-    }
-    @FXML
-    protected void updateStats() {
-        levelDisplay.setText("Level: " + farmer.getLevel());
-        xpDisplay.setText("XP: " + farmer.getCurrentXP());
-        balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
-
-        // check game over conditions
-        gameOver();
-
-    }
-
+    // Updates the Farm Game view and the tiles with harvestabe
     @FXML
     protected void updateDay() {
         dayDisplay.setText("Day: " + days);
@@ -874,10 +910,24 @@ public class FarmController {
         cropButtons.setVisible(false);
         tileDescriptionBox.setVisible(false);
 
-        // check game over conditions
+        // Check game over conditions
         gameOver();
     }
 
+    // Checks all tiles and updates their appearance accordingly if its crop is withered
+    private void updateWitheredCrops() {
+        // Check each tile if it has a withered crop (MAKE THIS INTO ITS OWN METHOD)
+        for (int i = 0; i < 50; i++) {
+            Tile tile = lot.getTile(i);
+            if (tile.hasWitheredCrop()) {
+                // Grab the corresponding tile button from the list of tile buttons.
+                Button tileBtn = tileBtnList.get(i);
+                setBtnImage(tileBtn, "environment/withered-crop.png");
+            }
+        }
+    }
+
+    // Checks all tiles and updates their appearance accordingly if its crop is harvestable
     private void updateHarvestableCrops() {
         // Check each tile if it has a harvestable crop
         for (int i = 0; i < 50; i++) {
@@ -899,87 +949,30 @@ public class FarmController {
         }
     }
 
-    private void updateWitheredCrops() {
-        // Check each tile if it has a withered crop (MAKE THIS INTO ITS OWN METHOD)
-        for (int i = 0; i < 50; i++) {
-            Tile tile = lot.getTile(i);
-            if (tile.hasWitheredCrop()) {
-                // Grab the corresponding tile button from the list of tile buttons.
-                Button tileBtn = tileBtnList.get(i);
-                setBtnImage(tileBtn, "environment/withered-crop.png");
-            }
-        }
-    }
-
-    @FXML
-    protected void displayMarketInformation(ActionEvent event) throws IOException {
-        //Switch image in the market description
-        Image carrotImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/market/displays/carrot-desc.png"));
-        Image appleImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/market/displays/apple-desc.png"));
-        Image mangoImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/market/displays/mango-desc.png"));
-        Image potatoImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/market/displays/potato-desc.png"));
-        Image roseImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/market/displays/rose-desc.png"));
-        Image sunflowerImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/market/displays/sunflower-desc.png"));
-        Image tulipImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/market/displays/tulip-desc.png"));
-        Image turnipImage = new Image(getClass().getResourceAsStream("/com/example/farminggame/new-assets/market/displays/turnip-desc.png"));
-
-        expandMarket();
-        Object node = event.getSource();
-
-        Button button = (Button) node;
-        System.out.println("DISPLAYING " + button.getId());
-
-        if (button.getId().equals("marketCarrotBtn")) {
-            setSelectedButton("Carrot");
-            cropDescription.setImage(carrotImage);
-        }
-        else if (button.getId().equals("marketAppleBtn")) {
-            setSelectedButton("Apple");
-            cropDescription.setImage(appleImage);
-        }
-        else if (button.getId().equals("marketMangoBtn")) {
-            setSelectedButton("Mango");
-            cropDescription.setImage(mangoImage);
-        }
-        else if (button.getId().equals("marketPotatoBtn")) {
-            setSelectedButton("Potato");
-            cropDescription.setImage(potatoImage);
-        }
-        else if (button.getId().equals("marketRoseBtn")) {
-            setSelectedButton("Rose");
-            cropDescription.setImage(roseImage);
-        }
-        else if (button.getId().equals("marketSunflowerBtn")) {
-            setSelectedButton("Sunflower");
-            cropDescription.setImage(sunflowerImage);
-        }
-        else if (button.getId().equals("marketTulipBtn")) {
-            setSelectedButton("Tulip");
-            cropDescription.setImage(tulipImage);
-        }
-        else if (button.getId().equals("marketTurnipBtn")) {
-            setSelectedButton("Turnip");
-            cropDescription.setImage(turnipImage);
-        }
-    }
-
-
-    @FXML
-    protected void exitGame() {
-        sceneController.switchToStartView();
-    }
-
-    @FXML protected void exitProgram() {
-        stage.close();
-    }
+    // Sets the background image for an FXML button by passing the button and the imagePath as arguments
     private void setBtnImage(Button button, String imagePath) {
         button.setStyle(String.format("-fx-background-image: url(\"%s\");", ASSETS_URL + imagePath));
     }
 
-    private void setSelectedButton(String button) {
-        this.selectedButton = button;
+    // Enables the different menu buttons
+    private void enableButtons() {
+        exitBtn.setDisable(false);
+        profileBtn.setDisable(false);
+        openMarketBtn.setDisable(false);
+        nextDayBtn.setDisable(false);
     }
 
+    // Disables the different menu buttons
+    private void disableButtons() {
+        exitBtn.setDisable(true);
+        profileBtn.setDisable(true);
+        openMarketBtn.setDisable(true);
+        nextDayBtn.setDisable(true);
+        toolButtons.setDisable(true);
+        cropButtons.setDisable(true);
+    }
+
+    // Checks whether the player has lost the game or not and returns the reason why if they did
     private String checkGameOver() {
         boolean foundNotWithered = false;
         boolean hasSeeds = false;
@@ -1018,6 +1011,7 @@ public class FarmController {
         return "";
     }
 
+    // Display the game over screen
     private void gameOver() {
         String gameOverReason = checkGameOver();
         if (!gameOverReason.equals("")) {
@@ -1026,12 +1020,22 @@ public class FarmController {
             gameOverText.setText(gameOverReason);
         }
     }
-    // GETTERS AND SETTERS
 
-    public void setFarmer(Farmer farmer) {
-        this.farmer = farmer;
-        this.wallet = farmer.getWallet();
-        this.seedPouch = farmer.getSeedPouch();
+    // Exit to the start menu
+    @FXML
+    protected void exitGame() {
+        sceneController.switchToStartView();
+    }
+
+    // Exit the program altogether
+    @FXML
+    protected void exitProgram() {
+        stage.close();
+    }
+
+    // Stores the last clicked button (in the market pane)
+    private void setSelectedButton(String button) {
+        this.selectedButton = button;
     }
 
     // Stores the last clicked tile button
@@ -1044,6 +1048,13 @@ public class FarmController {
             // If tile has a double-digit index, grab the fifth and sixth characters of the id (e.x. '12' in tile12)
             this.activeTileIndex = Integer.parseInt(tileBtn.getId().substring(4, 6)) - 1;
         }
+    }
+
+    // Set the farmer to be used by FarmController
+    public void setFarmer(Farmer farmer) {
+        this.farmer = farmer;
+        this.wallet = farmer.getWallet();
+        this.seedPouch = farmer.getSeedPouch();
     }
 
     public void setSceneController(SceneController sceneController) {
