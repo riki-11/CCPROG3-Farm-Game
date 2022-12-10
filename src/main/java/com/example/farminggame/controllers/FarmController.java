@@ -313,20 +313,22 @@ public class FarmController {
             }
         }
 
-        System.out.println(wallet.getObjectCoins());
-        System.out.println(fertilizer.getCost());
+
         // check if there are enough coins to use the tool
         if (wallet.getObjectCoins() < shovel.getCost()) {
             shovelBtn.setDisable(true);
             shovelCropBtn.setDisable(true);
-        } else if (wallet.getObjectCoins() < plough.getCost()) {
+        }
+        if (wallet.getObjectCoins() < plough.getCost()) {
             ploughBtn.setDisable(true);
-        } else if (wallet.getObjectCoins() < pickaxe.getCost()) {
+        }
+        if (wallet.getObjectCoins() < pickaxe.getCost()) {
             pickaxeBtn.setDisable(true);
-        } else if (wallet.getObjectCoins() < fertilizer.getCost()) {
-            System.out.println("fertilizer");
+        }
+        if (wallet.getObjectCoins() < fertilizer.getCost()) {
             fertilizerBtn.setDisable(true);
-        } else if (wallet.getObjectCoins() < wateringCan.getCost()) {
+        }
+        if (wallet.getObjectCoins() < wateringCan.getCost()) {
             wateringCanBtn.setDisable(true);
         }
 
