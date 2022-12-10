@@ -85,13 +85,13 @@ public class Tile {
         if (hasCrop()) {
             return String.format("""
                                 Withered: %s
-                                Water Count : %d
-                                Fertilizer Count : %d
+                                Water Count : %d / %d
+                                Fertilizer Count : %d / %d
                                 Harvestable : %s
                                 Days until harvestable: %d
                                 """,
-                                this.crop.isWithered(), this.crop.getWaterCount(),
-                                this.crop.getFertilizerCount(), this.crop.isHarvestable(),
+                                this.crop.isWithered(), this.crop.getWaterCount(), this.crop.getWaterNeeds(),
+                                this.crop.getFertilizerCount(), this.crop.getFertilizerNeeds(), this.crop.isHarvestable(),
                                 this.crop.getHarvestTime() - this.crop.getDaysPlanted());
         }
         return "";

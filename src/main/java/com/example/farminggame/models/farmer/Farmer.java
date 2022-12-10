@@ -209,7 +209,7 @@ public class Farmer {
 
         // Gain xp for successful plow
         if (success) {
-            this.experience += plough.getXP();
+            addXP(plough.getXP());
         }
 
         // Unequip tool after using
@@ -225,7 +225,8 @@ public class Farmer {
             wateringCan.waterCrop(tile.getCrop());
 
             this.wallet.setObjectCoins(-1 * wateringCan.getCost());
-            this.experience += wateringCan.getXP();
+            addXP(wateringCan.getXP());
+
         }
     }
 
@@ -239,8 +240,7 @@ public class Farmer {
             fertilizer.fertilizeCrop(tile.getCrop());
 
             this.wallet.setObjectCoins(-1 * fertilizer.getCost());
-            this.experience += fertilizer.getXP();
-
+            addXP(fertilizer.getXP());
         }
     }
 
@@ -253,7 +253,7 @@ public class Farmer {
         if (tile.hasCrop()) {
             // Remove plant
             shovel.removePlant(tile);
-            this.experience += shovel.getXP();
+            addXP(shovel.getXP());
 
         } else {
             System.out.println("Nothing happened. We can't use the shovel here.");
@@ -271,8 +271,7 @@ public class Farmer {
     public void usePickaxe(Tile tile, Pickaxe pickaxe) {
         if (tile.hasRock()) {
             pickaxe.removeRock(tile);
-            this.experience += pickaxe.getXP();
-
+            addXP(pickaxe.getXP());
             // Deduct from wallet
             this.wallet.setObjectCoins(-1 * pickaxe.getCost());
         } else {

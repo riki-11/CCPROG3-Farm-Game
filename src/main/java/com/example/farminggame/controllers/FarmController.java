@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -73,13 +74,16 @@ public class FarmController {
 
     // Game-Wide FXML Variables
     @FXML private SceneController sceneController;
-
     @FXML private Button exitBtn;
     @FXML private Button nextDayBtn;
     @FXML private BorderPane gameOverScreen;
     @FXML private Text gameOverText;
-    @FXML private TextField cropNumber;
 
+    // Seed Market FXML Variables
+    @FXML private TextField cropNumber;
+    @FXML private Button buyBtnMarket;
+
+    // NOTIFICATION FXML Variables
     @FXML private Text successText;
     @FXML private Text failedText;
     @FXML private Text misinputText;
@@ -134,7 +138,6 @@ public class FarmController {
     @FXML private Text tileDescText;
     @FXML private VBox tileDescriptionBox;
 
-
     // Profile Pop Up
     @FXML private StackPane profilePane;
     @FXML private Button profileBtn;
@@ -143,7 +146,6 @@ public class FarmController {
     @FXML private Rectangle marketRectangle;
     @FXML private Rectangle descriptionRectangle;
     @FXML private ImageView cropDescription;
-    @FXML private VBox expandingPane;
     @FXML private Button exitMarket;
     @FXML private ImageView farmerProfileDesc;
 
@@ -251,7 +253,6 @@ public class FarmController {
         this.stage.show();
     }
 
-    // Displays
     @FXML
     protected void display(ActionEvent event) throws IOException {
         // Grabs the button that triggered this event
@@ -347,7 +348,7 @@ public class FarmController {
                 tileDescImage.setImage(mangoImage);
                 tileDescLabel.setText("MANGO");
             }
-            case "POtato" -> {
+            case "Potato" -> {
                 tileDescImage.setImage(potatoImage);
                 tileDescLabel.setText("POTATO");
             }
@@ -561,15 +562,22 @@ public class FarmController {
             case "fertilizerBtn" -> farmer.useFertilizer(activeTile, fertilizer);
             case "wateringCanBtn" -> farmer.useWateringCan(activeTile, wateringCan);
             case "harvestBtn" -> {
-                // Harvest crop returns boolean. Use this to notify the user.
                 farmer.harvestCrop(activeTile);
+                PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                shovelNotif.setText("Crop was successfully harvested");
+                shovelNotif.setVisible(true);
+                pause.setOnFinished(
+                        f -> shovelNotif.setVisible(false));
+                pause.play();
                 setBtnImage(activeTileBtn, "environment/default-tile.png");
             }
         }
 
         updateStats();
         toolButtons.setDisable(true);
+        toolButtons.setVisible(false);
         cropButtons.setVisible(false);
+        cropButtons.setDisable(true);
         tileDescriptionBox.setVisible(false);
     }
 
@@ -710,13 +718,14 @@ public class FarmController {
                     // If selected crop can't be planted on the tile
                     canPlant = false;
                     PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                    shovelNotif.setText("Fruit trees cannot be planted on edge tiles or tiles with adjacent crops");
+                    shovelNotif.setText("Fruit trees cannot be planted on edge tiles or tiles with adjacent crops or rocks");
                     shovelNotif.setVisible(true);
                     pause.setOnFinished(
                             f -> shovelNotif.setVisible(false));
                     pause.play();
                 }
                 break;
+
         }
 
         // Set the image of the tile to show a seed
@@ -725,6 +734,8 @@ public class FarmController {
         }
 
         updateStats();
+        tileDescriptionBox.setVisible(false);
+        cropButtons.setDisable(true);
         cropButtons.setVisible(false);
     }
 
@@ -737,7 +748,7 @@ public class FarmController {
         disableButtons();
     }
 
-    // Enables/disables the upgrade button based on whether farmer can upgrade ornot
+    // Enables/disables the upgrade button based on whether farmer can upgrade or not
     private void farmerUpgradeButton() {
         if (farmer.getCanUpgrade() != -1) {
             upgradeFarmerBtn.setDisable(false);
@@ -776,7 +787,7 @@ public class FarmController {
     @FXML
     protected void upgradeFarmer() {
         farmer.upgradeFarmer();
-        farmerRankPopUp.setText(farmer.getFarmerType());
+        exitProfile();
     }
 
     // Updates the stats of the farmer based on their farmer type
@@ -784,7 +795,8 @@ public class FarmController {
     protected void updateStats() {
         levelDisplay.setText("Level: " + farmer.getLevel());
         xpDisplay.setText("XP: " + farmer.getCurrentXP());
-        balanceDisplay.setText("Balance: " + wallet.getObjectCoins());
+        DecimalFormat format = new DecimalFormat("#.##");
+        balanceDisplay.setText("Balance: " + format.format(wallet.getObjectCoins()));
 
         // check game over conditions
         gameOver();
@@ -794,6 +806,8 @@ public class FarmController {
     @FXML
     protected void openMarket(){
         marketPane.setVisible(true);
+        buyBtnMarket.setDisable(true);
+        cropNumber.setDisable(true);
         cropNumber.setText("");
         disableButtons();
     }
@@ -873,12 +887,17 @@ public class FarmController {
     private void expandMarket() {
         marketRectangle.setWidth(800);
         descriptionRectangle.setTranslateX(500);
+
+        buyBtnMarket.setDisable(false);
+        cropNumber.setDisable(false);
+
         cropDescription.setTranslateX(250);
         cropDescription.setVisible(true);
         descriptionRectangle.setVisible(true);
         exitMarket.setTranslateX(300);
         exitMarket.toFront();
     }
+
 
     // Move to the next in-game day and update any necessary game elements
     @FXML
@@ -893,11 +912,10 @@ public class FarmController {
             crop.addDayPlanted();
         }
 
-        // Update the view
         updateDay();
     }
 
-    // Updates the Farm Game view and the tiles with harvestabe
+    // Updates the Farm Game view and the tiles with harvestable crops or withered crops
     @FXML
     protected void updateDay() {
         dayDisplay.setText("Day: " + days);
@@ -977,13 +995,20 @@ public class FarmController {
         boolean foundNotWithered = false;
         boolean hasSeeds = false;
         boolean hasCoins = false;
+        boolean foundActiveCrop = false;
 
         ArrayList<String> seedList = new ArrayList<>(List.of("Apple", "Carrot", "Mango", "Potato", "Rose",
                                                              "Sunflower", "Tulip", "Turnip"));
+
         // Check if there are any tiles WITHOUT withered crops remaining
         for (int i = 0; i < lot.getLot().size(); i++) {
+            // Check if there are any tiles WITHOUT withered crops remaining
             if (!lot.getTile(i).hasWitheredCrop()) {
                 foundNotWithered = true;
+            }
+            // Check if a tile still has active crops
+            if (lot.getTile(i).hasCrop() && !(lot.getTile(i).getCrop().isWithered())) {
+                foundActiveCrop = true;
             }
         }
 
@@ -1001,8 +1026,8 @@ public class FarmController {
             }
         }
 
-        // If farmer has no seeds, can't buy more, or if there are no more growing crops
-        if ((!hasSeeds && !hasCoins)) {
+        // If farmer has no seeds, can't buy more, and if there are no more growing crops
+        if ((!hasSeeds && !hasCoins) && !foundActiveCrop) {
             return "\n\nUh oh! You don't have enough coins to do anything!";
         } else if (!foundNotWithered) {
             return "\n\nOh no! All your tiles have dead crops!";

@@ -222,7 +222,7 @@
                                                 </TextField>
 
                                                 <!-- buy button for the crops -->
-                                                <Button styleClass="buyBTN" text="BUY" onAction="#buyCrop">
+                                                <Button fx:id="buyBtnMarket" styleClass="buyBTN" text="BUY" onAction="#buyCrop">
                                                     <FlowPane.margin>
                                                         <Insets top="5" left="2"></Insets>
                                                     </FlowPane.margin>
