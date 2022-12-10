@@ -263,19 +263,13 @@ public class FarmController {
         // set the tools to visible first
         toolButtons.setVisible(true);
         toolButtons.setDisable(false);
-        shovelBtn.setDisable(false);
-        ploughBtn.setVisible(true);
-        pickaxeBtn.setVisible(true);
-        fertilizerBtn.setVisible(true);
-        wateringCanBtn.setVisible(true);
-        shovelBtn.setVisible(true);
-        harvestBtn.setVisible(true);
-
+        cropButtons.setDisable(false);
         cropButtons.setVisible(false);
 
         // Check the status of the last clicked tile (aka the active Tile)
         if (activeTile.hasRock()) {
             // If tile has a rock
+            shovelBtn.setDisable(false);
             ploughBtn.setDisable(true);
             pickaxeBtn.setDisable(false);
             fertilizerBtn.setDisable(true);
@@ -283,6 +277,7 @@ public class FarmController {
             harvestBtn.setDisable(true);
         } else if (!(activeTile.isPlowed())) {
             // If tile is unplowed
+            shovelBtn.setDisable(false);
             ploughBtn.setDisable(false);
             pickaxeBtn.setDisable(true);
             fertilizerBtn.setDisable(true);
@@ -292,17 +287,13 @@ public class FarmController {
             // If tile is plowed
             // remove all tools except shovel
             toolButtons.setVisible(false);
-            ploughBtn.setVisible(false);
-            pickaxeBtn.setVisible(false);
-            fertilizerBtn.setVisible(false);
-            wateringCanBtn.setVisible(false);
-            harvestBtn.setVisible(false);
 
             showCropBtns(); // method to show crops depending on seed inventory
 
         } else {
             pickaxeBtn.setDisable(true);
             ploughBtn.setDisable(true);
+            shovelBtn.setDisable(false);
 
             if (activeTile.hasHarvestableCrop()) {
                 // harvestable
@@ -322,14 +313,18 @@ public class FarmController {
             }
         }
 
+        System.out.println(wallet.getObjectCoins());
+        System.out.println(fertilizer.getCost());
         // check if there are enough coins to use the tool
         if (wallet.getObjectCoins() < shovel.getCost()) {
             shovelBtn.setDisable(true);
+            shovelCropBtn.setDisable(true);
         } else if (wallet.getObjectCoins() < plough.getCost()) {
             ploughBtn.setDisable(true);
         } else if (wallet.getObjectCoins() < pickaxe.getCost()) {
             pickaxeBtn.setDisable(true);
         } else if (wallet.getObjectCoins() < fertilizer.getCost()) {
+            System.out.println("fertilizer");
             fertilizerBtn.setDisable(true);
         } else if (wallet.getObjectCoins() < wateringCan.getCost()) {
             wateringCanBtn.setDisable(true);
@@ -356,6 +351,7 @@ public class FarmController {
                 setBtnImage(activeTileBtn, "environment/default-tile.png");
             } else {
                 PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                shovelNotif.setText("You're not supposed to use that on that tile");
                 shovelNotif.setVisible(true);
                 pause.setOnFinished(
                         f -> shovelNotif.setVisible(false));
@@ -473,6 +469,12 @@ public class FarmController {
         } else {
             turnipBtn.setDisable(false);
         }
+
+        if (wallet.getObjectCoins() < shovel.getCost()) {
+            shovelCropBtn.setDisable(true);
+        } else {
+            shovelCropBtn.setDisable(false);
+        }
     }
 
     @FXML
@@ -515,8 +517,14 @@ public class FarmController {
                 }
             } else {
                 canPlant = false;
-                System.out.println("Fruit trees cannot be planted on tiles with adjacent crops");
-                // TODO: add a pop-up for that
+                PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+                shovelNotif.setText("Fruit trees cannot be planted on edge tiles or tiles with adjacent crops");
+                shovelNotif.setVisible(true);
+                pause.setOnFinished(
+                        f -> shovelNotif.setVisible(false));
+                pause.play();
+
+
             }
         }
 
@@ -665,7 +673,7 @@ public class FarmController {
         openMarketBtn.setDisable(true);
         nextDayBtn.setDisable(true);
         toolButtons.setDisable(true);
-        cropButtons.setVisible(false);
+        cropButtons.setDisable(true);
 
     }
 
