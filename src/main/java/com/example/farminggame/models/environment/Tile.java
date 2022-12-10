@@ -9,7 +9,7 @@ import com.example.farminggame.models.environment.crops.Crop;
 public class Tile {
     private boolean plowed;
     private boolean rock;
-    private Crop crop; // USE POLYMORPHISM
+    private Crop crop;
 
     /**
      *  Creates a basic tile in its default state

@@ -1,5 +1,9 @@
 package com.example.farminggame.models.tools;
 
+/**
+ * Represents a Tool
+ * @author Enrique Lejano and Krizchelle Wong
+ */
 public abstract class Tool {
     protected int usageCost;
     protected double experienceGained;
