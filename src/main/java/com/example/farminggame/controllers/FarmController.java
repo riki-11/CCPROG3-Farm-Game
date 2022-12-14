@@ -562,10 +562,24 @@ public class FarmController {
             case "fertilizerBtn" -> farmer.useFertilizer(activeTile, fertilizer);
             case "wateringCanBtn" -> farmer.useWateringCan(activeTile, wateringCan);
             case "harvestBtn" -> {
-                farmer.harvestCrop(activeTile);
-                PauseTransition pause = new PauseTransition(Duration.seconds(1));
-                shovelNotif.setText("Crop was successfully harvested");
+                // Check which crop will be harvested and how many of it were harvested
+                String cropName = activeTile.getCrop().getCropName();
+                int produceCount = activeTile.getCrop().getProduce();
+
+                // Briefly keep the notification on screen
+                PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+
+                // Display different text depending on crop that was harvested and the no. of crops harvested
+                if (produceCount == 1) {
+                    shovelNotif.setText(String.format("%d %s was successfully harvested", produceCount, cropName));
+                } else {
+                    shovelNotif.setText(String.format("%d %ss were successfully harvested", produceCount, cropName));
+                }
                 shovelNotif.setVisible(true);
+
+                // Harvest the crop
+                farmer.harvestCrop(activeTile);
+
                 pause.setOnFinished(
                         f -> shovelNotif.setVisible(false));
                 pause.play();
@@ -716,7 +730,7 @@ public class FarmController {
                     // If selected crop can't be planted on the tile
                     canPlant = false;
                     PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                    shovelNotif.setText("Fruit trees cannot be planted on edge tiles or tiles with adjacent crops or rocks");
+                    shovelNotif.setText("Fruit trees cannot be planted be planted on edge tiles or tiles with adjacent crops or rocks.");
                     shovelNotif.setVisible(true);
                     pause.setOnFinished(
                             f -> shovelNotif.setVisible(false));
@@ -1004,7 +1018,7 @@ public class FarmController {
             if (!lot.getTile(i).hasWitheredCrop()) {
                 foundNotWithered = true;
             }
-            // Check if a tile still has active crops
+            // Check if a tile still has an active crop
             if (lot.getTile(i).hasCrop() && !(lot.getTile(i).getCrop().isWithered())) {
                 foundActiveCrop = true;
             }
@@ -1024,7 +1038,7 @@ public class FarmController {
             }
         }
 
-        // If farmer has no seeds, can't buy more, and if there are no more growing crops
+        // If farmer has no seeds, can't buy more, and if all tiles can't be planted on
         if ((!hasSeeds && !hasCoins) && !foundActiveCrop) {
             return "\n\nUh oh! You don't have enough coins to do anything!";
         } else if (!foundNotWithered) {
