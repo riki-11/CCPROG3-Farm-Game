@@ -730,7 +730,7 @@ public class FarmController {
                     // If selected crop can't be planted on the tile
                     canPlant = false;
                     PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-                    shovelNotif.setText("Fruit trees cannot be planted be planted on edge tiles or tiles with adjacent crops or rocks.");
+                    shovelNotif.setText("Fruit trees cannot be planted on edge tiles or tiles with adjacent crops or rocks.");
                     shovelNotif.setVisible(true);
                     pause.setOnFinished(
                             f -> shovelNotif.setVisible(false));
